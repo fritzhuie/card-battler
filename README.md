@@ -18,6 +18,26 @@ Basic browser-based dungeon crawler card battler game
    
 1. Player plays any number of cards
 2. Player clicks "finish turn" (Enemy action resolves)
-3. Repeat until either emeny or player dies
+3. Repeat until either enemy or player dies
 4. New round (repeat)
 
+## Requirements
+
+### Front end (HTML/CSS)
+
+New game Screen
+- Welcome / Game over / Victory message
+- New game button
+
+Gameplay screen
+- Enemy portrait, health, action
+- Player hand, health, power crystal count
+- Finish turn button
+- Recent action description scroll
+
+### Gameplay logic (JavaScript)
+
+- List of enemies (with attributes and actions)
+- List of cards (with attributes and actions)
+- Card engine (that decides what happens when player plays a card)
+- Gameplay state (health pools, crystals, gameover check)
