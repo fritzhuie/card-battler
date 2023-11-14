@@ -19,5 +19,5 @@ Basic browser-based dungeon crawler card battler game
 1. Player plays any number of cards
 2. Player clicks "finish turn" (Enemy action resolves)
 3. Repeat until either emeny or player dies
-4. New round (repeat from 1.)
+4. New round (repeat)
 
