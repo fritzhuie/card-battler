@@ -26,6 +26,27 @@ body, html {
     margin-left: 0;
 }
 
+.status-region {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.player-status,
+.enemy-status {
+    flex: 1; /* Ensures that both status regions take up equal space */
+    text-align: center; /* Centers the text within the status div */
+}
+
+.player-status img,
+.enemy-status img {
+    width: 200px; /* Adjust as needed */
+    height: auto;
+    display: block; /* Makes the image a block to allow margin auto to work */
+    padding: 20px;
+    margin: 0 auto 10px; /* Centers the image and adds space below */
+}
+
 .hand {
     display: flex;
     justify-content: space-around;
