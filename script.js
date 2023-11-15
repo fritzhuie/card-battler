@@ -8,6 +8,18 @@ document.getElementById("end-turn").addEventListener("click", function() {
     beginNextTurn();
 });
 
+var mainMenu = document.getElementById("title-screen");
+var battleMenu = document.getElementById("battle-screen");
+
+var playerHealth = document.getElementById("player-health");
+var playerArmor = document.getElementById("player-armor");
+var playerMana = document.getElementById("player-mana");
+var enemyHealth = document.getElementById("enemy-health");
+var enemyArmor = document.getElementById("enemy-armor");
+var enemyAttack = document.getElementById("enemy-attack");
+
+var playerPortrait = 
+
 function cardWithName(name) {
     switch (name) {
         case "attack":
@@ -105,6 +117,8 @@ function gameOver() {
 }
 
 function newGame () {
+    mainMenu.hidden = true;
+    battleMenu.hidden = false;
     deck = ["strike", "strike", "strike", "strike", "strike", "armor", "armor", "big_armor"];
     newBattle();
 }

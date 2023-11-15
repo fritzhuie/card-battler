@@ -7,18 +7,17 @@ body, html {
     justify-content: center;
     align-items: center;
     text-align: center;
+    background-color:#f7f7f7;
 }
 
 .game-container {
-    width: 80%;
-    max-width: 600px;
-    margin: auto;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #999;
 }
 
 .enemy-status {
-    
-    position: relative;
-    margin-right: 0;
+    width: 600px;
 }
 
 .player-status {
@@ -32,13 +31,29 @@ body, html {
     margin-bottom: 20px;
 }
 
-.player-status,
+.player-status {
+    position: absolute;
+    right: 0;
+    top: 100px;
+    flex: 1; /* Ensures that both status regions take up equal space */
+    text-align: center; /* Centers the text within the status div */
+    background: #DDD;
+}
+
 .enemy-status {
     flex: 1; /* Ensures that both status regions take up equal space */
     text-align: center; /* Centers the text within the status div */
+    background: #DDD;
 }
 
-.player-status img,
+.player-status img {
+    width: 100px; /* Adjust as needed */
+    height: auto;
+    display: block; /* Makes the image a block to allow margin auto to work */
+    padding: 20px;
+    margin: 0 auto 10px; /* Centers the image and adds space below */
+}
+
 .enemy-status img {
     width: 200px; /* Adjust as needed */
     height: auto;
@@ -83,4 +98,8 @@ body, html {
 
 #draw-card:hover, #end-turn:hover {
     background-color: #45a049;
+}
+
+#battle-screen {
+    visibility: hidden;
 }

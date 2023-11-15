@@ -7,26 +7,30 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="game-container">
-    <div class="status-region">
-        <div class="player-status">
-            <img src="roman.jpg"> 
-            <p>Health: 100</p>
-            <p>Armor: 0</p>
-            <p>Mana: 3</p>
-        </div>
-        <div class="enemy-status">
-            <img src="roman.jpg">  
-            <p>Health: 100</p>
-            <p>Armor: 0</p>
-            <p>Action: Attack for 6</p>
-        </div>
+
+    <div class="game-container" id="title-screen">
+        <button id="new-game">New Game</button>
     </div>
-    <div class="hand" id="player-hand">
+
+<div class="game-container" id="battle-screen">
+    <div class="enemy-status">
+        <img src="img/barbarian.png" id="enemy-portrait">
+        <p id="enemy-name">Maddie the Baddie</h2>
+        <p id="enemy-health">Health: 100</p>
+        <p id="enemy-armor">Armor: 0</p>
+        <p id="enemy-attack">Action: Attack for 6</p>
     </div>
-    <button id="end-turn">End Turn</button>
-    <button id="new-game">New Game</button>
+    <div class="hand" id="player-hand"></div>
+    <button id="end-turn">Next Turn</button>
+    <div class="player-status">
+        <img src="img/hero.png" id="player-portrait"> 
+        <p id="class-label">Warrior Knight</p>
+        <p id="player-health">🩸 100</p>
+        <p id="player-armor">🛡️ 0</p>
+        <p id="player-mana">✨ 1</p>
+    </div>
 </div>
+
 <script src="script.js"></script>
 </body>
 </html>
