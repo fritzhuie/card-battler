@@ -37,6 +37,14 @@ button:hover {
     width: 100%;
     margin: 200px auto;
     background-color: #999;
+    flex-grow: 1;
+    display: none;
+    margin: 0 auto;
+}
+
+.hand {
+    display: flex;
+    flex-direction: row;
 }
 
 .card {
@@ -55,17 +63,19 @@ button:hover {
 }
 
 #hero-sidebar {
-    width: 20%;
-    background-color: #8b8b8b;
-    float: right;
+    display: none;
+    width: 200px;
     height: 100%;
+    background-color: #8b8b8b;
     padding: 10px;
     box-sizing: border-box;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #hero-sidebar img {
-    width: 90%;
+    width: 80%;
     height: auto;
 }
 
@@ -77,11 +87,6 @@ button:hover {
     margin: 0 auto 10px; /* Centers the image and adds space below */
 }
 
-.hand {
-    display: flex;
-    flex-direction: row;
-}
-
 #title-menu {
     display: none;
     text-align: center;
@@ -90,6 +95,13 @@ button:hover {
 #dialog-menu {
     display: none;
     text-align: center;
+}
+
+#dialog-menu p {
+    text-align: justify;
+    width: 400px;
+    padding: 50px;
+    font-family: "Luminari", "fantasy";
 }
 
 #hero-select-menu {
@@ -106,36 +118,10 @@ button:hover {
     height: 200px;
 }
 
-#hero-sidebar {
-    display: none;
-}
-
-#hero-portrait {
-    width: 95%;
-    border-radius: 10px;
-}
-
 #game-area {
     display: flex;
     width: 1000px;
     height: 600px;
     background-color: #999;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-#hero-sidebar {
-    width: 200px;
-    height: 100%;
-    background-color: #8b8b8b;
-    padding: 10px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.game-container {
-    flex-grow: 1;
-    display: none;
-    margin: 0 auto;
 }

@@ -22,7 +22,7 @@
 
     <div class="game-container" id="dialog-menu">
         <p id="dialog-text">The hero began</p>
-        <button id="fight-button" onclick="startBattle()">Battle!</button>
+        <button id="fight-button" onclick="startBattle()">Journey forth!</button>
     </div>
 
     <div class="game-container" id="battle-screen">
@@ -33,6 +33,8 @@
             <p id="enemy-armor">Armor: 0</p>
             <p id="enemy-attack">Action: Attack for 6</p>
         </div>
+        <p id="draw-pile">Draw pile: 10</p>
+        <p id="discard-pile">Discard: 0</p>
         <div class="hand" id="player-hand"></div>
         <button id="end-turn" onclick="beginNextTurn()">End Turn / start fight</button>
         <button id="win-cheat" onclick="win()">(win)</button>
@@ -42,9 +44,9 @@
     <div id="hero-sidebar">
         <img src="" id="hero-portrait"> 
         <p id="class-label">Warrior Knight</p>
-        <p id="player-health">🩸 100</p>
-        <p id="player-armor">🛡️ 0</p>
-        <p id="player-mana">✨ 1</p>
+        <p id="player-health">Health: 100</p>
+        <p id="player-armor">Armor: 0</p>
+        <p id="player-mana">Mana: 1</p>
     </div>
 </div>
 <script src="script.js"></script>

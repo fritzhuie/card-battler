@@ -11,6 +11,8 @@ const enemyHealthLabel = document.getElementById("enemy-health");
 const enemyArmorLabel = document.getElementById("enemy-armor");
 const enemyAttackLabel = document.getElementById("enemy-attack");
 
+const dialogText = document.getElementById("dialog-text");
+
 const strikeCard = {      name:"Strike",      type:"damage",  value:5,  cost:1 }
 const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8,  cost:1 }
 const armorCard = {       name:"Armor",       type:"armor",   value:5,  cost:1 }
@@ -22,14 +24,14 @@ const enemyMaddie = {     name: "Maddie the Baddie", health: 29, attackDamage: 7
 
 // Variables --------------------------------------------------------------------
 
-var deck = [];
-var discard = [];
-var currentEnemy = enemyMaddie;
-var handSize = 0;
-var playerHealth = 100;
-var playerArmor = 0;
-var playerMana = 3;
-var enemyHealth = 100;
+let deck = [];
+let discard = [];
+let currentEnemy = enemyMaddie;
+let handSize = 0;
+let playerHealth = 100;
+let playerArmor = 0;
+let playerMana = 3;
+let enemyHealth = 100;
 
 // Functions --------------------------------------------------------------------
 
@@ -40,7 +42,7 @@ function showMainMenu() {
     hideElement('hero-select-menu');
     hideHeroSidebar()
 
-    //reset everything
+    //reset everything here
 }
 
 function showElement(id) {
@@ -49,6 +51,10 @@ function showElement(id) {
 
 function hideElement(id) {
     document.getElementById(id).style.display = "none";
+}
+
+function setDialog(text) {
+    dialogText.innerText = text;
 }
 
 function showHeroSelect() {
@@ -90,15 +96,18 @@ function selectHero(type) {
 if(type === 'warrior') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/hero.png';
-    playerClassName.innerText = "Warrior"
+    playerClassName.innerText = "Warrior";
+    setDialog("The armored warrior lifted his great shield and set out to destroy the great evil that infested his realm. Only then would the king grant his return from exile.")
 } else if(type === 'wizard') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/hero-wizard.png';
-    playerClassName.innerText = "Wizard"
+    playerClassName.innerText = "Wizard";
+    setDialog("The wizard left his tower for the first time in years, ready to crush the undead swarm. What secrets will be discover on this path?")
 } else if(type === 'barbarian') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/barbarian.png';
-    playerClassName.innerText = "Barbarian"
+    playerClassName.innerText = "Barbarian";
+    setDialog("The barbarian lifted her massive sword, and set out to destroy her enemies. She would not rest until the undead were driven before her, and she could hear the lamentations of their evil makers.")
 }
     console.log('Player selected' + type)
     showDialogMenu();
@@ -136,6 +145,8 @@ function drawCard(card) {
     const cardElement = document.createElement('div');
     cardElement.classList.add('card');
     cardElement.textContent = card;
+    cardElement.style.backgroundImage = "url('img/strike-card.png')";
+    cardElement.style.backgroundSize = "100%";
     cardElement.addEventListener('click', function() {
         handleCardClick(cardElement, card);
     });
