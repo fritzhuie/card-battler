@@ -72,6 +72,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-style: italic;
 }
 
 #hero-sidebar img {
@@ -79,12 +80,9 @@ button:hover {
     height: auto;
 }
 
-#player-icon img {
-    width: 95%; /* Adjust as needed */
-    height: auto;
-    display: block; /* Makes the image a block to allow margin auto to work */
-    padding: 20px;
-    margin: 0 auto 10px; /* Centers the image and adds space below */
+#class-label  {
+    font-weight: bold;
+    font-family: "Luminari", "fantasy";;
 }
 
 #title-menu {
@@ -102,6 +100,8 @@ button:hover {
     width: 400px;
     padding: 50px;
     font-family: "Luminari", "fantasy";
+    margin: 100px auto 100px;
+    background-color: antiquewhite;
 }
 
 #hero-select-menu {
