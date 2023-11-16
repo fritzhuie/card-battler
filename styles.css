@@ -1,89 +1,9 @@
 body, html {
-    height: 100%;
-    margin: 0;
     font-family: 'Arial', sans-serif;
     background-color: #f7f7f7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color:#f7f7f7;
 }
 
-.game-container {
-    width: 100%;
-    margin: 0 auto;
-    background-color: #999;
-}
-
-.enemy-status {
-    width: 600px;
-}
-
-.player-status {
-    position: relative;
-    margin-left: 0;
-}
-
-.status-region {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.player-status {
-    position: absolute;
-    right: 0;
-    top: 100px;
-    flex: 1; /* Ensures that both status regions take up equal space */
-    text-align: center; /* Centers the text within the status div */
-    background: #DDD;
-}
-
-.enemy-status {
-    flex: 1; /* Ensures that both status regions take up equal space */
-    text-align: center; /* Centers the text within the status div */
-    background: #DDD;
-}
-
-.player-status img {
-    width: 100px; /* Adjust as needed */
-    height: auto;
-    display: block; /* Makes the image a block to allow margin auto to work */
-    padding: 20px;
-    margin: 0 auto 10px; /* Centers the image and adds space below */
-}
-
-.enemy-status img {
-    width: 200px; /* Adjust as needed */
-    height: auto;
-    display: block; /* Makes the image a block to allow margin auto to work */
-    padding: 20px;
-    margin: 0 auto 10px; /* Centers the image and adds space below */
-}
-
-.hand {
-    display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
-}
-
-.card {
-    width: 100px;
-    height: 140px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin: 0 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    color: #333;
-}
-
-#draw-card, #end-turn {
+button {
     padding: 10px 20px;
     font-size: 16px;
     margin-top: 20px;
@@ -96,10 +16,72 @@ body, html {
     transition: background-color 0.3s ease;
 }
 
-#draw-card:hover, #end-turn:hover {
-    background-color: #45a049;
+button:hover {
+    background-color: #cdefcf;
+}
+
+.game-container {
+    width: 1200px;
+    height: 600px;
+    margin: 200px auto;
+    background-color: #999;
+}
+
+.card {
+    width: 120px;
+    height: 150px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 0 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #333;
+}
+
+#character-info {
+    width: 20%;
+    background-color: #8b8b8b;
+    float: right;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    /* TODO: Add styles for portrait, health, armor, mana */
+}
+
+#player-icon img {
+    width: 95%; /* Adjust as needed */
+    height: auto;
+    display: block; /* Makes the image a block to allow margin auto to work */
+    padding: 20px;
+    margin: 0 auto 10px; /* Centers the image and adds space below */
+}
+
+#hand {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+#title-menu {
+    display: none;
+}
+
+#dialog-menu {
+    display: none;
+}
+
+#hero-select-menu {
+    display: none;
 }
 
 #battle-screen {
-    visibility: hidden;
+    display: none;
+}
+
+#hero-sidebar {
+    display: none;
 }

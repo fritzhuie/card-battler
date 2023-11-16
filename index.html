@@ -8,9 +8,19 @@
 </head>
 <body>
 
-    <div class="game-container" id="title-screen">
-        <button id="new-game">New Game</button>
-    </div>
+<div class="game-container" id="title-menu">
+    <button id="new-game-button" onclick="showHeroSelect()">New Game</button>
+</div>
+
+<div class="game-container" id="hero-select-menu">
+    <button class="character-select" onclick="selectHero('warrior')">Warrior</button>
+    <button class="character-select" onclick="selectHero('Wizard')">Wizard</button>
+    <button class="character-select" onclick="selectHero('Barbarian')">Barbarian</button>
+</div>
+
+<div class="game-container" id="dialog-menu">
+    <button id="fight-button" onclick="startBattle()">Battle!</button>
+</div>
 
 <div class="game-container" id="battle-screen">
     <div class="enemy-status">
@@ -21,14 +31,17 @@
         <p id="enemy-attack">Action: Attack for 6</p>
     </div>
     <div class="hand" id="player-hand"></div>
-    <button id="end-turn">Next Turn</button>
-    <div class="player-status">
-        <img src="img/hero.png" id="player-portrait"> 
-        <p id="class-label">Warrior Knight</p>
-        <p id="player-health">🩸 100</p>
-        <p id="player-armor">🛡️ 0</p>
-        <p id="player-mana">✨ 1</p>
-    </div>
+    <button id="end-turn" onclick="beginNextTurn()">End Turn / start fight</button>
+    <button id="win-cheat" onclick="win()">(win)</button>
+    <button id="give-up-button" onclick="gameOver()">"(die)"</button>
+</div>
+
+<div id="hero-sidebar">
+    <img src="img/hero.png" id="player-portrait"> 
+    <p id="class-label">Warrior Knight</p>
+    <p id="player-health">🩸 100</p>
+    <p id="player-armor">🛡️ 0</p>
+    <p id="player-mana">✨ 1</p>
 </div>
 
 <script src="script.js"></script>

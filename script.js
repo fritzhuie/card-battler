@@ -1,16 +1,5 @@
 
 
-document.getElementById("new-game").addEventListener("click", function() {
-    newGame();
-});
-
-document.getElementById("end-turn").addEventListener("click", function() {
-    beginNextTurn();
-});
-
-var mainMenu = document.getElementById("title-screen");
-var battleMenu = document.getElementById("battle-screen");
-
 var playerHealth = document.getElementById("player-health");
 var playerArmor = document.getElementById("player-armor");
 var playerMana = document.getElementById("player-mana");
@@ -18,7 +7,55 @@ var enemyHealth = document.getElementById("enemy-health");
 var enemyArmor = document.getElementById("enemy-armor");
 var enemyAttack = document.getElementById("enemy-attack");
 
-var playerPortrait = 
+function showMainMenu() {
+    showElement('title-menu');
+    hideElement('hero-sidebar');
+    hideElement('dialog-menu');
+    hideElement('battle-screen');
+    hideElement('hero-select-menu');
+
+    //reset everything
+}
+
+function showElement(id) {
+    document.getElementById(id).style.display = "block";
+}
+
+function hideElement(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+function showHeroSelect() {
+    hideElement('title-menu');
+    showElement('hero-select-menu');
+}
+
+function showHeroSidebar() {
+    showElement('hero-sidebar');
+}
+
+function hideHeroSidebar() {
+    hideElement('hero-sidebar');
+}
+
+function showDialogMenu() {
+    showElement('dialog-menu');
+    hideElement('hero-select-menu');
+    hideElement('battle-screen');
+}
+
+function startBattle() {
+    hideElement('dialog-menu');
+    showElement('battle-screen');
+}
+
+showElement('title-menu');
+
+function selectHero(type) {
+    console.log('Player selected' + type)
+    showDialogMenu();
+    showHeroSidebar();
+}
 
 function cardWithName(name) {
     switch (name) {
@@ -110,6 +147,11 @@ function recycleDiscard() {
         deck.push(discard(pop));
     }
     deck = deck.sort(() => Math.random() - 0.5);
+}
+
+function win() {
+    console.log("win");
+    
 }
 
 function gameOver() {
