@@ -6,6 +6,8 @@ const playerClassName = document.getElementById("class-label");
 const playerHealthLabel = document.getElementById("player-health");
 const playerArmorLabel = document.getElementById("player-armor");
 const playerManaLabel = document.getElementById("player-mana");
+const drawPileLabel = document.getElementById("draw-pile");
+const discardPileLabel = document.getElementById("discard-pile");
 
 const enemyHealthLabel = document.getElementById("enemy-health");
 const enemyArmorLabel = document.getElementById("enemy-armor");
@@ -88,6 +90,7 @@ function showDialogMenu() {
     hideElement('hero-select-menu');
     hideElement('battle-screen');
     showHeroSidebar();
+    enemyIntroDialog.innerText = "Before you stands a shaman armored in boar bones and wet sinew, wielding a gore-encrusted axe..."
 }
 
 function showEnemyIntro() {

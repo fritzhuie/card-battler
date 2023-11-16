@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'Eater';
+    src: url('Eater-Regular.ttf') format('truetype');
+}
 
 body, html {
     font-family: 'Arial', sans-serif;
@@ -142,19 +146,23 @@ button:hover {
 }
 
 #enemy-intro-menu img {
-    width: 350px;
-    margin: 25px 0 0 0;
+    width: 300px;
+    margin: 30px 0 0 0;
     border-radius: 80px;
 }
 
 #enemy-intro-menu h3 {
+    font-family: "Eater";
     font-weight: bolder;
-    font-size: 60px;
+    font-size: 48px;
     border-radius: 30px;
+
 }
 
 #enemy-intro-menu p {
+    text-align: center;
     font-style: italic;
+    margin: 16px;
 }
 
 #hero-select-menu {
