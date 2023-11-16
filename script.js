@@ -97,17 +97,17 @@ if(type === 'warrior') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/hero.png';
     playerClassName.innerText = "Warrior";
-    setDialog("The armored warrior lifted his great shield and set out to destroy the great evil that infested his realm. Only then would the king grant his return from exile.")
+    setDialog("The armored warrior lifted his massive shield and set out to destroy the great evil that has infested the realm. An army of undead now stand between the knight and glory...")
 } else if(type === 'wizard') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/hero-wizard.png';
     playerClassName.innerText = "Wizard";
-    setDialog("The wizard left his tower for the first time in years, ready to crush the undead swarm. What secrets will be discover on this path?")
+    setDialog("The wizard emerged from his secluded tower, ready to vanquish the slavering undead hordes. The necromancers had stolen knowledge from his tower, and would soon feel his arcane wrath...")
 } else if(type === 'barbarian') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/barbarian.png';
     playerClassName.innerText = "Barbarian";
-    setDialog("The barbarian lifted her massive sword, and set out to destroy her enemies. She would not rest until the undead were driven before her, and she could hear the lamentations of their evil makers.")
+    setDialog("The barbarian lifted her ancient sword, and set out to crush her enemies. She smiled, knowing that soon, she would see the undead driven before her, and hear the lamentations of their evil makers...")
 }
     console.log('Player selected' + type)
     showDialogMenu();

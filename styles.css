@@ -5,13 +5,13 @@ body, html {
 }
 
 h1 {
-    font-family: "URW Chancery L", cursive;
+    font-family: "Luminari", "fantasy";
     font-size: 60px;
     margin: 100px;
 }
 
 h2 {
-    font-family: "URW Chancery L", cursive;
+    font-family: "Luminari", "fantasy";
     font-size: 48px;
     margin: 100px;
 }
@@ -98,10 +98,14 @@ button:hover {
 #dialog-menu p {
     text-align: justify;
     width: 400px;
-    padding: 50px;
+    padding: 70px;
+    font-size: large;
     font-family: "Luminari", "fantasy";
     margin: 100px auto 100px;
-    background-color: antiquewhite;
+    background-image: url("img/scroll.png");
+    background-size: 100% 100%;
+    color:darkslategray;
+    opacity: 80%;
 }
 
 #hero-select-menu {
