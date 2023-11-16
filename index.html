@@ -10,28 +10,37 @@
 <div id="game-area">
     <div class="game-container" id="title-menu">
         <h1>Dungeon Card Battler</h1>
-        <button id="new-game-button" onclick="showHeroSelect()">New Game</button>
+        <button onclick="showHeroSelect()">New Game</button>
     </div>
 
     <div class="game-container" id="hero-select-menu">
         <h2>Choose your hero</h2>
-        <button class="character-select" onclick="selectHero('warrior')">Choose Warrior</button>
-        <button class="character-select" onclick="selectHero('wizard')">Choose Wizard</button>
-        <button class="character-select" onclick="selectHero('barbarian')">Choose Barbarian</button>
+        <button onclick="selectHero('warrior')">Choose Warrior</button>
+        <button onclick="selectHero('wizard')">Choose Wizard</button>
+        <button onclick="selectHero('barbarian')">Choose Barbarian</button>
     </div>
 
     <div class="game-container" id="dialog-menu">
         <p id="dialog-text">The hero began</p>
-        <button id="fight-button" onclick="startBattle()">Journey forth!</button>
+        <button onclick="showEnemyIntro()">Journey forth!</button>
+    </div>
+
+    <div class="game-container" id="enemy-intro-menu">
+        <img src="img/axe-shaman.png" id="enemy-intro-portrait">
+        <h3>Osteal Shaman</h3>
+        <p id="enemy-intro-dialog">Before you stands a scary monster!</p>
+        <button onclick="startBattle()">FIGHT!</button>
     </div>
 
     <div class="game-container" id="battle-screen">
-        <div class="enemy-status">
-            <img src="img/barbarian.png" id="enemy-portrait">
-            <p id="enemy-name">Maddie the Baddie</h2>
-            <p id="enemy-health">Health: 100</p>
-            <p id="enemy-armor">Armor: 0</p>
-            <p id="enemy-attack">Action: Attack for 6</p>
+        <div id="enemy-sidebar">
+            <img src="img/axe-shaman.png" id="enemy-portrait">
+            <div id="enemy-status">
+                <h3 id="enemy-name">Osteal Shaman</h3>
+                <p id="enemy-health">Health: 100</p>
+                <p id="enemy-armor">Armor: 0</p>
+                <p id="enemy-attack">Action: Attack for 6</p>
+            </div>
         </div>
         <p id="draw-pile">Draw pile: 10</p>
         <p id="discard-pile">Discard: 0</p>

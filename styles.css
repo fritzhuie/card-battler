@@ -16,6 +16,12 @@ h2 {
     margin: 100px;
 }
 
+h3 {
+    font-family: "Luminari", "fantasy";
+    font-size: 36px;
+    margin: 10px;
+}
+
 button {
     padding: 10px 20px;
     font-size: 16px;
@@ -76,8 +82,31 @@ button:hover {
 }
 
 #hero-sidebar img {
+    border-radius: 15px;
+    border: 5px solid #000;
     width: 80%;
     height: auto;
+}
+
+#enemy-sidebar {
+    padding: 20px;
+    display: flex;
+}
+
+#enemy-sidebar img {
+    border-radius: 35px;
+    border: 7px solid #000;
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+}
+
+#enemy-name {
+
+}
+
+#enemy-status {
+    padding: 10px;
 }
 
 #class-label  {
@@ -108,6 +137,26 @@ button:hover {
     opacity: 80%;
 }
 
+#enemy-intro-menu {
+    text-align: center;
+}
+
+#enemy-intro-menu img {
+    width: 350px;
+    margin: 25px 0 0 0;
+    border-radius: 80px;
+}
+
+#enemy-intro-menu h3 {
+    font-weight: bolder;
+    font-size: 60px;
+    border-radius: 30px;
+}
+
+#enemy-intro-menu p {
+    font-style: italic;
+}
+
 #hero-select-menu {
     display: none;
     text-align: center;
@@ -115,11 +164,6 @@ button:hover {
 
 #battle-screen {
     display: none;
-}
-
-#battle-screen img {
-    width: 200px;
-    height: 200px;
 }
 
 #game-area {

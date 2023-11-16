@@ -13,6 +13,9 @@ const enemyAttackLabel = document.getElementById("enemy-attack");
 
 const dialogText = document.getElementById("dialog-text");
 
+const enemyIntroDialog = document.getElementById("enemy-intro-dialog");
+const enemyIntroPortrait = document.getElementById("enemy-intro-portrait");
+
 const strikeCard = {      name:"Strike",      type:"damage",  value:5,  cost:1 }
 const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8,  cost:1 }
 const armorCard = {       name:"Armor",       type:"armor",   value:5,  cost:1 }
@@ -87,8 +90,13 @@ function showDialogMenu() {
     showHeroSidebar();
 }
 
-function startBattle() {
+function showEnemyIntro() {
+    showElement('enemy-intro-menu');
     hideElement('dialog-menu');
+}
+
+function startBattle() {
+    hideElement('enemy-intro-menu');
     showElement('battle-screen');
 }
 
