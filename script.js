@@ -1,18 +1,44 @@
 
+// Contants --------------------------------------------------------------------
 
-var playerHealth = document.getElementById("player-health");
-var playerArmor = document.getElementById("player-armor");
-var playerMana = document.getElementById("player-mana");
-var enemyHealth = document.getElementById("enemy-health");
-var enemyArmor = document.getElementById("enemy-armor");
-var enemyAttack = document.getElementById("enemy-attack");
+const heroPortrait = document.getElementById("hero-portrait");
+const playerClassName = document.getElementById("class-label");
+const playerHealthLabel = document.getElementById("player-health");
+const playerArmorLabel = document.getElementById("player-armor");
+const playerManaLabel = document.getElementById("player-mana");
+
+const enemyHealthLabel = document.getElementById("enemy-health");
+const enemyArmorLabel = document.getElementById("enemy-armor");
+const enemyAttackLabel = document.getElementById("enemy-attack");
+
+const strikeCard = {      name:"Strike",      type:"damage",  value:5,  cost:1 }
+const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8,  cost:1 }
+const armorCard = {       name:"Armor",       type:"armor",   value:5,  cost:1 }
+const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12, cost:2 }
+const fireballCard = {    name:"Fireball",    type:"damage",  value:7,  cost:1 }
+const manaCard = {        name:"Replenish",   type:"mana",    value:3,  cost:1 }
+
+const enemyMaddie = {     name: "Maddie the Baddie", health: 29, attackDamage: 7 }
+
+// Variables --------------------------------------------------------------------
+
+var deck = [];
+var discard = [];
+var currentEnemy = enemyMaddie;
+var handSize = 0;
+var playerHealth = 100;
+var playerArmor = 0;
+var playerMana = 3;
+var enemyHealth = 100;
+
+// Functions --------------------------------------------------------------------
 
 function showMainMenu() {
     showElement('title-menu');
-    hideElement('hero-sidebar');
     hideElement('dialog-menu');
     hideElement('battle-screen');
     hideElement('hero-select-menu');
+    hideHeroSidebar()
 
     //reset everything
 }
@@ -30,18 +56,29 @@ function showHeroSelect() {
     showElement('hero-select-menu');
 }
 
+
 function showHeroSidebar() {
-    showElement('hero-sidebar');
+    heroPortrait.style.opacity = 1;
+    playerClassName.style.opacity = 1;
+    playerHealthLabel.style.opacity = 1;
+    playerArmorLabel.style.opacity = 1;
+    playerManaLabel.style.opacity = 1;
 }
 
 function hideHeroSidebar() {
-    hideElement('hero-sidebar');
+    heroPortrait.style.opacity = 0;
+    playerClassName.style.opacity = 0;
+    playerHealthLabel.style.opacity = 0;
+    playerArmorLabel.style.opacity = 0;
+    playerManaLabel.style.opacity = 0;
 }
+
 
 function showDialogMenu() {
     showElement('dialog-menu');
     hideElement('hero-select-menu');
     hideElement('battle-screen');
+    showHeroSidebar();
 }
 
 function startBattle() {
@@ -49,9 +86,20 @@ function startBattle() {
     showElement('battle-screen');
 }
 
-showElement('title-menu');
-
 function selectHero(type) {
+if(type === 'warrior') {
+    const img = document.getElementById('hero-portrait');
+    img.src = 'img/hero.png';
+    playerClassName.innerText = "Warrior"
+} else if(type === 'wizard') {
+    const img = document.getElementById('hero-portrait');
+    img.src = 'img/hero-wizard.png';
+    playerClassName.innerText = "Wizard"
+} else if(type === 'barbarian') {
+    const img = document.getElementById('hero-portrait');
+    img.src = 'img/barbarian.png';
+    playerClassName.innerText = "Barbarian"
+}
     console.log('Player selected' + type)
     showDialogMenu();
     showHeroSidebar();
@@ -73,43 +121,6 @@ function cardWithName(name) {
           break;
     }
 }
-
-var strikeCard = {
-    name:"Strike",
-    type:"damage",
-    value:5,
-    cost:1,
-    id: 0
-}
-var armorCard = {
-    name:"Protec",
-    type:"armor",
-    value:5
-}
-var bigArmorCard = {
-    name:"BigProtec",
-    type:"armor",
-    value:12,
-    cost:2
-}
-
-var enemyMaddie = {
-    name: "Maddie the Baddie",
-    health: 29,
-    attackDamage: 7
-}
-
-var deck = [];
-const discard = [];
-var handSize = 0;
-
-var playerHealth = 100;
-var playerMana = 3;
-var playerArmor = 0;
-
-var currentEnemy = enemyMaddie;
-var enemyHealth = 0;
-var enemyAttack = 0;
 
 function handleCardClick(cardElement, card) {
     console.log(card + " played!")
@@ -176,7 +187,6 @@ function newBattle() {
 }
 
 function beginNextTurn () {
-    playerHealth = playerHealth - enemyAttack;
     if (playerHealth <= 0) {
         gameOver();
     }
@@ -192,4 +202,8 @@ function beginNextTurn () {
     console.log("currentEnemy: " + currentEnemy.name);
     console.log("Deck: " + deck);
 }
+
+// Entry Point --------------------------------------------------------------------
+
+showMainMenu();
 

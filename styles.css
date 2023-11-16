@@ -1,6 +1,19 @@
+
 body, html {
     font-family: 'Arial', sans-serif;
-    background-color: #f7f7f7;
+    background-color: white;
+}
+
+h1 {
+    font-family: "URW Chancery L", cursive;
+    font-size: 60px;
+    margin: 100px;
+}
+
+h2 {
+    font-family: "URW Chancery L", cursive;
+    font-size: 48px;
+    margin: 100px;
 }
 
 button {
@@ -9,11 +22,11 @@ button {
     margin-top: 20px;
     margin-right: 10px;
     background-color: #4CAF50;
-    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 button:hover {
@@ -21,8 +34,7 @@ button:hover {
 }
 
 .game-container {
-    width: 1200px;
-    height: 600px;
+    width: 100%;
     margin: 200px auto;
     background-color: #999;
 }
@@ -42,14 +54,19 @@ button:hover {
     color: #333;
 }
 
-#character-info {
+#hero-sidebar {
     width: 20%;
     background-color: #8b8b8b;
     float: right;
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
-    /* TODO: Add styles for portrait, health, armor, mana */
+    text-align: center;
+}
+
+#hero-sidebar img {
+    width: 90%;
+    height: auto;
 }
 
 #player-icon img {
@@ -60,28 +77,65 @@ button:hover {
     margin: 0 auto 10px; /* Centers the image and adds space below */
 }
 
-#hand {
+.hand {
     display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
+    flex-direction: row;
 }
 
 #title-menu {
     display: none;
+    text-align: center;
 }
 
 #dialog-menu {
     display: none;
+    text-align: center;
 }
 
 #hero-select-menu {
     display: none;
+    text-align: center;
 }
 
 #battle-screen {
     display: none;
 }
 
+#battle-screen img {
+    width: 200px;
+    height: 200px;
+}
+
 #hero-sidebar {
     display: none;
+}
+
+#hero-portrait {
+    width: 95%;
+    border-radius: 10px;
+}
+
+#game-area {
+    display: flex;
+    width: 1000px;
+    height: 600px;
+    background-color: #999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#hero-sidebar {
+    width: 200px;
+    height: 100%;
+    background-color: #8b8b8b;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-container {
+    flex-grow: 1;
+    display: none;
+    margin: 0 auto;
 }
