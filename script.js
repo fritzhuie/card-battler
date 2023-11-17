@@ -18,12 +18,12 @@ const dialogText = document.getElementById("dialog-text");
 const enemyIntroDialog = document.getElementById("enemy-intro-dialog");
 const enemyIntroPortrait = document.getElementById("enemy-intro-portrait");
 
-const strikeCard = {      name:"Strike",      type:"damage",  value:5,  cost:1 }
-const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8,  cost:1 }
-const armorCard = {       name:"Armor",       type:"armor",   value:5,  cost:1 }
-const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12, cost:2 }
-const fireballCard = {    name:"Fireball",    type:"damage",  value:7,  cost:1 }
-const manaCard = {        name:"Replenish",   type:"mana",    value:3,  cost:1 }
+const strikeCard = {      name:"Strike",      type:"damage",  value:5,  cost:1, url:'img/strike-card.png'}
+const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8,  cost:1, url:'img/big-strike-card.png'}
+const armorCard = {       name:"Armor",       type:"armor",   value:5,  cost:1, url:'img/armor-card.png'}
+const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12, cost:2, url:'img/bigArmor-card.png'}
+const fireballCard = {    name:"Fireball",    type:"damage",  value:7,  cost:1, url:'img/fireBall-card.png'}
+const manaCard = {        name:"Replenish",   type:"mana",    value:3,  cost:1, url:'img/mana-card.png'}
 
 const enemyMaddie = { name: "Orthic Shaman", health: 29, attackDamage: 7 }
 
@@ -31,6 +31,7 @@ const enemyMaddie = { name: "Orthic Shaman", health: 29, attackDamage: 7 }
 
 let deck = [];
 let discard = [];
+let handSize = 0;
 let currentEnemy = enemyMaddie;
 let playerHealth = 100;
 let playerArmor = 0;
@@ -115,7 +116,7 @@ if(type === 'warrior') {
     setDialog("True knights of the land have been tasked with ending undead activity within the kingdom. The smell of putrid air fills the warrior's helmet as he enters the crypts...")
 } else if(type === 'wizard') {
     const img = document.getElementById('hero-portrait');
-    img.src = 'img/hero-wizard.png';
+    img.src = 'img/wizard-portrait.png';
     playerClassName.innerText = "Wizard";
     setDialog("The wizard emerges from his secluded tower, ready to vanquish the slavering undead hordes at his doorstep. The necromancers have stolen forbidden knowledge from his tower, and it must be returned...")
 } else if(type === 'barbarian') {
@@ -144,6 +145,10 @@ function cardWithName(name) {
           console.log("ERROR: INVALID CARD")
           break;
     }
+}
+
+function cardImage(cardName) {
+
 }
 
 function handleCardClick(cardElement, cardName) {
@@ -183,8 +188,10 @@ function gainMana(value) {
 
 function drawCard(card) {
     const cardElement = document.createElement('div');
+    cardElement.dataset.cardType = card;
     cardElement.classList.add('card');
     cardElement.textContent = card;
+
     cardElement.style.backgroundImage = "url('img/strike-card.png')";
     cardElement.style.backgroundSize = "100%";
     cardElement.addEventListener('click', function() {
