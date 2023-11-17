@@ -1,6 +1,15 @@
 # Dungeon Battler
 Basic browser-based dungeon crawler card battler game
 
+## TODO:
+- Implement onChange="function()" to gameplay variables
+- Add monster randomizer
+   - Add round reset logic
+   - Add unique class cards
+- implement armor interaction
+- implement enemy damage system
+- add game over screen
+
 ## Gameplay
 - Players start with a deck of cards, and a health pool, and three power crystals.
 - Each round, an emeny is presented, and the player battles the enemy to the death.

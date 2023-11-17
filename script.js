@@ -7,7 +7,7 @@ const playerHealthLabel = document.getElementById("player-health");
 const playerArmorLabel = document.getElementById("player-armor");
 const playerManaLabel = document.getElementById("player-mana");
 const drawPileLabel = document.getElementById("draw-pile");
-const discardPileLabel = document.getElementById("discard-pile");
+const drawPileImage = document.getElementById("draw-pile-image");
 
 const enemyHealthLabel = document.getElementById("enemy-health");
 const enemyArmorLabel = document.getElementById("enemy-armor");
@@ -25,14 +25,13 @@ const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12, cost:2 }
 const fireballCard = {    name:"Fireball",    type:"damage",  value:7,  cost:1 }
 const manaCard = {        name:"Replenish",   type:"mana",    value:3,  cost:1 }
 
-const enemyMaddie = {     name: "Maddie the Baddie", health: 29, attackDamage: 7 }
+const enemyMaddie = { name: "Orthic Shaman", health: 29, attackDamage: 7 }
 
 // Variables --------------------------------------------------------------------
 
 let deck = [];
 let discard = [];
 let currentEnemy = enemyMaddie;
-let handSize = 0;
 let playerHealth = 100;
 let playerArmor = 0;
 let playerMana = 3;
@@ -45,7 +44,7 @@ function showMainMenu() {
     hideElement('dialog-menu');
     hideElement('battle-screen');
     hideElement('hero-select-menu');
-    hideHeroSidebar()
+    hideHeroSidebar();
 
     //reset everything here
 }
@@ -67,6 +66,16 @@ function showHeroSelect() {
     showElement('hero-select-menu');
 }
 
+function hideHeroSidebar() {
+    heroPortrait.style.opacity = 0;
+    playerClassName.style.opacity = 0;
+    playerHealthLabel.style.opacity = 0;
+    playerArmorLabel.style.opacity = 0;
+    playerManaLabel.style.opacity = 0;
+    drawPileLabel.style.opacity = 0;
+    drawPileImage.style.opacity = 0;
+    document.getElementById("hero-sidebar").style.display = "none";
+}
 
 function showHeroSidebar() {
     heroPortrait.style.opacity = 1;
@@ -74,14 +83,9 @@ function showHeroSidebar() {
     playerHealthLabel.style.opacity = 1;
     playerArmorLabel.style.opacity = 1;
     playerManaLabel.style.opacity = 1;
-}
-
-function hideHeroSidebar() {
-    heroPortrait.style.opacity = 0;
-    playerClassName.style.opacity = 0;
-    playerHealthLabel.style.opacity = 0;
-    playerArmorLabel.style.opacity = 0;
-    playerManaLabel.style.opacity = 0;
+    drawPileLabel.style.opacity = 1;
+    drawPileImage.style.opacity = 1;
+    document.getElementById("hero-sidebar").style.display = "flex";
 }
 
 
@@ -90,7 +94,7 @@ function showDialogMenu() {
     hideElement('hero-select-menu');
     hideElement('battle-screen');
     showHeroSidebar();
-    enemyIntroDialog.innerText = "Before you stands a shaman armored in boar bones and wet sinew, wielding a gore-encrusted axe..."
+    enemyIntroDialog.innerText = "Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe..."
 }
 
 function showEnemyIntro() {
@@ -106,19 +110,19 @@ function startBattle() {
 function selectHero(type) {
 if(type === 'warrior') {
     const img = document.getElementById('hero-portrait');
-    img.src = 'img/hero.png';
+    img.src = 'img/warrior.png';
     playerClassName.innerText = "Warrior";
-    setDialog("The armored warrior lifted his massive shield and set out to destroy the great evil that has infested the realm. An army of undead now stand between the knight and glory...")
+    setDialog("True knights of the land have been tasked with ending undead activity within the kingdom. The smell of putrid air fills the warrior's helmet as he enters the crypts...")
 } else if(type === 'wizard') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/hero-wizard.png';
     playerClassName.innerText = "Wizard";
-    setDialog("The wizard emerged from his secluded tower, ready to vanquish the slavering undead hordes. The necromancers had stolen knowledge from his tower, and would soon feel his arcane wrath...")
+    setDialog("The wizard emerges from his secluded tower, ready to vanquish the slavering undead hordes at his doorstep. The necromancers have stolen forbidden knowledge from his tower, and it must be returned...")
 } else if(type === 'barbarian') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/barbarian.png';
     playerClassName.innerText = "Barbarian";
-    setDialog("The barbarian lifted her ancient sword, and set out to crush her enemies. She smiled, knowing that soon, she would see the undead driven before her, and hear the lamentations of their evil makers...")
+    setDialog("The barbarian lifted her ancient sword, and set out to crush her enemies, see the undead driven before her, and hear the lamentations of their human masters...")
 }
     console.log('Player selected' + type)
     showDialogMenu();
@@ -142,14 +146,39 @@ function cardWithName(name) {
     }
 }
 
-function handleCardClick(cardElement, card) {
-    console.log(card + " played!")
-    discard.push(card)
-    cardElement.remove();
-    //check if card can be played
-    //move card from hand to discard pile
+function handleCardClick(cardElement, cardName) {
+    let card = cardWithName(cardName);
+    if (playerMana >= card.cost ) {
+        cardElement.remove();
+        discard.push(cardName)
+
+        //types: "armor" "damage" "mana"
+        if (card.type === "damage") {
+            hurtEnemyFor(card.value);
+        } else if (card.type === "armor") {
+            gainArmor(card.value)
+        } else if (card.type === "mana" ) {
+            gainMana(card.value);
+        }
+
+        if (enemyHealth <= 0 ) {
+            win();
+        }
+    }
     //do card thing
     //check that enemy health > 0 (if so, end battle)
+}
+
+function hurtEnemy(value) {
+    enemyHealth-=value;
+}
+
+function gainArmor(value) {
+    playerArmor+=value;
+}
+
+function gainMana(value) {
+    playerMana = 3;
 }
 
 function drawCard(card) {
@@ -184,7 +213,10 @@ function recycleDiscard() {
 
 function win() {
     console.log("win");
-    
+    showDialogMenu();
+    dialogText.innerText == "One evil has been defeated. But many more enemies await.";
+    playerArmor = 0;
+    playerMana = 3;
 }
 
 function gameOver() {
@@ -194,7 +226,7 @@ function gameOver() {
 function newGame () {
     mainMenu.hidden = true;
     battleMenu.hidden = false;
-    deck = ["strike", "strike", "strike", "strike", "strike", "armor", "armor", "big_armor"];
+    deck = ["strike", "strike", "strike", "strike", "strike", "armor", "armor"];
     newBattle();
 }
 

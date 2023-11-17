@@ -9,9 +9,13 @@ body, html {
 }
 
 h1 {
+    text-align: center;
     font-family: "Luminari", "fantasy";
-    font-size: 60px;
-    margin: 100px;
+    font-size: 75px;
+    color: white;
+    font-weight: 900;
+    margin: 150px 0 150px 0;
+    text-shadow: 3px 3px #000000;
 }
 
 h2 {
@@ -79,17 +83,24 @@ button:hover {
     background-color: #8b8b8b;
     padding: 10px;
     box-sizing: border-box;
-    display: flex;
     flex-direction: column;
     align-items: center;
     font-style: italic;
 }
 
-#hero-sidebar img {
+#hero-portrait {
     border-radius: 15px;
     border: 5px solid #000;
     width: 80%;
     height: auto;
+}
+#draw-pile {
+    font-weight: bold;
+    margin: 100px 0 0 0;
+}
+
+#draw-pile-image {
+    width: 75px;
 }
 
 #enemy-sidebar {
@@ -121,6 +132,18 @@ button:hover {
 #title-menu {
     display: none;
     text-align: center;
+    background-image: url("img/crypt.png");
+    background-position: center;
+}
+
+#title-menu button {
+    width: 150px;
+    height: 100px;
+    background-color:burlywood;
+}
+
+#title-menu button:hover {
+    background-color: #BBB;
 }
 
 #dialog-menu {
@@ -168,6 +191,18 @@ button:hover {
 #hero-select-menu {
     display: none;
     text-align: center;
+}
+
+#warrior-portrait img {
+    width: 50px;
+} 
+
+#wizard-portrait img {
+    
+}
+
+#barbarian-portrait img {
+    width: 80px;
 }
 
 #battle-screen {

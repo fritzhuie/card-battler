@@ -9,15 +9,24 @@
 <body>
 <div id="game-area">
     <div class="game-container" id="title-menu">
-        <h1>Dungeon Card Battler</h1>
+        <h1>Crypts of the Forsaken</h1>
         <button onclick="showHeroSelect()">New Game</button>
     </div>
 
     <div class="game-container" id="hero-select-menu">
         <h2>Choose your hero</h2>
-        <button onclick="selectHero('warrior')">Choose Warrior</button>
-        <button onclick="selectHero('wizard')">Choose Wizard</button>
-        <button onclick="selectHero('barbarian')">Choose Barbarian</button>
+        <div id="hero-select-buttons">
+            <div class="warrior-portrait">
+                <img src="img/warrior.png" width="200">
+                <button onclick="selectHero('warrior')">Choose Warrior</button>
+            </div>
+            <div id="wizard-portrait">
+                <button onclick="selectHero('wizard')">Choose Wizard</button>
+            </div>
+            <div id="barbarian-portrait">
+                <button onclick="selectHero('barbarian')">Choose Barbarian</button>
+            </div>
+        </div>
     </div>
 
     <div class="game-container" id="dialog-menu">
@@ -54,8 +63,8 @@
         <p id="player-health">Health: 100</p>
         <p id="player-armor">Armor: 0</p>
         <p id="player-mana">Mana: 1</p>
-        <p id="draw-pile">Draw pile: 10</p>
-        <p id="discard-pile">Discard: 0</p>
+        <p id="draw-pile">10</p>
+        <img id="draw-pile-image" src="img/draw.png" width="60px">
     </div>
 </div>
 <script src="script.js"></script>
