@@ -16,15 +16,14 @@
     <div class="game-container" id="hero-select-menu">
         <h2>Choose your hero</h2>
         <div id="hero-select-buttons">
-            <button id="warrior-select-button" onclick="selectHero('warrior')" onmouseover="highlightHero('warrior')">Warrior</button>
-            <button id="wizard-select-button" onclick="selectHero('wizard')" onmouseover="highlightHero('wizard')">Wizard</button>
-            <button id="barbarian-select-button" onclick="selectHero('barbarian')" onmouseover="highlightHero('barbarian')">Barbarian</button>
+            <button id="warrior-select-button" onclick="selectHero('warrior')" onmouseover="highlightHero('warrior')" onmouseleave="unhighlightHero()">Warrior</button>
+            <button id="wizard-select-button" onclick="selectHero('wizard')" onmouseover="highlightHero('wizard')" onmouseleave="unhighlightHero()">Wizard</button>
+            <button id="barbarian-select-button" onclick="selectHero('barbarian')" onmouseover="highlightHero('barbarian')" onmouseleave="unhighlightHero()">Barbarian</button>
         </div>
     </div>
-
     <div class="game-container" id="dialog-menu">
         <p id="dialog-text">The hero began</p>
-        <button onclick="showEnemyIntro()">Journey forth!</button>
+        <button id="dialog-button" onclick="showEnemyIntro()">Journey forth!</button>
     </div>
 
     <div class="game-container" id="enemy-intro-menu">

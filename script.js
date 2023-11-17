@@ -18,12 +18,12 @@ const dialogText = document.getElementById("dialog-text");
 const enemyIntroDialog = document.getElementById("enemy-intro-dialog");
 const enemyIntroPortrait = document.getElementById("enemy-intro-portrait");
 
-const strikeCard = {      name:"Strike",      type:"damage",  value:5,  cost:1, url:'img/strike-card.png'}
-const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8,  cost:1, url:'img/big-strike-card.png'}
-const armorCard = {       name:"Armor",       type:"armor",   value:5,  cost:1, url:'img/armor-card.png'}
-const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12, cost:2, url:'img/bigArmor-card.png'}
-const fireballCard = {    name:"Fireball",    type:"damage",  value:7,  cost:1, url:'img/fireBall-card.png'}
-const manaCard = {        name:"Replenish",   type:"mana",    value:3,  cost:1, url:'img/mana-card.png'}
+const strikeCard = {      name:"Strike",      type:"damage",  value:5 }
+const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8 }
+const armorCard = {       name:"Armor",       type:"armor",   value:5 }
+const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12}
+const fireballCard = {    name:"Fireball",    type:"damage",  value:7 }
+const manaCard = {        name:"Replenish",   type:"mana",    value:3 }
 
 const enemyShaman = { 
     name: "Orthic Shaman", 
@@ -105,7 +105,7 @@ function showDialogMenu() {
     hideElement('hero-select-menu');
     hideElement('battle-screen');
     showHeroSidebar();
-    enemyIntroDialog.innerText = "Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe..."
+    enemyIntroDialog.innerText = "no dialog loaded"
 }
 
 function showEnemyIntro() {
@@ -116,22 +116,26 @@ function showEnemyIntro() {
 function startBattle() {
     hideElement('enemy-intro-menu');
     showElement('battle-screen');
+    newBattle();
 }
 
 function selectHero(type) {
 if(type === 'warrior') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/warrior-portrait.png';
+    document.getElementById('dialog-button').innerText = "FOR THE KING!";
     playerClassName.innerText = "Warrior";
     setDialog("Tasked with ending undead activity within the kingdom, the smell of putrid air fills the warrior's helmet as he enters the crypts...")
 } else if(type === 'wizard') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/wizard-portrait.png';
+    document.getElementById('dialog-button').innerText = "THEY WILL PAY!";
     playerClassName.innerText = "Wizard";
     setDialog("The wizard emerges from his secluded tower, ready to vanquish the slavering undead hordes at his doorstep. The necromancers have stolen forbidden knowledge from his tower, and it must be returned...")
 } else if(type === 'barbarian') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/barbarian-portrait.png';
+    document.getElementById('dialog-button').innerText = "RAMPAGE!";
     playerClassName.innerText = "Barbarian";
     setDialog("The barbarian lifted her ancient sword, and smiled. She will crush her enemies, see them driven before her, and hear the lamentations of the cultists...")
 }
@@ -153,6 +157,11 @@ function highlightHero(type) {
     }
 }
 
+function unhighlightHero() {
+    document.getElementById("hero-select-menu").style.backgroundImage = "url('img/selection-bg.png')";
+    document.getElementById("hero-select-menu").style.backgroundSize = "cover";
+}
+
 function cardWithName(name) {
     switch (name) {
         case "attack":
@@ -161,37 +170,9 @@ function cardWithName(name) {
         case "armor":
             return armorCard;
             break;
-        case "bigArmor":
-            return bigArmorCard;
-            break;
         default:
           console.log("ERROR: INVALID CARD")
           break;
-    }
-}
-
-function cardImage(cardName) {
-
-}
-
-function handleCardClick(cardElement, cardName) {
-    let card = cardWithName(cardName);
-    if (playerMana >= card.cost ) {
-        cardElement.remove();
-        discard.push(cardName)
-
-        //types: "armor" "damage" "mana"
-        if (card.type === "damage") {
-            hurtEnemyFor(card.value);
-        } else if (card.type === "armor") {
-            gainArmor(card.value)
-        } else if (card.type === "mana" ) {
-            gainMana(card.value);
-        }
-
-        if (enemyHealth <= 0 ) {
-            win();
-        }
     }
 }
 
@@ -208,28 +189,56 @@ function gainMana(value) {
     playerMana = 3;
 }
 
+const cardClasses = {
+    "strike":"strike-card",
+    "armor":"armor-card"
+}
+
 function drawCard(card) {
     const cardElement = document.createElement('div');
-    cardElement.dataset.cardType = card;
+    cardElement.style.backgroundImage = 'url(img/strike-card.png';
+    cardElement.style.backgroundSize = "contain";
+    // cardElement.style.fontSize = 0;
+    cardElement.style.opacity = 0;
     cardElement.classList.add('card');
-    cardElement.textContent = card;
 
-    cardElement.style.backgroundImage = "url('img/strike-card.png')";
-    cardElement.style.backgroundSize = "100%";
+    console.log("card drawn= " + card);
+
     cardElement.addEventListener('click', function() {
-        handleCardClick(cardElement, card);
+        handleCardClick(cardElement);
     });
     const playerHand = document.getElementById('player-hand');
     playerHand.appendChild(cardElement);
     handSize++;
 }
 
+function handleCardClick(cardElement) {
+    const card = cardWithName(cardName);
+    console.log(card);
+    cardElement.remove();
+    discard.push(cardName)
+
+    if (card.type === "damage") {
+        hurtEnemyFor(card.value);
+    } else if (card.type === "armor") {
+        gainArmor(card.value)
+    } else if (card.type === "mana" ) {
+        gainMana(card.value);
+    }
+
+    if (enemyHealth <= 0 ) {
+        win();
+    }
+}
+
 function dealCards (count) {
     while (handSize < 5) {
-        if (deck.length === 0) {
+        if (deck.count === 0) {
             recycleDiscard()
         }
-        drawCard(deck.pop());
+        const cardToBeDrawn = deck.pop();
+        console.log("drawing card: " + cardToBeDrawn);
+        drawCard(cardToBeDrawn);
     }
 }
 
@@ -241,32 +250,25 @@ function recycleDiscard() {
 }
 
 function win() {
-    console.log("win");
-    showDialogMenu();
-    dialogText.innerText == "One evil has been defeated. But many more enemies await.";
+    dialogText.innerText == "One evil has been defeated. But many more enemies await...";
     playerArmor = 0;
     playerMana = 3;
+    // TODO: queue up random monster, reset monster hp
+    showDialogMenu();
 }
 
 function gameOver() {
     console.log("lose");
 }
 
-function newGame () {
-    mainMenu.hidden = true;
-    battleMenu.hidden = false;
-    deck = ["strike", "strike", "strike", "strike", "strike", "armor", "armor"];
-    newBattle();
-}
-
 function newBattle() {
-    currentEnemy = enemyMaddie;
+    // currentEnemy = enemyMaddie;
     playerHealth = 100;
     playerArmor = 0;
     enemyAttack = 0;
-    enemyHealth = currentEnemy.health;
+    // enemyHealth = currentEnemy.health;
+    deck = ["strike", "strike", "strike", "strike", "strike", "armor", "armor"];
     deck = deck.sort(() => Math.random() - 0.5);
-    beginNextTurn();
 }
 
 function beginNextTurn () {

@@ -4,7 +4,7 @@
 }
 
 body, html {
-    font-family: 'Arial', sans-serif;
+    font-family: "Luminari", "fantasy";
     background-color: white;
 }
 
@@ -31,10 +31,11 @@ h3 {
 }
 
 button {
-    padding: 10px 20px;
+    font-family: "Papyrus";
+    font-weight: bolder;
+    padding: 20px;
     font-size: 16px;
-    margin-top: 20px;
-    margin-right: 10px;
+    margin: 10px;
     background-color: #4CAF50;
     border: none;
     border-radius: 5px;
@@ -126,7 +127,7 @@ button:hover {
 
 #class-label  {
     font-weight: bold;
-    font-family: "Luminari", "fantasy";;
+    font-family: "Luminari", "fantasy";
 }
 
 #title-menu {
@@ -189,7 +190,8 @@ button:hover {
 }
 
 #hero-select-menu {
-    background-image:
+    background-image: url("img/selection-bg.png");
+    background-size: fill;
 }
 
 #hero-select-menu h2 {
