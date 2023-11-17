@@ -2,13 +2,14 @@
 Basic browser-based dungeon crawler card battler game
 
 ## TODO:
-- Implement onChange="function()" to gameplay variables
 - Add monster randomizer
    - Add round reset logic
    - Add unique class cards
 - implement armor interaction
 - implement enemy damage system
 - add game over screen
+
+- Implement onChange="function()" to gameplay variables? (ask about this)
 
 ## Gameplay
 - Players start with a deck of cards, and a health pool, and three power crystals.
