@@ -51,7 +51,6 @@ button:hover {
     width: 100%;
     margin: 200px auto;
     background-color: #999;
-    flex-grow: 1;
     display: none;
     margin: 0 auto;
 }
@@ -94,6 +93,7 @@ button:hover {
     width: 80%;
     height: auto;
 }
+
 #draw-pile {
     font-weight: bold;
     margin: 100px 0 0 0;
@@ -117,7 +117,7 @@ button:hover {
 }
 
 #enemy-name {
-
+    font-weight: bold;
 }
 
 #enemy-status {
@@ -153,14 +153,14 @@ button:hover {
 
 #dialog-menu p {
     text-align: justify;
-    width: 400px;
+    width: 600px;
     padding: 70px;
-    font-size: large;
+    font-size: x-large;
     font-family: "Luminari", "fantasy";
     margin: 100px auto 100px;
     background-image: url("img/scroll.png");
     background-size: 100% 100%;
-    color:darkslategray;
+    color:rgb(24, 37, 37);
     opacity: 80%;
 }
 
@@ -189,20 +189,32 @@ button:hover {
 }
 
 #hero-select-menu {
-    display: none;
+    background-image:
+}
+
+#hero-select-menu h2 {
+    margin:0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
     text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: white;
 }
 
-#warrior-portrait img {
-    width: 50px;
-} 
-
-#wizard-portrait img {
-    
+#hero-select-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 400px;
 }
 
-#barbarian-portrait img {
-    width: 80px;
+#hero-select-buttons button {
+    font-family: "Luminari", "fantasy";
+    width: 20%;
+    height: 50px;
+    padding: 10px;
+    margin: 0 5px;
 }
 
 #battle-screen {

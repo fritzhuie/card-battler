@@ -16,16 +16,9 @@
     <div class="game-container" id="hero-select-menu">
         <h2>Choose your hero</h2>
         <div id="hero-select-buttons">
-            <div class="warrior-portrait">
-                <img src="img/warrior.png" width="200">
-                <button onclick="selectHero('warrior')">Choose Warrior</button>
-            </div>
-            <div id="wizard-portrait">
-                <button onclick="selectHero('wizard')">Choose Wizard</button>
-            </div>
-            <div id="barbarian-portrait">
-                <button onclick="selectHero('barbarian')">Choose Barbarian</button>
-            </div>
+            <button id="warrior-select-button" onclick="selectHero('warrior')" onmouseover="highlightHero('warrior')">Warrior</button>
+            <button id="wizard-select-button" onclick="selectHero('wizard')" onmouseover="highlightHero('wizard')">Wizard</button>
+            <button id="barbarian-select-button" onclick="selectHero('barbarian')" onmouseover="highlightHero('barbarian')">Barbarian</button>
         </div>
     </div>
 

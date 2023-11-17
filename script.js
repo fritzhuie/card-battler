@@ -25,18 +25,28 @@ const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12, cost:2, 
 const fireballCard = {    name:"Fireball",    type:"damage",  value:7,  cost:1, url:'img/fireBall-card.png'}
 const manaCard = {        name:"Replenish",   type:"mana",    value:3,  cost:1, url:'img/mana-card.png'}
 
-const enemyMaddie = { name: "Orthic Shaman", health: 29, attackDamage: 7 }
+const enemyShaman = { 
+    name: "Orthic Shaman", 
+    health: 29, 
+    actions: { "The shaman jabs at you with its tusks!": 4 },
+    description: "Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe..."
+}
+
+const enemyUndead = { name: "Necrotic Barbarian", health: 31, actions: 7 }
+const enemyRaptor = { name: "Mecharaptor", health: 48, actions: [5,5,7,7] }
+const enemyWizard = { name: "Fallen Wizard", health: 29, actions: [0,12,0,12] }
 
 // Variables --------------------------------------------------------------------
 
 let deck = [];
 let discard = [];
 let handSize = 0;
-let currentEnemy = enemyMaddie;
+let currentEnemy = enemyShaman;
 let playerHealth = 100;
 let playerArmor = 0;
 let playerMana = 3;
 let enemyHealth = 100;
+let enemyArmor = 0;
 
 // Functions --------------------------------------------------------------------
 
@@ -111,9 +121,9 @@ function startBattle() {
 function selectHero(type) {
 if(type === 'warrior') {
     const img = document.getElementById('hero-portrait');
-    img.src = 'img/warrior.png';
+    img.src = 'img/warrior-portrait.png';
     playerClassName.innerText = "Warrior";
-    setDialog("True knights of the land have been tasked with ending undead activity within the kingdom. The smell of putrid air fills the warrior's helmet as he enters the crypts...")
+    setDialog("Tasked with ending undead activity within the kingdom, the smell of putrid air fills the warrior's helmet as he enters the crypts...")
 } else if(type === 'wizard') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/wizard-portrait.png';
@@ -121,13 +131,26 @@ if(type === 'warrior') {
     setDialog("The wizard emerges from his secluded tower, ready to vanquish the slavering undead hordes at his doorstep. The necromancers have stolen forbidden knowledge from his tower, and it must be returned...")
 } else if(type === 'barbarian') {
     const img = document.getElementById('hero-portrait');
-    img.src = 'img/barbarian.png';
+    img.src = 'img/barbarian-portrait.png';
     playerClassName.innerText = "Barbarian";
-    setDialog("The barbarian lifted her ancient sword, and set out to crush her enemies, see the undead driven before her, and hear the lamentations of their human masters...")
+    setDialog("The barbarian lifted her ancient sword, and smiled. She will crush her enemies, see them driven before her, and hear the lamentations of the cultists...")
 }
     console.log('Player selected' + type)
     showDialogMenu();
     showHeroSidebar();
+}
+
+function highlightHero(type) {
+    if(type === 'warrior') {
+        document.getElementById("hero-select-menu").style.backgroundImage = "url('img/warrior.png')";
+        document.getElementById("hero-select-menu").style.backgroundSize = "cover";
+    } else if(type === 'wizard') {
+        document.getElementById("hero-select-menu").style.backgroundImage = "url('img/wizard.png')";
+        document.getElementById("hero-select-menu").style.backgroundSize = "cover";
+    } else if(type === 'barbarian') {
+        document.getElementById("hero-select-menu").style.backgroundImage = "url('img/barbarian.png')";
+        document.getElementById("hero-select-menu").style.backgroundSize = "cover";
+    }
 }
 
 function cardWithName(name) {
@@ -170,12 +193,11 @@ function handleCardClick(cardElement, cardName) {
             win();
         }
     }
-    //do card thing
-    //check that enemy health > 0 (if so, end battle)
 }
 
 function hurtEnemy(value) {
     enemyHealth-=value;
+    enemyHealthLabel = enemyHealth;
 }
 
 function gainArmor(value) {
