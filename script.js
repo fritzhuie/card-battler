@@ -1,11 +1,12 @@
 
-// Contants --------------------------------------------------------------------
+// Constants --------------------------------------------------------------------
 
 const heroPortrait = document.getElementById("hero-portrait");
 const playerClassName = document.getElementById("class-label");
 const playerHealthLabel = document.getElementById("player-health");
 const playerArmorLabel = document.getElementById("player-armor");
 const playerManaLabel = document.getElementById("player-mana");
+
 const drawPileLabel = document.getElementById("draw-pile");
 const drawPileImage = document.getElementById("draw-pile-image");
 
@@ -13,17 +14,8 @@ const enemyHealthLabel = document.getElementById("enemy-health");
 const enemyArmorLabel = document.getElementById("enemy-armor");
 const enemyAttackLabel = document.getElementById("enemy-attack");
 
-const dialogText = document.getElementById("dialog-text");
-
 const enemyIntroDialog = document.getElementById("enemy-intro-dialog");
 const enemyIntroPortrait = document.getElementById("enemy-intro-portrait");
-
-const strikeCard = {      name:"Strike",      type:"damage",  value:5 }
-const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8 }
-const armorCard = {       name:"Armor",       type:"armor",   value:5 }
-const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12}
-const fireballCard = {    name:"Fireball",    type:"damage",  value:7 }
-const manaCard = {        name:"Replenish",   type:"mana",    value:3 }
 
 const enemyShaman = { 
     name: "Orthic Shaman", 
@@ -69,7 +61,7 @@ function hideElement(id) {
 }
 
 function setDialog(text) {
-    dialogText.innerText = text;
+    document.getElementById("dialog-text").innerText = text;
 }
 
 function showHeroSelect() {
@@ -162,20 +154,6 @@ function unhighlightHero() {
     document.getElementById("hero-select-menu").style.backgroundSize = "cover";
 }
 
-function cardWithName(name) {
-    switch (name) {
-        case "attack":
-            return strikeCard;
-            break;
-        case "armor":
-            return armorCard;
-            break;
-        default:
-          console.log("ERROR: INVALID CARD")
-          break;
-    }
-}
-
 function hurtEnemy(value) {
     enemyHealth-=value;
     enemyHealthLabel = enemyHealth;
@@ -189,34 +167,64 @@ function gainMana(value) {
     playerMana = 3;
 }
 
-const cardClasses = {
-    "strike":"strike-card",
-    "armor":"armor-card"
+function cardWithName(name) {
+
+    const strikeCard = {      name:"Strike",      type:"damage",  value:5 }
+    const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8 }
+    const armorCard = {       name:"Armor",       type:"armor",   value:5 }
+    const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12}
+    const fireballCard = {    name:"Fireball",    type:"damage",  value:7 }
+    const manaCard = {        name:"Replenish",   type:"mana",    value:3 }
+
+    const cardImage = {
+        "strike":"strike-card.png",
+        "bigStrike":"big-strike-card.png",
+        "armor":"armor-card.png",
+        "bigArmor":"big-armor-card.png",
+        "fireball":"fireball-card.png",
+        "replenish":"replenish-card.png"
+    }
+
+    switch (name) {
+        case "attack":
+            return strikeCard;
+            break;
+        case "armor":
+            return armorCard;
+            break;
+        default:
+          console.log("ERROR: INVALID CARD")
+          break;
+    }
 }
 
 function drawCard(card) {
+
+    console.log("Card drawn -> " + card);
+
     const cardElement = document.createElement('div');
     cardElement.style.backgroundImage = 'url(img/strike-card.png';
     cardElement.style.backgroundSize = "contain";
-    // cardElement.style.fontSize = 0;
-    cardElement.style.opacity = 0;
+    cardElement.style.fontSize = 0;
+    cardElement.innerText = card;
     cardElement.classList.add('card');
 
-    console.log("card drawn= " + card);
-
+    const playerHand = document.getElementById('player-hand');
+    playerHand.appendChild(cardElement);
     cardElement.addEventListener('click', function() {
         handleCardClick(cardElement);
     });
-    const playerHand = document.getElementById('player-hand');
-    playerHand.appendChild(cardElement);
+
     handSize++;
 }
 
 function handleCardClick(cardElement) {
+    const cardName = cardElement.innerText;
     const card = cardWithName(cardName);
-    console.log(card);
     cardElement.remove();
-    discard.push(cardName)
+
+    console.log(cardName);
+    console.log(card);
 
     if (card.type === "damage") {
         hurtEnemyFor(card.value);
@@ -229,6 +237,9 @@ function handleCardClick(cardElement) {
     if (enemyHealth <= 0 ) {
         win();
     }
+
+    discard.push(cardName);
+
 }
 
 function dealCards (count) {
@@ -236,9 +247,8 @@ function dealCards (count) {
         if (deck.count === 0) {
             recycleDiscard()
         }
-        const cardToBeDrawn = deck.pop();
-        console.log("drawing card: " + cardToBeDrawn);
-        drawCard(cardToBeDrawn);
+
+        drawCard(deck.pop());
     }
 }
 
@@ -278,14 +288,6 @@ function beginNextTurn () {
     enemyAttack = currentEnemy.attackDamage;
     playerMana = 3;
     dealCards(5);
-    console.log(handSize);
-    console.log("playerHealth: " + playerHealth);
-    console.log("playerArmor: " + playerArmor);
-    console.log("enemyAttack: " + enemyAttack);
-    console.log("enemyHealth: " + enemyHealth);
-    console.log("playerMana: " + playerMana);
-    console.log("currentEnemy: " + currentEnemy.name);
-    console.log("Deck: " + deck);
 }
 
 // Entry Point --------------------------------------------------------------------
