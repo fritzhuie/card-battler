@@ -33,17 +33,10 @@ class Enemy {
         this.portraitUrl = portraitUrl;
     }
 
-    takeDamage(damage) {
-        this.health -= damage;
-        console.log(`${this.name} took ${damage} damage.`);
-        if (this.health <= 0) {
-            this.die();
-        }
-    }
-
-    performAttack() {
-        console.log(`${this.name} attacks ${target.name} for ${this.attackDamage} damage.`);
-        target.takeDamage(this.attackDamage);
+    performAttack(description, damage) {
+        playerHealth = playerHealth - damage;
+        playerHealthLabel = playerHealth;
+        console.log(description);
     }
 
     die() {
@@ -51,36 +44,29 @@ class Enemy {
     }
 }
 
-let enemyShaman = { 
-    name: "Orthic Shaman", 
-    health: 29, 
-    actions: [[ "Orthic Shaman jabs at you with its tusks", 4], ["Orthic Shaman swings its putrid axe", 7]],
-    description: "Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe...",
-    portraitUrl: "img/axe-shaman.png"
-}
+const strikeCard = {      name:"Strike",      type:"damage",  value:5 , portrait: "url(img/strike-card.png)"};
+const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8 , portrait: "url(img/big-strike-card.png)"};
+const armorCard = {       name:"Armor",       type:"armor",   value:5 , portrait: "url(img/armor-card.png)"};
+const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12, portrait: "url(img/big-armor-card.png)"};
+const fireballCard = {    name:"Fireball",    type:"damage",  value:7 , portrait: "url(img/fireball-card.png)"};
+const manaCard = {        name:"Replenish",   type:"mana",    value:3 , portrait: "url(img/replenish-card.png)"};
 
-enemyShaman = new Enemy (
+let enemyShaman = new Enemy (
     "Orthic Shaman",
     "Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe...",
     29,
-    [[ "Orthic Shaman jabs at you with its tusks", 4], ["Orthic Shaman swings its putrid axe", 7]],
-    "img/axe-shaman.png"
+    [   { description: "Orthic Shaman jabs at you with its tusks", damage: 4},
+        { description: "Orthic Shaman swings its putrid axe", damage: 7}
+    ],
+    "url(img/axe-shaman.png)"
     );
 
-let enemyUndead = {
-    name: "Necrotic Barbarian",
-    health: 31, 
-    actions: [["The wight swings its greatsword in a wide arch", 7]],
-    description: "Undead with sword",
-
-}
-
-enemyShaman = new Enemy (
+let enemyUndead = new Enemy (
     "Necrotic Barbarian",
     "Undead with sword",
     31,
     [["The wight swings its greatsword in a wide arch", 7]],
-    "female-undead.png"
+    "url(img/female-undead.png)"
 )
 
     // const enemyRaptor = { name: "Mecharaptor", health: 48, actions: [5,5,7,7] }
@@ -94,10 +80,6 @@ function showMainMenu() {
     hideElement('battle-screen');
     hideElement('hero-select-menu');
     hideHeroSidebar();
-
-    inititalizeRandomEnemy();
-
-    //reset everything here
 }
 
 function showElement(id) {
@@ -143,20 +125,18 @@ function inititalizeRandomEnemy () {
 
     let remainingEnemies = [enemyShaman, enemyUndead];
     remainingEnemies = remainingEnemies.sort(() => Math.random() - 0.5); //randomize
-    const nextEnemy = remainingEnemies.pop();
+    currentEnemy = remainingEnemies.pop();
 
-    console.log( nextEnemy )
+    setDialog( currentEnemy.description );
 
-    setDialog( nextEnemy.description );
-
-    currentEnemy = nextEnemy;
+    console.log(currentEnemy);
 
     enemyHealthLabel = currentEnemy.health;
     enemyArmorLabel = currentEnemy.armor;
-    enemyAttackLabel = currentEnemy.enemyAttackLabel;
-    enemyIntroPortrait = currentEnemy.name;
+    enemyAttackLabel = currentEnemy.name + " growls menacingly...";
+    enemyAttack = 0;
+    enemyIntroPortrait = currentEnemy.portraitUrl;
 }
-
 
 function showDialogMenu() {
     showElement('dialog-menu');
@@ -166,6 +146,7 @@ function showDialogMenu() {
 }
 
 function showEnemyIntro() {
+    inititalizeRandomEnemy();
     showElement('enemy-intro-menu');
     hideElement('dialog-menu');
 }
@@ -173,7 +154,11 @@ function showEnemyIntro() {
 function startBattle() {
     hideElement('enemy-intro-menu');
     showElement('battle-screen');
-    newBattle();
+    
+    playerHealth = 100;
+    playerArmor = 0;
+    deck = ["strike", "strike", "strike", "strike", "strike", "armor", "armor"];
+    deck = deck.sort(() => Math.random() - 0.5);
 }
 
 function selectHero(type) {
@@ -222,6 +207,9 @@ function unhighlightHero() {
 function hurtEnemy(value) {
     enemyHealth-=value;
     enemyHealthLabel = enemyHealth;
+    if (currentEnemy.health <= 0 ) {
+        win();
+    }
 }
 
 function gainArmor(value) {
@@ -234,44 +222,27 @@ function gainMana(value) {
 
 function cardWithName(name) {
 
-    const strikeCard = {      name:"Strike",      type:"damage",  value:5 };
-    const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8 };
-    const armorCard = {       name:"Armor",       type:"armor",   value:5 };
-    const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12};
-    const fireballCard = {    name:"Fireball",    type:"damage",  value:7 };
-    const manaCard = {        name:"Replenish",   type:"mana",    value:3 };
+    console.log("cardWithName:" + name);
 
-    const cardImage = {
-        "strike":"strike-card.png",
-        "bigStrike":"big-strike-card.png",
-        "armor":"armor-card.png",
-        "bigArmor":"big-armor-card.png",
-        "fireball":"fireball-card.png",
-        "replenish":"replenish-card.png"
-    }
+    if (name === "strike") { return strikeCard; }
+    if (name === "armor") { return armorCard; }
+    if (name === "strike") { return strikeCard; }
+    if (name === "strike") { return strikeCard; }
+    if (name === "strike") { return strikeCard; }
 
-    switch (name) {
-        case "attack":
-            return strikeCard;
-            break;
-        case "armor":
-            return armorCard;
-            break;
-        default:
-          console.log("ERROR: INVALID CARD")
-          break;
-    }
 }
 
-function drawCard(card) {
+function drawCard(cardName) {
 
-    console.log("Card drawn -> " + card);
+    console.log("Card drawn -> " + cardName);
+
+    const card = cardWithName(cardName);
 
     const cardElement = document.createElement('div');
-    cardElement.style.backgroundImage = 'url(img/strike-card.png';
+    cardElement.style.backgroundImage = card.portrait;
     cardElement.style.backgroundSize = "contain";
     cardElement.style.fontSize = 0;
-    cardElement.innerText = card;
+    cardElement.innerText = cardName;
     cardElement.classList.add('card');
 
     const playerHand = document.getElementById('player-hand');
@@ -286,13 +257,12 @@ function drawCard(card) {
 function handleCardClick(cardElement) {
     const cardName = cardElement.innerText;
     const card = cardWithName(cardName);
+    console.log("Playing card: " + card);
     cardElement.remove();
 
-    console.log(cardName);
-    console.log(card);
-
     if (card.type === "damage") {
-        hurtEnemyFor(card.value);
+        console.log("attack with :" + cardName);
+        hurtEnemy(card.value);
     } else if (card.type === "armor") {
         gainArmor(card.value)
     } else if (card.type === "mana" ) {
@@ -303,32 +273,32 @@ function handleCardClick(cardElement) {
         win();
     }
 
+    handSize = handSize - 1;
     discard.push(cardName);
 
 }
 
 function dealCards (count) {
+    console.log("deal cards | Deck: " + deck.length + " Discard: " + discard.length + " Hand: " + handSize);
     while (handSize < 5) {
-        if (deck.count === 0) {
+        if (deck.length === 0) {
             recycleDiscard()
         }
-
         drawCard(deck.pop());
     }
 }
 
 function recycleDiscard() {
     while (discard.length > 0) {
-        deck.push(discard(pop));
+        deck.push(discard.pop());
     }
     deck = deck.sort(() => Math.random() - 0.5);
 }
 
 function win() {
     dialogText.innerText == "One evil has been defeated. But many more enemies await...";
+    document.getElementById('dialog-button').innerText = "Continue";
     playerArmor = 0;
-    playerMana = 3;
-    // TODO: queue up random monster, reset monster hp
     showDialogMenu();
 }
 
@@ -336,22 +306,24 @@ function gameOver() {
     console.log("lose");
 }
 
-function newBattle() {
-    // currentEnemy = enemyMaddie;
-    playerHealth = 100;
-    playerArmor = 0;
-    enemyAttack = 0;
-    // enemyHealth = currentEnemy.health;
-    deck = ["strike", "strike", "strike", "strike", "strike", "armor", "armor"];
-    deck = deck.sort(() => Math.random() - 0.5);
-}
-
 function beginNextTurn () {
+
+    console.log(currentEnemy.nextAction);
+
+    if ( currentEnemy && currentEnemy.nextAction && currentEnemy.nextAction.description ) {
+        currentEnemy.performAttack(currentEnemy.nextAction.description, currentEnemy.nextAction.damage);
+    }
+
     if (playerHealth <= 0) {
         gameOver();
+        return;
     }
-    enemyAttack = currentEnemy.attackDamage;
+
+    currentEnemy.nextAction = currentEnemy.actions.sort(() => Math.random() - 0.5);
+    enemyAttack = currentEnemy.nextAction.damage;
+    enemyAttackLabel = currentEnemy.nextAction.damage;
     playerMana = 3;
+
     dealCards(5);
 }
 
