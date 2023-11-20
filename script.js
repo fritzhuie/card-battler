@@ -1,44 +1,90 @@
-
-// Constants --------------------------------------------------------------------
-
-const heroPortrait = document.getElementById("hero-portrait");
-const playerClassName = document.getElementById("class-label");
-const playerHealthLabel = document.getElementById("player-health");
-const playerArmorLabel = document.getElementById("player-armor");
-const playerManaLabel = document.getElementById("player-mana");
-
-const drawPileLabel = document.getElementById("draw-pile");
-const drawPileImage = document.getElementById("draw-pile-image");
-
-const enemyHealthLabel = document.getElementById("enemy-health");
-const enemyArmorLabel = document.getElementById("enemy-armor");
-const enemyAttackLabel = document.getElementById("enemy-attack");
-
-const enemyIntroDialog = document.getElementById("enemy-intro-dialog");
-const enemyIntroPortrait = document.getElementById("enemy-intro-portrait");
-
-const enemyShaman = { 
-    name: "Orthic Shaman", 
-    health: 29, 
-    actions: { "The shaman jabs at you with its tusks!": 4 },
-    description: "Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe..."
-}
-
-const enemyUndead = { name: "Necrotic Barbarian", health: 31, actions: 7 }
-const enemyRaptor = { name: "Mecharaptor", health: 48, actions: [5,5,7,7] }
-const enemyWizard = { name: "Fallen Wizard", health: 29, actions: [0,12,0,12] }
-
 // Variables --------------------------------------------------------------------
+
+let heroPortrait = document.getElementById("hero-portrait");
+let playerClassName = document.getElementById("class-label");
+let playerHealthLabel = document.getElementById("player-health");
+let playerArmorLabel = document.getElementById("player-armor");
+let playerManaLabel = document.getElementById("player-mana");
+let drawPileLabel = document.getElementById("draw-pile");
+let drawPileImage = document.getElementById("draw-pile-image");
+let enemyHealthLabel = document.getElementById("enemy-health");
+let enemyArmorLabel = document.getElementById("enemy-armor");
+let enemyAttackLabel = document.getElementById("enemy-attack");
+let enemyIntroPortrait = document.getElementById("enemy-intro-portrait");
 
 let deck = [];
 let discard = [];
 let handSize = 0;
-let currentEnemy = enemyShaman;
+let currentEnemy = null;
 let playerHealth = 100;
 let playerArmor = 0;
 let playerMana = 3;
 let enemyHealth = 100;
 let enemyArmor = 0;
+
+// Classes ----------------------------------------------------------------------
+
+class Enemy {
+    constructor(name, description, health, actions, portraitUrl) {
+        this.name = name;
+        this.description = description;
+        this.health = health;
+        this.actions = actions;
+        this.portraitUrl = portraitUrl;
+    }
+
+    takeDamage(damage) {
+        this.health -= damage;
+        console.log(`${this.name} took ${damage} damage.`);
+        if (this.health <= 0) {
+            this.die();
+        }
+    }
+
+    performAttack() {
+        console.log(`${this.name} attacks ${target.name} for ${this.attackDamage} damage.`);
+        target.takeDamage(this.attackDamage);
+    }
+
+    die() {
+        console.log(`${this.name} has been defeated.`);
+    }
+}
+
+let enemyShaman = { 
+    name: "Orthic Shaman", 
+    health: 29, 
+    actions: [[ "Orthic Shaman jabs at you with its tusks", 4], ["Orthic Shaman swings its putrid axe", 7]],
+    description: "Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe...",
+    portraitUrl: "img/axe-shaman.png"
+}
+
+enemyShaman = new Enemy (
+    "Orthic Shaman",
+    "Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe...",
+    29,
+    [[ "Orthic Shaman jabs at you with its tusks", 4], ["Orthic Shaman swings its putrid axe", 7]],
+    "img/axe-shaman.png"
+    );
+
+let enemyUndead = {
+    name: "Necrotic Barbarian",
+    health: 31, 
+    actions: [["The wight swings its greatsword in a wide arch", 7]],
+    description: "Undead with sword",
+
+}
+
+enemyShaman = new Enemy (
+    "Necrotic Barbarian",
+    "Undead with sword",
+    31,
+    [["The wight swings its greatsword in a wide arch", 7]],
+    "female-undead.png"
+)
+
+    // const enemyRaptor = { name: "Mecharaptor", health: 48, actions: [5,5,7,7] }
+    // const enemyWizard = { name: "Fallen Wizard", health: 29, actions: [0,12,0,12] }
 
 // Functions --------------------------------------------------------------------
 
@@ -48,6 +94,8 @@ function showMainMenu() {
     hideElement('battle-screen');
     hideElement('hero-select-menu');
     hideHeroSidebar();
+
+    inititalizeRandomEnemy();
 
     //reset everything here
 }
@@ -91,13 +139,30 @@ function showHeroSidebar() {
     document.getElementById("hero-sidebar").style.display = "flex";
 }
 
+function inititalizeRandomEnemy () {
+
+    let remainingEnemies = [enemyShaman, enemyUndead];
+    remainingEnemies = remainingEnemies.sort(() => Math.random() - 0.5); //randomize
+    const nextEnemy = remainingEnemies.pop();
+
+    console.log( nextEnemy )
+
+    setDialog( nextEnemy.description );
+
+    currentEnemy = nextEnemy;
+
+    enemyHealthLabel = currentEnemy.health;
+    enemyArmorLabel = currentEnemy.armor;
+    enemyAttackLabel = currentEnemy.enemyAttackLabel;
+    enemyIntroPortrait = currentEnemy.name;
+}
+
 
 function showDialogMenu() {
     showElement('dialog-menu');
     hideElement('hero-select-menu');
     hideElement('battle-screen');
     showHeroSidebar();
-    enemyIntroDialog.innerText = "no dialog loaded"
 }
 
 function showEnemyIntro() {
@@ -169,12 +234,12 @@ function gainMana(value) {
 
 function cardWithName(name) {
 
-    const strikeCard = {      name:"Strike",      type:"damage",  value:5 }
-    const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8 }
-    const armorCard = {       name:"Armor",       type:"armor",   value:5 }
-    const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12}
-    const fireballCard = {    name:"Fireball",    type:"damage",  value:7 }
-    const manaCard = {        name:"Replenish",   type:"mana",    value:3 }
+    const strikeCard = {      name:"Strike",      type:"damage",  value:5 };
+    const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8 };
+    const armorCard = {       name:"Armor",       type:"armor",   value:5 };
+    const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12};
+    const fireballCard = {    name:"Fireball",    type:"damage",  value:7 };
+    const manaCard = {        name:"Replenish",   type:"mana",    value:3 };
 
     const cardImage = {
         "strike":"strike-card.png",
