@@ -76,13 +76,34 @@ button:hover {
     color: #333;
 }
 
-.img-flash {
-    animation: flashEffect 1s;
+.text-flash { animation: textFlashEffect 0.5s; }
+@keyframes textFlashEffect {
+    0% { color: red; }
+    100% { color: black); }
 }
 
+.img-flash { animation: flashEffect 0.5s; }
 @keyframes flashEffect {
     0% { background-color: red; }
-    100% { background-color: transparent; }
+    100% { background-color: white; }
+}
+
+.border-flash { animation: flashBorderEffect 2.0s; }
+@keyframes flashBorderEffect {
+    0% { border-color: red;}
+    100% { border-color: black; }
+}
+
+.text-flash-blue { animation: textFlashEffectBlue 2.0s; }
+@keyframes textFlashEffectBlue {
+    0% { color: rgb(50, 255, 255); }
+    100% { color: black; }
+}
+
+.border-flash-blue { animation: flashBorderEffectBlue 2.0s; }
+@keyframes flashBorderEffectBlue {
+    0% { border-color: rgb(50, 255, 255);}
+    100% { border-color: black; }
 }
 
 #hero-sidebar {

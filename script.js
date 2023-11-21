@@ -23,7 +23,7 @@ let currentEnemy = null;
 let playerHealth = 100;
 let playerArmor = 0;
 let playerMana = 3;
-let enemyHealth = 100;
+let enemyHealth = 99;
 let enemyArmor = 0;
 let enemyAttackIndex = 0;
 let nextEnemyAction = {
@@ -110,6 +110,8 @@ function inititalizeRandomEnemy () {
 
     enemyHealth = currentEnemy.maxHealth;
     enemyArmor = 0;
+    nextEnemyAction.damage = 0;
+    nextEnemyAction.description = "";
 
 
     document.getElementById("enemy-name").innerText = currentEnemy.name;
@@ -137,8 +139,6 @@ function showEnemyIntro() {
 function startBattle() {
     hideElement('enemy-intro-menu');
     showElement('battle-screen');
-    
-    playerHealth = 100;
     playerArmor = 0;
     deck = ["strike", "strike", "strike", "strike", "strike", "armor", "strike", "strike"];
     deck = deck.sort(() => Math.random() - 0.5);
@@ -196,6 +196,7 @@ function hurtEnemy(value) {
         win();
     }
     redFlashAnimation(enemyportrait);
+    redTextFlashAnimation(enemyHealthLabel);
 }
 
 function hurtPlayer(value) {
@@ -211,11 +212,15 @@ function hurtPlayer(value) {
     }
     playerArmorLabel.innerText = "Armor: " + playerArmor;
     playerHealthLabel.innerText = "Health: " + playerHealth;
+    redTextFlashAnimation(playerHealthLabel);
+    redBorderFlashAnimation(heroPortrait);
 }
 
 function gainArmor(value) {
     playerArmor+=value;
     playerArmorLabel.innerText = "Armor: " + playerArmor;
+    blueBorderFlashAnimation(heroPortrait);
+    blueTextFlashAnimation(playerArmorLabel);
 }
 
 function gainMana(value) {
@@ -315,7 +320,39 @@ function redFlashAnimation(element) {
 
     setTimeout(() => {
         element.classList.remove('img-flash');
-    }, 1000); // Remove class after 1 second, which is the length of the animation
+    }, 500); // Remove class after 1 second, which is the length of the animation
+}
+
+function redTextFlashAnimation(element) {
+    element.classList.add('text-flash');
+
+    setTimeout(() => {
+        element.classList.remove('text-flash');
+    }, 500); // Remove class after 1 second, which is the length of the animation
+}
+
+function redBorderFlashAnimation(element) {
+    element.classList.add('border-flash');
+
+    setTimeout(() => {
+        element.classList.remove('border-flash');
+    }, 2000); // Remove class after 1 second, which is the length of the animation
+}
+
+function blueTextFlashAnimation(element) {
+    element.classList.add('text-flash-blue');
+
+    setTimeout(() => {
+        element.classList.remove('text-flash-blue');
+    }, 2000); // Remove class after 1 second, which is the length of the animation
+}
+
+function blueBorderFlashAnimation(element) {
+    element.classList.add('border-flash-blue');
+
+    setTimeout(() => {
+        element.classList.remove('border-flash-blue');
+    }, 2000); // Remove class after 1 second, which is the length of the animation
 }
 
 function beginNextTurn () {
@@ -324,7 +361,6 @@ function beginNextTurn () {
 
     if (nextEnemyAction.damage > 0) {
         hurtPlayer(nextEnemyAction.damage);
-        //TODO: add description to scrolling log
     }
 
     if (playerHealth <= 0) {
