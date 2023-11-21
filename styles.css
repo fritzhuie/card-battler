@@ -76,6 +76,15 @@ button:hover {
     color: #333;
 }
 
+.img-flash {
+    animation: flashEffect 1s;
+}
+
+@keyframes flashEffect {
+    0% { background-color: red; }
+    100% { background-color: transparent; }
+}
+
 #hero-sidebar {
     display: none;
     width: 200px;
@@ -86,6 +95,10 @@ button:hover {
     flex-direction: column;
     align-items: center;
     font-style: italic;
+}
+
+#hero-sidebar p {
+    transition: opacity 800ms;
 }
 
 #hero-portrait {
@@ -115,6 +128,7 @@ button:hover {
     width: 200px;
     height: 200px;
     margin: 10px;
+    background-color: white;
 }
 
 #enemy-name {
@@ -173,6 +187,7 @@ button:hover {
     width: 300px;
     margin: 30px 0 0 0;
     border-radius: 80px;
+    background-color: white;
 }
 
 #enemy-intro-menu h3 {
@@ -191,7 +206,8 @@ button:hover {
 
 #hero-select-menu {
     background-image: url("img/selection-bg.png");
-    background-size: fill;
+    background-size: cover;
+    transition: background-image 0.15s ease-in-out;
 }
 
 #hero-select-menu h2 {

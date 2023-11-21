@@ -195,6 +195,7 @@ function hurtEnemy(value) {
         console.log("you win!")
         win();
     }
+    redFlashAnimation(enemyportrait);
 }
 
 function hurtPlayer(value) {
@@ -307,6 +308,14 @@ function gameOver() {
     console.log("lose");
     setDialog("Your hero has fallen, try again?")
     showDialogMenu();
+}
+
+function redFlashAnimation(element) {
+    element.classList.add('img-flash');
+
+    setTimeout(() => {
+        element.classList.remove('img-flash');
+    }, 1000); // Remove class after 1 second, which is the length of the animation
 }
 
 function beginNextTurn () {

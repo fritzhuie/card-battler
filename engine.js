@@ -1,19 +1,20 @@
 class CardGameEngine {
-    #deck = []
-    #hand = []
-    #discardPile = []
-    #currentEnemy = {}
-
+    
+    // Public API ------------------
+    
     startNewGame() {
-
+        
     }
 
     playCard(handPosition) {
-        // try to play a card
-        return true // card did get played?
+        return true
     }
 
     endTurn () {
+
+    }
+
+    selectNewCard(card) {
 
     }
 
@@ -30,8 +31,17 @@ class CardGameEngine {
     }
 
     get currentEnemy () {
-        return this.#currentEnemy // what do I add here
+        return this.#currentEnemy
     }
+
+    // Private -------------------------------
+
+    #deck = []
+    #hand = []
+    #discardPile = []
+    #currentEnemy = {}
+
+
 }
 
 class Enemy {
@@ -54,7 +64,6 @@ class Action {
 }
 
 let enemyShaman = new Enemy ('Orthic Shaman')
-
 enemyShaman.description = 'Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe...'
 enemyShaman.portrait = 'img/axe-shaman.png'
 enemyShaman.maxHealth = 37
@@ -64,8 +73,6 @@ enemyShaman.actions = [
     new Action('Axe Swing', 'Orthic Shaman swings its putrid axe!', 8)
 ]
 
-console.log(enemyShaman)
-
 let enemyUndeadFemale = new Enemy ('Blade Revenant')
 enemyUndeadFemale.description = 'Undead thing with a sword'
 enemyUndeadFemale.portrait = 'img/female-undead.png'
@@ -74,3 +81,4 @@ enemyUndeadFemale.health = 48
 enemyUndeadFemale.actions = [
     new Action('Slash', 'The wight swings its greatsword in a wide arc', 9)
 ]
+
