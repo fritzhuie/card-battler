@@ -10,7 +10,9 @@ let drawPileImage = document.getElementById("draw-pile-image");
 let enemyHealthLabel = document.getElementById("enemy-health");
 let enemyArmorLabel = document.getElementById("enemy-armor");
 let enemyAttackLabel = document.getElementById("enemy-attack");
+let enemyIntroDescription = document.getElementById("enemy-intro-description");
 let enemyIntroPortrait = document.getElementById("enemy-intro-portrait");
+let enemyportrait = document.getElementById("enemy-portrait");
 
 let deck = [];
 let discard = [];
@@ -21,28 +23,13 @@ let playerArmor = 0;
 let playerMana = 3;
 let enemyHealth = 100;
 let enemyArmor = 0;
+let enemyAttackIndex = 0;
+let nextEnemyAction = {
+    description: "...",
+    damage: 0
+}
 
 // Classes ----------------------------------------------------------------------
-
-class Enemy {
-    constructor(name, description, health, actions, portraitUrl) {
-        this.name = name;
-        this.description = description;
-        this.health = health;
-        this.actions = actions;
-        this.portraitUrl = portraitUrl;
-    }
-
-    performAttack(description, damage) {
-        playerHealth = playerHealth - damage;
-        playerHealthLabel = playerHealth;
-        console.log(description);
-    }
-
-    die() {
-        console.log(`${this.name} has been defeated.`);
-    }
-}
 
 const strikeCard = {      name:"Strike",      type:"damage",  value:5 , portrait: "url(img/strike-card.png)"};
 const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8 , portrait: "url(img/big-strike-card.png)"};
@@ -51,23 +38,30 @@ const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12, portrait
 const fireballCard = {    name:"Fireball",    type:"damage",  value:7 , portrait: "url(img/fireball-card.png)"};
 const manaCard = {        name:"Replenish",   type:"mana",    value:3 , portrait: "url(img/replenish-card.png)"};
 
-let enemyShaman = new Enemy (
-    "Orthic Shaman",
-    "Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe...",
-    29,
-    [   { description: "Orthic Shaman jabs at you with its tusks", damage: 4},
-        { description: "Orthic Shaman swings its putrid axe", damage: 7}
-    ],
-    "url(img/axe-shaman.png)"
-    );
+let enemyShaman = {
 
-let enemyUndead = new Enemy (
-    "Necrotic Barbarian",
-    "Undead with sword",
-    31,
-    [["The wight swings its greatsword in a wide arch", 7]],
-    "url(img/female-undead.png)"
-)
+    name: "Orthic Shaman",
+    description: "Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe...",
+    maxHealth: 37,
+    health: 37,
+    actions: {
+        description: ["Orthic Shaman jabs at you with its tusks", "Orthic Shaman swings its putrid axe"],
+        damage:[4,7]
+    },
+    portrait: "img/axe-shaman.png"
+};
+
+let enemyUndead = {
+    name: "Blade Revenant",
+    description: "Undead thing with a sword",
+    maxHealth: 48,
+    health: 48,
+    actions: {
+        description: ["The wight swings its greatsword in a wide arc"],
+        damage:[9]
+    },
+    portrait: "img/female-undead.png"
+};
 
     // const enemyRaptor = { name: "Mecharaptor", health: 48, actions: [5,5,7,7] }
     // const enemyWizard = { name: "Fallen Wizard", health: 29, actions: [0,12,0,12] }
@@ -123,19 +117,27 @@ function showHeroSidebar() {
 
 function inititalizeRandomEnemy () {
 
-    let remainingEnemies = [enemyShaman, enemyUndead];
+    let remainingEnemies = ["shaman", "undead"];
     remainingEnemies = remainingEnemies.sort(() => Math.random() - 0.5); //randomize
-    currentEnemy = remainingEnemies.pop();
+    const currentEnemyName = remainingEnemies.pop();
+    if ( currentEnemyName === "shaman" ) {
+        currentEnemy = enemyShaman;
+    } else {
+        currentEnemy = enemyUndead;
+    }
 
+    console.log("Current enemy -> " + currentEnemy)
     setDialog( currentEnemy.description );
 
     console.log(currentEnemy);
 
-    enemyHealthLabel = currentEnemy.health;
-    enemyArmorLabel = currentEnemy.armor;
-    enemyAttackLabel = currentEnemy.name + " growls menacingly...";
-    enemyAttack = 0;
-    enemyIntroPortrait = currentEnemy.portraitUrl;
+    document.getElementById("enemy-name").innerText = currentEnemy.name;
+    enemyHealthLabel.innerText = "Health: " + currentEnemy.health;
+    enemyArmorLabel.innerText = "Armor: " + enemyArmor;
+    enemyAttackLabel.innerText = currentEnemy.name + " growls menacingly...";
+    enemyIntroDescription.innerText = currentEnemy.name;
+    enemyIntroPortrait.src = currentEnemy.portrait;
+    enemyportrait.src = currentEnemy.portrait;
 }
 
 function showDialogMenu() {
@@ -205,15 +207,31 @@ function unhighlightHero() {
 }
 
 function hurtEnemy(value) {
-    enemyHealth-=value;
-    enemyHealthLabel = enemyHealth;
+    currentEnemy.health = currentEnemy.health - value;
+    enemyHealthLabel.textContent = "Health: " + currentEnemy.health;
     if (currentEnemy.health <= 0 ) {
         win();
     }
 }
 
+function hurtPlayer(value) {
+    for(i=value;i>0;i--) {
+        if (playerArmor > 0) {
+            playerArmor--;
+        } else {
+            playerHealth--;
+        }
+    }
+    if (playerHealth <= 0) {
+        // lose
+    }
+    playerArmorLabel.innerText = "Armor: " + playerArmor;
+    playerHealthLabel.innerText = "Health: " + playerHealth;
+}
+
 function gainArmor(value) {
     playerArmor+=value;
+    playerArmorLabel.innerText = "Armor: " + playerArmor;
 }
 
 function gainMana(value) {
@@ -261,7 +279,7 @@ function handleCardClick(cardElement) {
     cardElement.remove();
 
     if (card.type === "damage") {
-        console.log("attack with :" + cardName);
+        console.log("attack for " + card.value);
         hurtEnemy(card.value);
     } else if (card.type === "armor") {
         gainArmor(card.value)
@@ -308,10 +326,11 @@ function gameOver() {
 
 function beginNextTurn () {
 
-    console.log(currentEnemy.nextAction);
+    console.log(nextEnemyAction);
 
-    if ( currentEnemy && currentEnemy.nextAction && currentEnemy.nextAction.description ) {
-        currentEnemy.performAttack(currentEnemy.nextAction.description, currentEnemy.nextAction.damage);
+    if (nextEnemyAction.damage > 0) {
+        hurtPlayer(nextEnemyAction.damage);
+        //TODO: add description to scrolling log
     }
 
     if (playerHealth <= 0) {
@@ -319,9 +338,12 @@ function beginNextTurn () {
         return;
     }
 
-    currentEnemy.nextAction = currentEnemy.actions.sort(() => Math.random() - 0.5);
-    enemyAttack = currentEnemy.nextAction.damage;
-    enemyAttackLabel = currentEnemy.nextAction.damage;
+    enemyAttackIndex = enemyAttackIndex > currentEnemy.actions.description.length ? 0 : enemyAttackIndex;
+
+    nextEnemyAction.description = currentEnemy.actions.description[enemyAttackIndex];
+    nextEnemyAction.damage = currentEnemy.actions.damage[enemyAttackIndex];
+    enemyAttackIndex++;
+    enemyAttackLabel = currentEnemy.name + ` will attack for ${nextEnemyAction.damage} damage.`;
     playerMana = 3;
 
     dealCards(5);
