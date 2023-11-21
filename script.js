@@ -1,3 +1,4 @@
+let engine = new CardGameEngine();
 // Variables --------------------------------------------------------------------
 
 let heroPortrait = document.getElementById("hero-portrait");
@@ -14,6 +15,7 @@ let enemyIntroDescription = document.getElementById("enemy-intro-description");
 let enemyIntroPortrait = document.getElementById("enemy-intro-portrait");
 let enemyportrait = document.getElementById("enemy-portrait");
 
+let currentLevel = 1;
 let deck = [];
 let discard = [];
 let handSize = 0;
@@ -29,7 +31,7 @@ let nextEnemyAction = {
     damage: 0
 }
 
-// Classes ----------------------------------------------------------------------
+// constants ----------------------------------------------------------------------
 
 const strikeCard = {      name:"Strike",      type:"damage",  value:5 , portrait: "url(img/strike-card.png)"};
 const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8 , portrait: "url(img/big-strike-card.png)"};
@@ -37,31 +39,6 @@ const armorCard = {       name:"Armor",       type:"armor",   value:5 , portrait
 const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12, portrait: "url(img/big-armor-card.png)"};
 const fireballCard = {    name:"Fireball",    type:"damage",  value:7 , portrait: "url(img/fireball-card.png)"};
 const manaCard = {        name:"Replenish",   type:"mana",    value:3 , portrait: "url(img/replenish-card.png)"};
-
-let enemyShaman = {
-
-    name: "Orthic Shaman",
-    description: "Before you stands a ghoul shrouded in boar bones and wet sinew, wielding a gore-encrusted axe...",
-    maxHealth: 37,
-    health: 37,
-    actions: {
-        description: ["Orthic Shaman jabs at you with its tusks", "Orthic Shaman swings its putrid axe"],
-        damage:[4,7]
-    },
-    portrait: "img/axe-shaman.png"
-};
-
-let enemyUndead = {
-    name: "Blade Revenant",
-    description: "Undead thing with a sword",
-    maxHealth: 48,
-    health: 48,
-    actions: {
-        description: ["The wight swings its greatsword in a wide arc"],
-        damage:[9]
-    },
-    portrait: "img/female-undead.png"
-};
 
     // const enemyRaptor = { name: "Mecharaptor", health: 48, actions: [5,5,7,7] }
     // const enemyWizard = { name: "Fallen Wizard", health: 29, actions: [0,12,0,12] }
@@ -123,13 +100,17 @@ function inititalizeRandomEnemy () {
     if ( currentEnemyName === "shaman" ) {
         currentEnemy = enemyShaman;
     } else {
-        currentEnemy = enemyUndead;
+        currentEnemy = enemyUndeadFemale;
     }
 
     console.log("Current enemy -> " + currentEnemy)
     setDialog( currentEnemy.description );
 
     console.log(currentEnemy);
+
+    enemyHealth = currentEnemy.maxHealth;
+    enemyArmor = 0;
+
 
     document.getElementById("enemy-name").innerText = currentEnemy.name;
     enemyHealthLabel.innerText = "Health: " + currentEnemy.health;
@@ -159,8 +140,9 @@ function startBattle() {
     
     playerHealth = 100;
     playerArmor = 0;
-    deck = ["strike", "strike", "strike", "strike", "strike", "armor", "armor"];
+    deck = ["strike", "strike", "strike", "strike", "strike", "armor", "strike", "strike"];
     deck = deck.sort(() => Math.random() - 0.5);
+    beginNextTurn();
 }
 
 function selectHero(type) {
@@ -210,6 +192,7 @@ function hurtEnemy(value) {
     currentEnemy.health = currentEnemy.health - value;
     enemyHealthLabel.textContent = "Health: " + currentEnemy.health;
     if (currentEnemy.health <= 0 ) {
+        console.log("you win!")
         win();
     }
 }
@@ -223,7 +206,7 @@ function hurtPlayer(value) {
         }
     }
     if (playerHealth <= 0) {
-        // lose
+        gameOver();
     }
     playerArmorLabel.innerText = "Armor: " + playerArmor;
     playerHealthLabel.innerText = "Health: " + playerHealth;
@@ -314,14 +297,16 @@ function recycleDiscard() {
 }
 
 function win() {
-    dialogText.innerText == "One evil has been defeated. But many more enemies await...";
+    setDialog("One evil has been defeated. But many more enemies await...");
     document.getElementById('dialog-button').innerText = "Continue";
-    playerArmor = 0;
+    currentLevel++;
     showDialogMenu();
 }
 
 function gameOver() {
     console.log("lose");
+    setDialog("Your hero has fallen, try again?")
+    showDialogMenu();
 }
 
 function beginNextTurn () {
@@ -338,12 +323,14 @@ function beginNextTurn () {
         return;
     }
 
-    enemyAttackIndex = enemyAttackIndex > currentEnemy.actions.description.length ? 0 : enemyAttackIndex;
-
-    nextEnemyAction.description = currentEnemy.actions.description[enemyAttackIndex];
-    nextEnemyAction.damage = currentEnemy.actions.damage[enemyAttackIndex];
+    enemyAttackIndex = enemyAttackIndex > currentEnemy.actions.length - 1 ? 0 : enemyAttackIndex;
+    nextEnemyAction = currentEnemy.actions[enemyAttackIndex];
+    console.log("attacking for: " + nextEnemyAction.damage);
+    console.log("description:" + nextEnemyAction.description);
     enemyAttackIndex++;
-    enemyAttackLabel = currentEnemy.name + ` will attack for ${nextEnemyAction.damage} damage.`;
+
+    enemyAttackLabel.innerText = "Attacking for " + nextEnemyAction.damage + ' damage.'
+    
     playerMana = 3;
 
     dealCards(5);
