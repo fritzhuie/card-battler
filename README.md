@@ -48,6 +48,26 @@ Basic browser-based dungeon crawler card battler game
 
 ### Gameplay logic (JavaScript)
 
+Cards contain any number of effects of the following categories:
+   - Direct effects
+        - Damage
+        - Draw   
+   - Buffs
+        - Armor
+        - Thorns
+        - Strength (+damage dealt)
+        - Agility (Critical hit chance)
+        - Resiliance (Decrease damage taken)
+   - Debuffs
+        - Enfeable (increase damage taken)
+        - Weaken (decrease damaeg dealt)
+        - Bleed (damage per turn)
+        - Stun (skip turn)
+          
+   Card effect structure: {armor: 5, enfeable: 5, bleed: 5}
+
+   Card engine will parse each effect and execute it in order of effect priorety
+
 - List of enemies (with attributes and actions)
 - List of cards (with attributes and actions)
 - Card engine (that decides what happens when player plays a card)
