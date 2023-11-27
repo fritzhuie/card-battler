@@ -1,21 +1,25 @@
-class CardGameEngine {
+class CardGame {
     
     // Public API ------------------
     
     startNewGame() {
-        
+
     }
 
-    playCard(handPosition) {
+    playCard(cardElement) {
         return true
     }
 
     endTurn () {
+        
+    }
+
+    selectNewCard(cardElement) {
 
     }
 
-    selectNewCard(card) {
-
+    get turn () {
+        return this.#turn
     }
 
     get deck () {
@@ -36,11 +40,35 @@ class CardGameEngine {
 
     // Private -------------------------------
 
+    #turn = 0
     #deck = []
     #hand = []
     #discardPile = []
     #currentEnemy = {}
 
+
+}
+
+class Hero {
+    constructor() {
+        this.health = 100
+        this.armor = 0
+        this.class = ""
+        this.debuffs = []
+        this.buffs = []
+    }
+
+    takeDamage (value) {
+
+    }
+
+    gainArmor (value) {
+
+    }
+
+    gainEffect(name, value) {
+
+    }
 
 }
 
@@ -50,16 +78,30 @@ class Enemy {
         this.description = ''
         this.maxHealth = 0
         this.health = 0
-        this.actions = {}
+        this.actions = []
+        this.buffs = []
+        this.debuffs = []
         this.portrait = ''
+    }
+
+    takeDamage (value) {
+
+    }
+
+    gainArmor (value) {
+
+    }
+
+    gainEffect(name, value) {
+        
     }
 }
 
-class Action {
-    constructor(name, description, damage) {
+class EnemyAction {
+    constructor(name, description, effects) {
         this.name = name
         this.description = description
-        this.damage = damage
+        this.effects = effects
     }
 }
 
@@ -69,16 +111,22 @@ enemyShaman.portrait = 'img/axe-shaman.png'
 enemyShaman.maxHealth = 37
 enemyShaman.health = 37
 enemyShaman.actions = [
-    new Action('Boar Charge','Orthic Shaman rams you with its tusks!', 6),
-    new Action('Axe Swing', 'Orthic Shaman swings its putrid axe!', 8)
+    new EnemyAction('Boar Charge','Orthic Shaman rams you with its tusks!', {'damage': 6}),
+    new EnemyAction('Axe Swing', 'Orthic Shaman swings its putrid axe!', {'damage': 8})
 ]
 
 let enemyUndeadFemale = new Enemy ('Blade Revenant')
-enemyUndeadFemale.description = 'Undead thing with a sword'
+enemyUndeadFemale.description = "Hint: She's gonna hit you with the sword"
 enemyUndeadFemale.portrait = 'img/female-undead.png'
 enemyUndeadFemale.maxHealth = 48
 enemyUndeadFemale.health = 48
 enemyUndeadFemale.actions = [
-    new Action('Slash', 'The wight swings its greatsword in a wide arc', 9)
+    new EnemyAction('Slash', 'The wight swings its greatsword in a wide arc', {'damage': 13})
 ]
 
+class Card {
+    constructor(cardName) {
+       this.cardName = cardName
+       this.effects = []
+    }
+}

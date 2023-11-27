@@ -1,4 +1,4 @@
-let engine = new CardGameEngine();
+let engine = new CardGame();
 // Variables --------------------------------------------------------------------
 
 let heroPortrait = document.getElementById("hero-portrait");
@@ -65,6 +65,10 @@ function setDialog(text) {
     document.getElementById("dialog-text").innerText = text;
 }
 
+function setEnemyDialog(text) {
+    document.getElementById("enemy-intro-dialog").innerText = text;
+}
+
 function showHeroSelect() {
     hideElement('title-menu');
     showElement('hero-select-menu');
@@ -104,7 +108,7 @@ function inititalizeRandomEnemy () {
     }
 
     console.log("Current enemy -> " + currentEnemy)
-    setDialog( currentEnemy.description );
+    setEnemyDialog( currentEnemy.description );
 
     console.log(currentEnemy);
 
@@ -115,7 +119,7 @@ function inititalizeRandomEnemy () {
 
 
     document.getElementById("enemy-name").innerText = currentEnemy.name;
-    enemyHealthLabel.innerText = "Health: " + currentEnemy.health;
+    enemyHealthLabel.innerText = "Health: " + currentEnemy.health + " / " + currentEnemy.maxHealth;
     enemyArmorLabel.innerText = "Armor: " + enemyArmor;
     enemyAttackLabel.innerText = currentEnemy.name + " growls menacingly...";
     enemyIntroDescription.innerText = currentEnemy.name;
@@ -149,21 +153,21 @@ function selectHero(type) {
 if(type === 'warrior') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/warrior-portrait.png';
-    document.getElementById('dialog-button').innerText = "FOR THE KING!";
+    document.getElementById('dialog-button').innerText = "That's wack!";
     playerClassName.innerText = "Warrior";
-    setDialog("Tasked with ending undead activity within the kingdom, the smell of putrid air fills the warrior's helmet as he enters the crypts...")
+    setDialog("A gnarly AI is spawning monsters from the crypts! It's up to me to battle them!")
 } else if(type === 'wizard') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/wizard-portrait.png';
-    document.getElementById('dialog-button').innerText = "THEY WILL PAY!";
+    document.getElementById('dialog-button').innerText = "Gōkakyū no Jutsu!";
     playerClassName.innerText = "Wizard";
-    setDialog("The wizard emerges from his secluded tower, ready to vanquish the slavering undead hordes at his doorstep. The necromancers have stolen forbidden knowledge from his tower, and it must be returned...")
+    setDialog("The wizard is an old dude, but he shoots fire and stuff!")
 } else if(type === 'barbarian') {
     const img = document.getElementById('hero-portrait');
     img.src = 'img/barbarian-portrait.png';
-    document.getElementById('dialog-button').innerText = "RAMPAGE!";
+    document.getElementById('dialog-button').innerText = "AAUuaaAAGH!";
     playerClassName.innerText = "Barbarian";
-    setDialog("The barbarian lifted her ancient sword, and smiled. She will crush her enemies, see them driven before her, and hear the lamentations of the cultists...")
+    setDialog("She will crush her enemies, see them driven before her, and hear their lamentations and stuff,")
 }
     console.log('Player selected' + type)
     showDialogMenu();
@@ -190,7 +194,7 @@ function unhighlightHero() {
 
 function hurtEnemy(value) {
     currentEnemy.health = currentEnemy.health - value;
-    enemyHealthLabel.textContent = "Health: " + currentEnemy.health;
+    enemyHealthLabel.innerText = "Health: " + currentEnemy.health + " / " + currentEnemy.maxHealth;
     if (currentEnemy.health <= 0 ) {
         console.log("you win!")
         win();
@@ -211,7 +215,7 @@ function hurtPlayer(value) {
         gameOver();
     }
     playerArmorLabel.innerText = "Armor: " + playerArmor;
-    playerHealthLabel.innerText = "Health: " + playerHealth;
+    playerHealthLabel.innerText = "🫀: " + playerHealth + " / 100";
     redTextFlashAnimation(playerHealthLabel);
     redBorderFlashAnimation(heroPortrait);
 }
@@ -320,15 +324,19 @@ function redFlashAnimation(element) {
 
     setTimeout(() => {
         element.classList.remove('img-flash');
-    }, 500); // Remove class after 1 second, which is the length of the animation
+    }, 500); 
 }
 
 function redTextFlashAnimation(element) {
-    element.classList.add('text-flash');
+    if (playerHealth < 20) {
+        element.style.color = "darkred"
+    } else {
+        element.classList.add('text-flash');
 
     setTimeout(() => {
         element.classList.remove('text-flash');
-    }, 500); // Remove class after 1 second, which is the length of the animation
+    }, 500);
+    }
 }
 
 function redBorderFlashAnimation(element) {
@@ -336,7 +344,7 @@ function redBorderFlashAnimation(element) {
 
     setTimeout(() => {
         element.classList.remove('border-flash');
-    }, 2000); // Remove class after 1 second, which is the length of the animation
+    }, 2000);
 }
 
 function blueTextFlashAnimation(element) {
@@ -344,7 +352,7 @@ function blueTextFlashAnimation(element) {
 
     setTimeout(() => {
         element.classList.remove('text-flash-blue');
-    }, 2000); // Remove class after 1 second, which is the length of the animation
+    }, 2000);
 }
 
 function blueBorderFlashAnimation(element) {
@@ -352,7 +360,7 @@ function blueBorderFlashAnimation(element) {
 
     setTimeout(() => {
         element.classList.remove('border-flash-blue');
-    }, 2000); // Remove class after 1 second, which is the length of the animation
+    }, 2000);
 }
 
 function beginNextTurn () {
@@ -381,7 +389,24 @@ function beginNextTurn () {
     dealCards(5);
 }
 
+function makeTitleWavy(){
+    
+    let wavyText = document.getElementById("wavy-title");
+    
+    wavyText.innerHTML = wavyText.innerText.split("").map(letter => {
+        return `<span>` + letter + `</span>`;
+    })
+    .join("");
+
+    Array.from(wavyText.children).forEach((span, index) => {
+    setTimeout(() => {
+        span.classList.add("wavy");
+    }, index * 50);
+    });
+    
+}
+
 // Entry Point --------------------------------------------------------------------
 
 showMainMenu();
-
+makeTitleWavy()
