@@ -14,51 +14,81 @@ Basic browser-based dungeon crawler card battler game
 
 ## Game Loop
 
-- Player starts a New Game
-   
-1. Player plays any number of cards
-2. Player clicks "finish turn" (Enemy action resolves)
-3. Repeat until either enemy or player dies
-4. New round (repeat)
-5. After defeating the last enemy, player wins
+1. Player starts a New Game  
+2. Player plays any number of cards
+3. Player clicks "finish turn" (Enemy action resolves)
+4. Repeat until either enemy or player dies
+5. New round (repeat)
+6. After defeating the last enemy, player wins
 
-## Requirements
+(repeat)
 
-### Front end (HTML/CSS)
+```mermaid
+graph TD;
+   Start-new-game --> Deal;
+   Deal --> Player-plays-card;
+   Player-plays-card --> perform-card-effect; 
+   perform-card-effect --> Player-plays-card;
+   perform-card-effect --> Player-wins;
+   perform-card-effect --> Player-loses;
+```
 
-- New game Screen
-   - Welcome / Game over / Victory message
-   - New game button
+## Wire Frames
 
-- Gameplay screen
-   - Enemy portrait, health, action
-   - Player hand, health, power crystal count
-   - Finish turn button
-   - Recent action description scroll
+#### MVP goals
 
-### Gameplay logic (JavaScript)
+* As a player, I want to be able to start a game, and play until my character dies, or the last enemy dies
 
-Cards contain any number of effects of the following categories:
+* As a player, I should be able to see random enemies and a variety of cards with the following mechanics:
+     - Damage
+     - Armor
+     - Draw card
+     - Restore mana
+
+#### Stretch Goals
+
+* Full game with *at least* one end-game boss
+  
+* Balanced gameplay:
+
+   | Level           | 1    |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10  |
+   | :-------------- | :--: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :--: |
+   | Win Rate        | 100% | 90% | 80% | 70% | 60% | 50% | 40% | 30% | 20% | 10%  |
+
+* 15-20 randomized enemies, with a variety of thematic abilities
+
+* A variery of cards/abilities with the following mechanics
    - Direct effects
         - Damage
-        - Draw   
+        - Draw
+        - Restore HP
+        - Restore mana   
    - Buffs
         - Armor
         - Thorns
         - Strength (+damage dealt)
         - Agility (Critical hit chance)
-        - Resiliance (Decrease damage taken)
+        - Resiliance (Decrease damage taken)   
    - Debuffs
-        - Enfeable (increase damage taken)
-        - Weaken (decrease damaeg dealt)
+        - Enfeable (increase damage **taken**)
+        - Weaken (decrease damage **dealt**)
         - Bleed (damage per turn)
         - Stun (skip turn)
-          
-   Card effect structure: {armor: 5, enfeable: 5, bleed: 5}
 
-   Card engine will parse each effect and execute it in order of effect priorety
+### Gameplay logic (JavaScript)
 
-- List of enemies (with attributes and actions)
-- List of cards (with attributes and actions)
-- Card engine (that decides what happens when player plays a card)
-- Gameplay state (health pools, crystals, gameover check)
+   * Card effect structure: `{ armor: 5, enfeable: 5, bleed: 5 }`
+
+   * Enemy class structure: `{ debuff: value, buff: value, maxHP: value, remainingHP: value }`
+
+   * Card engine will parse each effect and execute it in order of effect priorety
+
+
+
+
+## Description
+
+Whos that pokemon is a classic guessing game.
+The game chooses a random pokemon out of the original 151, and the user tries to guess the word beore running out of guesses.
+
+
