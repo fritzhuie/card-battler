@@ -27,6 +27,7 @@ let enemyHealth = 99;
 let enemyArmor = 0;
 let enemyAttackIndex = 0;
 let nextEnemyAction = {
+    name: "...",
     description: "...",
     damage: 0
 }
@@ -258,7 +259,8 @@ function drawCard(cardName) {
 
     const playerHand = document.getElementById('player-hand');
     playerHand.appendChild(cardElement);
-    cardElement.addEventListener('click', function() {
+    cardElement.addEventListener('click', function(event) {
+        console.log(event);
         handleCardClick(cardElement);
     });
 
@@ -365,10 +367,10 @@ function blueBorderFlashAnimation(element) {
 
 function beginNextTurn () {
 
-    console.log(nextEnemyAction);
+    console.log("previous turn's action" + nextEnemyAction);
 
-    if (nextEnemyAction.damage > 0) {
-        hurtPlayer(nextEnemyAction.damage);
+    if (nextEnemyAction.effects && nextEnemyAction.effects.damage > 0) {
+        hurtPlayer(nextEnemyAction.effects.damage);
     }
 
     if (playerHealth <= 0) {
@@ -377,12 +379,12 @@ function beginNextTurn () {
     }
 
     enemyAttackIndex = enemyAttackIndex > currentEnemy.actions.length - 1 ? 0 : enemyAttackIndex;
+    console.log(currentEnemy.actions[enemyAttackIndex])
     nextEnemyAction = currentEnemy.actions[enemyAttackIndex];
-    console.log("attacking for: " + nextEnemyAction.damage);
-    console.log("description:" + nextEnemyAction.description);
+    console.log( "index: " + enemyAttackIndex + " | attacking for: " + nextEnemyAction.effects.damage);
     enemyAttackIndex++;
 
-    enemyAttackLabel.innerText = "Attacking for " + nextEnemyAction.damage + ' damage.'
+    enemyAttackLabel.innerText = "Attacking for " + nextEnemyAction.effects.damage + ' damage.'
     
     playerMana = 3;
 
@@ -403,10 +405,20 @@ function makeTitleWavy(){
         span.classList.add("wavy");
     }, index * 50);
     });
+
+    document.getElementById("wavy-title").addEventListener('click', function(event) {
+        if (event.target.style.color === "red") {
+            event.target.style.color = "green"
+        } else if (event.target.style.color === "green"){
+            event.target.style.color = "blue"
+        } else {
+            event.target.style.color = "red"
+        }
+    })
     
 }
 
 // Entry Point --------------------------------------------------------------------
 
 showMainMenu();
-makeTitleWavy()
+makeTitleWavy();
