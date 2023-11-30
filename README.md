@@ -21,8 +21,6 @@ Basic browser-based dungeon crawler card battler game
 5. New round (repeat)
 6. After defeating the last enemy, player wins
 
-(repeat)
-
 ```mermaid
 graph TD;
    Start-new-game --> Deal;
@@ -34,6 +32,8 @@ graph TD;
 ```
 
 ## Wire Frames
+
+ (TODO: Finish wireframes)
 
 #### MVP goals
 
@@ -83,10 +83,7 @@ graph TD;
 
    * Card engine will parse each effect and execute it in order of effect priorety
 
-
-
-
-## Description
+   * Enemy will deal damage once the player clicks "end turn"
 
 Whos that pokemon is a classic guessing game.
 The game chooses a random pokemon out of the original 151, and the user tries to guess the word beore running out of guesses.
