@@ -8,6 +8,8 @@ class CardGame {
     #hand = []
     #discard = []
 
+    #newCardOptions = []
+
     #player = null
     #currentEnemy = null
 
@@ -19,16 +21,41 @@ class CardGame {
     }
     // Public API ------------------
 
-    playCard(cardElement) {
-        return true
+    playCard(position) {
+        if (!hand || !hand[position] || !hand[position].effects) {
+            console.error('Invalid card or card effects. position:' + position);
+            return;
+        }
+
+        let card = Card.called(hand[position])
+
+        card.effects.forEach(effect => {
+            console.log(`Processing Effect: ${effect.name} with value ${effect.value}`)
+            switch (effect.name) {
+                case 'damage':
+                    this.#currentEnemy.dealDamage(effect.value)
+                    break;
+                case 'armor':
+                    this.#player.gainArmor(effect.value)
+                    break;
+                // ...
+                default:
+                    console.log(`Effect type ${effect.name} not recognized.`);
+            }
+        });
     }
 
     endTurn () {
-        
+        // deal enemy damage
+        // discard hand
+        // draw new hand
     }
 
-    selectNewCard(cardElement) {
-
+    selectNewCard(name) {
+        // player has chosen a card with 'name'
+        // if card is valid, this.#deck.push(name)
+        // cardChoices = []
+        // set state to 
     }
 
     #performEffect(...effects) { 
@@ -77,6 +104,10 @@ class CardGame {
 
     get player () {
         return this.#player
+    }
+
+    get newCardOptions () {
+        return this.#newCardOptions
     }
 
     init () {
@@ -167,8 +198,6 @@ class EnemyAction {
     }
 }
 
-
-
 class EnemyShaman extends Enemy {
     constructor() {
         super();
@@ -199,8 +228,6 @@ class EnemyBladeRevenant extends Enemy {
     }
 }
 
-    
-
 class EnemyMecharaptor extends Enemy {
     constructor() {
         super();
@@ -218,8 +245,8 @@ class EnemyMecharaptor extends Enemy {
 }
 
 class Effect {
-    constructor(type, value) {
-        this.type = type;
+    constructor(name, value) {
+        this.name = name;
         this.value = value;
     }
 }
@@ -232,26 +259,27 @@ class Card {
     }
 
     static called(name) {
-        if(name === 'strike') { return STRIKE_CARD }
-        if(name === 'armor') { return ARMOR_CARD }
-        if(name === 'shieldslam') { return SHIELD_SLAM }
-        if(name === 'magicmissile') { return MAGIC_MISSILE_CARD }
-        if(name === 'manashield') { return MANA_SHIELD_CARD }
-        if(name === 'cleave') { return CLEAVE_CARD }
-        if(name === 'flourish') { return FLOURISH_CARD }
+        return Card.cards[name]
+        // Example:
+        // let strike = Card.called('strike');
     }
 }
 
-const STRIKE_CARD = new Card('strike', 0, new Effect('damage', 6));
-const ARMOR_CARD = new Card('armor', 0, new Effect('armor', 6));
-const SHIELD_SLAM = new Card('shieldslam', 0, new Effect('slam', 1));
-const MAGIC_MISSILE_CARD = new Card('magicmissile', 1, new Effect('damage', 6));
-const MANA_SHIELD_CARD = new Card('manashield', 2, new Effect('armor', 9), new Effect('draw', 1));
-const CLEAVE_CARD = new Card('cleave', -1, new Effect('damage', 6), new Effect('bleed', 3));
-const FLOURISH_CARD = new Card('flourish', 3, new Effect('damage', 9), new Effect('heal', 5));
+Card.cards = {
+    'strike': new Card('strike', 0, new Effect('damage', 6)),
+    'armor': new Card('armor', 0, new Effect('armor', 6)),
+    'shieldslam': new Card('shieldslam', 0, new Effect('slam', 1)),
+    'magicmissile': new Card('magicmissile', 1, new Effect('damage', 6)),
+    'manashield': new Card('manashield', 2, new Effect('armor', 9), new Effect('draw', 1)),
+    'cleave': new Card('cleave', -1, new Effect('damage', 6), new Effect('bleed', 3)),
+    'flourish': new Card('flourish', 3, new Effect('damage', 9), new Effect('heal', 5))
+}
 
-const GameState = {
-    MENU: 'menu',
+const NAV_STATE = {
+    MAIN_MENU: 'main_menu',
+    HERO_SELECT: 'hero_menu',
+    HERO_INTRO: 'hero_intro',
+    ENEMY_INTRO: 'enemy_intro',
     BATTLE: 'battle',
     REWARD: 'reward',
     WIN: 'win',
