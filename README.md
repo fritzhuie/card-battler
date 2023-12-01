@@ -1,6 +1,12 @@
-# Dungeon Battler
+# Generative Adversaties
+
 Basic browser-based dungeon crawler card battler game
 
+## Project Description
+
+Crypt of the Generative Adversaties is a turn-based card battler dungeon crawler, inspired by *Dream Quest* and *Slay the Spire*.
+
+_Delve into the hauted crypt. Battle increasingly stronger enemies, and build a deck full of potent cards and devistating combinations. Will you uncover the shocking secret hidden at the bottom of the crypt, or will you fall to the terrifying creatures that protect it?_
 
 ## Gameplay
 - Players start with a deck of cards, and a health pool, and three power crystals.
