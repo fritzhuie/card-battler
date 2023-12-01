@@ -21,17 +21,48 @@ Basic browser-based dungeon crawler card battler game
 5. New round (repeat)
 6. After defeating the last enemy, player wins
 
+
 ```mermaid
+---
+title: Menu Navigation
+---
+
 graph TD;
-   Start-new-game --> Deal;
-   Deal --> Player-plays-card;
-   Player-plays-card --> perform-card-effect; 
-   perform-card-effect --> Player-plays-card;
-   perform-card-effect --> Player-wins;
-   perform-card-effect --> Player-loses;
+   Title-menu --> Choose-hero;
+   Choose-hero --> Hero-intro;
+   Hero-intro --> Next-enemy-intro;
+   Next-enemy-intro --> Battle;
+   Battle --> Player-wins;
+   Battle --> Player-loses;
+   Player-wins --> Post-fight-dialog;
+   Post-fight-dialog --> Next-enemy-intro;
+   Player-loses --> Player-death-dialog;
+   Player-death-dialog --> Title-menu;
 ```
 
+```mermaid
+---
+title: Battle loop
+---
+graph TD;
+   New-turn-draw-cards --> Player-plays-card;
+   Player-plays-card --> Perform-card-effect; 
+   Perform-card-effect --> Player-plays-card;
+   Perform-card-effect --> Enemy-is-dead;
+   Enemy-is-dead --> Player-wins;
+   Perform-card-effect --> Enemy-not-dead;
+   Enemy-not-dead --> End-turn;
+   End-turn --> Enemy-performs-action;
+   Enemy-performs-action --> Player-is-dead;
+   Enemy-performs-action --> Player-not-dead;
+   Player-is-dead --> Player-loses;
+   Player-not-dead --> New-turn-draw-cards;
+```
+
+
 ## Wire Frames
+
+Menu navigation
 
  (TODO: Finish wireframes)
 
@@ -41,11 +72,11 @@ graph TD;
 
 * As a player, I should see a win state when all enemies have been defeated, and a lose state when the player's health reaches 0 
 
-* As a player, I should be able to see at least 10 random enemies and at least 11 types of cards with the following mechanics:
+* As a player, I should be able to see at least 10 random enemy types and at least 3 unique cards per class, utilizing the following mechanics:
      - Damage
      - Armor
      - Draw card
-     - Restore mana
+     - Bleed (debuff)
 
 * As a player, I should be able to add a new card to my deck after defeating an enemy, creating a more powerful deck as more enemies are defeated
 
@@ -53,11 +84,11 @@ graph TD;
 
 * Full game with *at least* one end-game boss
   
-* Balanced gameplay:
+* Balanced gameplay, new players should have a ~10% chance of winning, experienced players should have a higher chance:
 
-   | Level           | 1    |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10  |
-   | :-------------- | :--: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :--: |
-   | Win Rate        | 100% | 90% | 80% | 70% | 60% | 50% | 40% | 30% | 20% | 10%  |
+   | Level           | 1    | ... |  6  | ... |  Final Boss  |
+   | :-------------- | :--: | :-: | :-: | :-: | :----------: |
+   | Win Rate        | 99%  | ... | ~50% | ... | 10%          |
 
 * 15-20 randomized enemies, with a variety of thematic abilities
 
@@ -88,7 +119,7 @@ graph TD;
    
 * Sound effects for boss intros and attacks
 
-### Gameplay logic (JavaScript)
+### Menu logic
 
    * Card effect structure: `[{ armor: 5}, {enfeable: 5}, {bleed: 5}]`
 
