@@ -211,7 +211,6 @@ class EnemyShaman extends Enemy {
             new EnemyAction('Axe Swing', 'swings its putrid axe!', {'damage': 16})
         ]
     }
-    
 }
 
 class EnemyBladeRevenant extends Enemy {

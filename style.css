@@ -14,7 +14,7 @@ h1 {
     font-size: 75px;
     color: white;
     font-weight: 900;
-    margin: 150px 0 150px 0;
+    margin: 150px 0 80px 0;
     text-shadow: 3px 3px #000000;
 }
 
@@ -114,16 +114,20 @@ button:hover {
     position: relative;
     top: 0;
     left: 0;
+    color:#fff;
   }
   @keyframes wavy {
     0% {
       top: 0px;
+      color:#555;
     }
     50% {
-      top: -15px;
+      top: -10px;
+      color:#fff;
     }
     100% {
       top: 0px;
+      color:#555;
     }
   }
 
@@ -193,14 +197,20 @@ button:hover {
     background-position: center;
 }
 
+#title-menu p {
+    font-size: 150%;
+    color: white;
+    transform: translateY(150px);
+}
+
 #title-menu button {
     width: 150px;
     height: 100px;
-    background-color:burlywood;
+    background-color:#4CAF50;
 }
 
 #title-menu button:hover {
-    background-color: #BBB;
+    background-color: #8dac8e;
 }
 
 #dialog-menu {
