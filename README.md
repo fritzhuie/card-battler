@@ -161,9 +161,9 @@ performCardEffect(card) {
 
 ## Schedule
 
-| Friday          | Saturday    | Sunday  |  Monday          | Tuesday      |  Wednesday   | Thursday     | Friday   |
-| :-------------- | :--------- | :----- | :-------------- | :---------- | :---------- | :---------- | :-------|
-| Gameplay MVP    | (Relax)     | (Relax) | Rewrite Gameplay | Implement UI | Add content  | Content / UI | Scramble |
+| Friday          | Saturday    | Sunday  |  Monday         | Tuesday      |  Wednesday   | Thursday     | Friday   |
+| :-------------- | :--------- | :----- | :---------------- | :---------- | :---------- | :---------- | :-------|
+| Gameplay MVP    | (Relax)     | (Relax) | Expand Gameplay | Implement UI | Add content  | Content / UI | Scramble, panic, probably break everything |
 
 
 
