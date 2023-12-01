@@ -12,15 +12,7 @@ Basic browser-based dungeon crawler card battler game
 - If the enemy's health reaches 0, the player immediately progresses to the next round.
 - If the player's health reaches 0, the player loses immediately.
 
-## Game Loop
-
-1. Player starts a New Game  
-2. Player plays any number of cards
-3. Player clicks "finish turn" (Enemy action resolves)
-4. Repeat until either enemy or player dies
-5. New round (repeat)
-6. After defeating the last enemy, player wins
-
+## Game States
 
 ```mermaid
 ---
