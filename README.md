@@ -1,6 +1,7 @@
 # Dungeon Battler
 Basic browser-based dungeon crawler card battler game
 
+
 ## Gameplay
 - Players start with a deck of cards, and a health pool, and three power crystals.
 - Each round, an emeny is presented, and the player battles the enemy to the death.
@@ -11,6 +12,7 @@ Basic browser-based dungeon crawler card battler game
 - Damage applies to armor first, then to health.
 - If the enemy's health reaches 0, the player immediately progresses to the next round.
 - If the player's health reaches 0, the player loses immediately.
+
 
 ## Game States
 
@@ -51,6 +53,7 @@ graph TD;
    Player-not-dead --> New-turn-draw-cards;
 ```
 
+
 ## Pseudo-code for Battles
 ```js
 
@@ -88,7 +91,7 @@ performCardEffect(card) {
 ```
 
 
-## MVP goals
+## MVP milestones
 
 * As a player, I should to be able to start a game, play cards, end my turn in a loop until my character dies, or the enemy dies.
 
@@ -102,21 +105,28 @@ performCardEffect(card) {
      - Disable
 
 * As a player, I should be able to add a new card to my deck after defeating an enemy, creating a more powerful deck as more enemies are defeated
+
 * As a player, I should experience coherant dialog
 
-#### Stretch Goals
 
-* Full game with *at least* one end-game boss
+## Stretch Goal Milestones
+
+* Add a final boss
   
-* Balanced gameplay, new players should have a ~10% chance of winning, experienced players should have a higher chance:
+* Balance gameplay
 
    | Level           | 1    | ... |  6  | ... |  Final Boss  |
    | :-------------- | :--: | :-: | :-: | :-: | :----------: |
    | Win Rate        | 99%  | ... | ~50% | ... | 10%          |
 
-* 15-20 randomized enemies, with a variety of thematic abilities
+* Add 15-20 randomized enemies, add thematic action sequences
+     - Damage
+     - Armor
+     - Bleed (debuff)
+     - Enrage (buff)
+     - Hide (buff)
 
-* A variery of cards/abilities with the following mechanics
+* Add cards with the following mechanics:
    - Direct effects
         - Damage
         - Draw
@@ -134,16 +144,22 @@ performCardEffect(card) {
         - Bleed (damage per turn)
         - Stun (skip turn)
 
-* 8-bit background music
+* Add 8-bit background music
   
 * Sound effects for player actions that correspond to different card types
    - Physical attacks
    - Magic attacks
- 
-## Wire Frames
-
-*Battle scene*
-![wireframe](https://github.com/fritzhuie/card-battler/assets/1472318/b6bb4c6f-e3cd-4374-8a92-b4840d14b87c)
-   - Defensive cards
    
 * Sound effects for boss intros and attacks
+
+
+** Schedule
+
+| Friday          | Saturday    | Sunday  |  Monday          | Tuesday      |  Wednesday   | Thursday     | Friday   |
+| :-------------- | :--------- | :----- | :-------------- | :---------- | :---------- | :---------- | :-------|
+| Gameplay MVP    | (Relax)     | (Relax) | Rewrite Gameplay | Implement UI | Add content  | Content / UI | Scramble |
+
+
+
+## Wire Frames
+![wireframe](https://github.com/fritzhuie/card-battler/assets/1472318/b98391df-0798-457d-8f1d-e5cc60c150c0)
