@@ -153,7 +153,7 @@ performCardEffect(card) {
 * Sound effects for boss intros and attacks
 
 
-** Schedule
+## Schedule
 
 | Friday          | Saturday    | Sunday  |  Monday          | Tuesday      |  Wednesday   | Thursday     | Friday   |
 | :-------------- | :--------- | :----- | :-------------- | :---------- | :---------- | :---------- | :-------|
@@ -161,5 +161,6 @@ performCardEffect(card) {
 
 
 
-## Wire Frames
+## Wire Frame (Battle scene)
+
 ![wireframe](https://github.com/fritzhuie/card-battler/assets/1472318/b98391df-0798-457d-8f1d-e5cc60c150c0)
