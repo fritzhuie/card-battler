@@ -59,26 +59,58 @@ graph TD;
    Player-not-dead --> New-turn-draw-cards;
 ```
 
+## Pseudo-code for Battles
+```js
 
-## Wire Frames
+newBattle() {
+   initBattle()
+   newTurn()
+}
 
-Menu navigation
+initBattle() {
+   buildPlayerDeck()
+   loadEnemy()
+}
 
- (TODO: Finish wireframes)
+newTurn() {
+   discardHand()
+   refreshManaPool()
+   dealCards()
+}
 
-#### MVP goals
+playCard(card) {
+   performCardEffect(card)
+   isEnemyDead() ? playerWins()
+}
 
-* As a player, I want to be able to start a game, and play cards and end turn until my character dies, or the last enemy dies
+endTurn() {
+   performEnemyAction(action)
+   isPlayerDead() ? playerLoses()
+}
+
+performCardEffect(card) {
+   card('damage') ? hurtEnemy(card.effect.value)
+   card('armor') ? gainArmor(card.effect.value)
+}
+
+```
+
+
+## MVP goals
+
+* As a player, I should to be able to start a game, play cards, end my turn in a loop until my character dies, or the enemy dies.
 
 * As a player, I should see a win state when all enemies have been defeated, and a lose state when the player's health reaches 0 
 
-* As a player, I should be able to see at least 10 random enemy types and at least 3 unique cards per class, utilizing the following mechanics:
+* As a player, I should be able to see at least 10 random enemy types and at least 3 unique cards per class (9 total), utilizing the following mechanics:
      - Damage
      - Armor
      - Draw card
      - Bleed (debuff)
+     - Disable
 
 * As a player, I should be able to add a new card to my deck after defeating an enemy, creating a more powerful deck as more enemies are defeated
+* As a player, I should experience coherant dialog
 
 #### Stretch Goals
 
@@ -115,18 +147,11 @@ Menu navigation
 * Sound effects for player actions that correspond to different card types
    - Physical attacks
    - Magic attacks
+ 
+## Wire Frames
+
+*Battle scene*
+![wireframe](https://github.com/fritzhuie/card-battler/assets/1472318/b6bb4c6f-e3cd-4374-8a92-b4840d14b87c)
    - Defensive cards
    
 * Sound effects for boss intros and attacks
-
-### Menu logic
-
-   * Card effect structure: `[{ armor: 5}, {enfeable: 5}, {bleed: 5}]`
-
-   * Enemy class structure: `{ debuff: value, buff: value, maxHP: value, remainingHP: value }`
-
-   * Card engine will parse each effect and execute it in order of effect priorety
-
-   * Enemy will deal damage once the player clicks "end turn"
-
-
