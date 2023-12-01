@@ -79,6 +79,15 @@ graph TD;
         - Bleed (damage per turn)
         - Stun (skip turn)
 
+* 8-bit background music
+  
+* Sound effects for player actions that correspond to different card types
+   - Physical attacks
+   - Magic attacks
+   - Defensive cards
+   
+* Sound effects for boss intros and attacks
+
 ### Gameplay logic (JavaScript)
 
    * Card effect structure: `[{ armor: 5}, {enfeable: 5}, {bleed: 5}]`
