@@ -1,5 +1,12 @@
-# Dungeon Battler
+# Generative Adversaties
+
 Basic browser-based dungeon crawler card battler game
+
+## Project Description
+
+Crypt of the Generative Adversaties is a turn-based card battler dungeon crawler, inspired by *Dream Quest* and *Slay the Spire*.
+
+_Delve into the hauted crypt. Battle increasingly stronger enemies, and build a deck full of potent cards and devistating combinations. Will you uncover the shocking secret hidden at the bottom of the crypt, or will you fall to the terrifying creatures that protect it?_
 
 ## Gameplay
 - Players start with a deck of cards, and a health pool, and three power crystals.
@@ -12,56 +19,120 @@ Basic browser-based dungeon crawler card battler game
 - If the enemy's health reaches 0, the player immediately progresses to the next round.
 - If the player's health reaches 0, the player loses immediately.
 
-## Game Loop
 
-1. Player starts a New Game  
-2. Player plays any number of cards
-3. Player clicks "finish turn" (Enemy action resolves)
-4. Repeat until either enemy or player dies
-5. New round (repeat)
-6. After defeating the last enemy, player wins
+## Game States
 
 ```mermaid
+---
+title: Menu Navigation
+---
+
 graph TD;
-   Start-new-game --> Deal;
-   Deal --> Player-plays-card;
-   Player-plays-card --> perform-card-effect; 
-   perform-card-effect --> Player-plays-card;
-   perform-card-effect --> Player-wins;
-   perform-card-effect --> Player-loses;
+   Title-menu --> Choose-hero;
+   Choose-hero --> Hero-intro;
+   Hero-intro --> Next-enemy-intro;
+   Next-enemy-intro --> Battle;
+   Battle --> Player-wins;
+   Battle --> Player-loses;
+   Player-wins --> Post-fight-dialog;
+   Post-fight-dialog --> Next-enemy-intro;
+   Player-loses --> Player-death-dialog;
+   Player-death-dialog --> Title-menu;
 ```
 
-## Wire Frames
+```mermaid
+---
+title: Battle loop
+---
+graph TD;
+   New-turn-draw-cards --> Player-plays-card;
+   Player-plays-card --> Perform-card-effect; 
+   Perform-card-effect --> Player-plays-card;
+   Perform-card-effect --> Enemy-is-dead;
+   Enemy-is-dead --> Player-wins;
+   Perform-card-effect --> Enemy-not-dead;
+   Enemy-not-dead --> End-turn;
+   End-turn --> Enemy-performs-action;
+   Enemy-performs-action --> Player-is-dead;
+   Enemy-performs-action --> Player-not-dead;
+   Player-is-dead --> Player-loses;
+   Player-not-dead --> New-turn-draw-cards;
+```
 
- (TODO: Finish wireframes)
 
-#### MVP goals
+## Pseudo-code for Battles
+```js
 
-* As a player, I want to be able to start a game, and play cards and end turn until my character dies, or the last enemy dies
+newBattle() {
+   initBattle()
+   newTurn()
+}
+
+initBattle() {
+   buildPlayerDeck()
+   loadEnemy()
+}
+
+newTurn() {
+   discardHand()
+   refreshManaPool()
+   dealCards()
+}
+
+playCard(card) {
+   performCardEffect(card)
+   isEnemyDead() ? playerWins()
+}
+
+endTurn() {
+   performEnemyAction(action)
+   isPlayerDead() ? playerLoses()
+}
+
+performCardEffect(card) {
+   card('damage') ? hurtEnemy(card.effect.value)
+   card('armor') ? gainArmor(card.effect.value)
+}
+
+```
+
+
+## MVP milestones
+
+* As a player, I should to be able to start a game, play cards, end my turn in a loop until my character dies, or the enemy dies.
 
 * As a player, I should see a win state when all enemies have been defeated, and a lose state when the player's health reaches 0 
 
-* As a player, I should be able to see at least 10 random enemies and at least 11 types of cards with the following mechanics:
+* As a player, I should be able to see at least 10 random enemy types and at least 3 unique cards per class (9 total), utilizing the following mechanics:
      - Damage
      - Armor
      - Draw card
-     - Restore mana
+     - Bleed (debuff)
+     - Disable
 
 * As a player, I should be able to add a new card to my deck after defeating an enemy, creating a more powerful deck as more enemies are defeated
 
-#### Stretch Goals
+* As a player, I should experience coherant dialog
 
-* Full game with *at least* one end-game boss
+
+## Stretch Goal Milestones
+
+* Add a final boss
   
-* Balanced gameplay:
+* Balance gameplay
 
-   | Level           | 1    |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10  |
-   | :-------------- | :--: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :--: |
-   | Win Rate        | 100% | 90% | 80% | 70% | 60% | 50% | 40% | 30% | 20% | 10%  |
+   | Level           | 1    | ... |  6  | ... |  Final Boss  |
+   | :-------------- | :--: | :-: | :-: | :-: | :----------: |
+   | Win Rate        | 99%  | ... | ~50% | ... | 10%          |
 
-* 15-20 randomized enemies, with a variety of thematic abilities
+* Add 15-20 randomized enemies, add thematic action sequences
+     - Damage
+     - Armor
+     - Bleed (debuff)
+     - Enrage (buff)
+     - Hide (buff)
 
-* A variery of cards/abilities with the following mechanics
+* Add cards with the following mechanics:
    - Direct effects
         - Damage
         - Draw
@@ -79,23 +150,23 @@ graph TD;
         - Bleed (damage per turn)
         - Stun (skip turn)
 
-* 8-bit background music
+* Add 8-bit background music
   
 * Sound effects for player actions that correspond to different card types
    - Physical attacks
    - Magic attacks
-   - Defensive cards
    
 * Sound effects for boss intros and attacks
 
-### Gameplay logic (JavaScript)
 
-   * Card effect structure: `[{ armor: 5}, {enfeable: 5}, {bleed: 5}]`
+## Schedule
 
-   * Enemy class structure: `{ debuff: value, buff: value, maxHP: value, remainingHP: value }`
-
-   * Card engine will parse each effect and execute it in order of effect priorety
-
-   * Enemy will deal damage once the player clicks "end turn"
+| Friday          | Saturday    | Sunday  |  Monday         | Tuesday      |  Wednesday   | Thursday     | Friday   |
+| :-------------- | :--------- | :----- | :---------------- | :---------- | :---------- | :---------- | :-------|
+| Gameplay MVP    | (Relax)     | (Relax) | Expand Gameplay | Implement UI | Add content  | Content / UI | Scramble, panic, probably break everything |
 
 
+
+## Wire Frame (Battle scene)
+
+![wireframe](https://github.com/fritzhuie/card-battler/assets/1472318/b98391df-0798-457d-8f1d-e5cc60c150c0)
