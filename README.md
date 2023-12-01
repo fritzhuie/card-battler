@@ -37,13 +37,17 @@ graph TD;
 
 #### MVP goals
 
-* As a player, I want to be able to start a game, and play until my character dies, or the last enemy dies
+* As a player, I want to be able to start a game, and play cards and end turn until my character dies, or the last enemy dies
 
-* As a player, I should be able to see random enemies and a variety of cards with the following mechanics:
+* As a player, I should see a win state when all enemies have been defeated, and a lose state when the player's health reaches 0 
+
+* As a player, I should be able to see at least 10 random enemies and at least 11 types of cards with the following mechanics:
      - Damage
      - Armor
      - Draw card
      - Restore mana
+
+* As a player, I should be able to add a new card to my deck after defeating an enemy, creating a more powerful deck as more enemies are defeated
 
 #### Stretch Goals
 
@@ -77,15 +81,12 @@ graph TD;
 
 ### Gameplay logic (JavaScript)
 
-   * Card effect structure: `{ armor: 5, enfeable: 5, bleed: 5 }`
+   * Card effect structure: `[{ armor: 5}, {enfeable: 5}, {bleed: 5}]`
 
    * Enemy class structure: `{ debuff: value, buff: value, maxHP: value, remainingHP: value }`
 
    * Card engine will parse each effect and execute it in order of effect priorety
 
    * Enemy will deal damage once the player clicks "end turn"
-
-Whos that pokemon is a classic guessing game.
-The game chooses a random pokemon out of the original 151, and the user tries to guess the word beore running out of guesses.
 
 

@@ -46,6 +46,25 @@ const manaCard = {        name:"Replenish",   type:"mana",    value:3 , portrait
 
 // Functions --------------------------------------------------------------------
 
+function init () {
+    currentLevel = 1;
+    deck = [];
+    discard = [];
+    handSize = 0;
+    currentEnemy = null;
+    playerHealth = 100;
+    playerArmor = 0;
+    playerMana = 3;
+    enemyHealth = 99;
+    enemyArmor = 0;
+    enemyAttackIndex = 0;
+    nextEnemyAction = {
+        name: "...",
+        description: "...",
+        damage: 0
+    }
+}
+
 function showMainMenu() {
     showElement('title-menu');
     hideElement('dialog-menu');
@@ -99,16 +118,18 @@ function showHeroSidebar() {
 
 function inititalizeRandomEnemy () {
 
-    let remainingEnemies = ["shaman", "undead"];
+    let remainingEnemies = ["shaman", "undead", 'raptor'];
     remainingEnemies = remainingEnemies.sort(() => Math.random() - 0.5); //randomize
     const currentEnemyName = remainingEnemies.pop();
-    if ( currentEnemyName === "shaman" ) {
-        currentEnemy = enemyShaman;
-    } else {
-        currentEnemy = enemyUndeadFemale;
+    if ( currentEnemyName === 'shaman' ) {
+        currentEnemy = new EnemyShaman()
+    } else if (currentEnemyName === 'undead'){
+        currentEnemy = new EnemyBladeRevenant()
+    } else if (currentEnemyName === 'raptor') {
+        currentEnemy = new EnemyMecharaptor()
     }
 
-    console.log("Current enemy -> " + currentEnemy)
+    console.log('Current enemy -> ' + currentEnemy)
     setEnemyDialog( currentEnemy.description );
 
     console.log(currentEnemy);
@@ -116,13 +137,13 @@ function inititalizeRandomEnemy () {
     enemyHealth = currentEnemy.maxHealth;
     enemyArmor = 0;
     nextEnemyAction.damage = 0;
-    nextEnemyAction.description = "";
+    nextEnemyAction.description = '';
 
 
-    document.getElementById("enemy-name").innerText = currentEnemy.name;
-    enemyHealthLabel.innerText = "Health: " + currentEnemy.health + " / " + currentEnemy.maxHealth;
-    enemyArmorLabel.innerText = "Armor: " + enemyArmor;
-    enemyAttackLabel.innerText = currentEnemy.name + " growls menacingly...";
+    document.getElementById('enemy-name').innerText = currentEnemy.name;
+    enemyHealthLabel.innerText = 'Health: ' + currentEnemy.health + ' / ' + currentEnemy.maxHealth;
+    enemyArmorLabel.innerText = 'Armor: ' + enemyArmor;
+    enemyAttackLabel.innerText = currentEnemy.name + ' growls menacingly...';
     enemyIntroDescription.innerText = currentEnemy.name;
     enemyIntroPortrait.src = currentEnemy.portrait;
     enemyportrait.src = currentEnemy.portrait;
