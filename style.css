@@ -298,3 +298,23 @@ button:hover {
     background-color: #999;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
+.transition-layer {
+    animation-name: transition-layer;
+    animation-duration: 1.5s;
+    animation-timing-function: ease;
+    animation-iteration-count: infinite;
+    position: absolute;
+    width:100vw;
+    height: 100vw;
+    background-color: black;
+    opacity: 0.0;
+  }
+  @keyframes transition-layer {
+    0% {
+      opacity: 1.0;
+    }
+    100% {
+      opacity: 0.0;
+    }
+  }

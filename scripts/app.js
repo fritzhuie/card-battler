@@ -14,6 +14,7 @@ let enemyAttackLabel = document.getElementById("enemy-attack");
 let enemyIntroDescription = document.getElementById("enemy-intro-description");
 let enemyIntroPortrait = document.getElementById("enemy-intro-portrait");
 let enemyportrait = document.getElementById("enemy-portrait");
+let transitionLayer = document.getElementById("transition-layer");
 
 let currentLevel = 1;
 let deck = [];
@@ -92,6 +93,7 @@ function setEnemyDialog(text) {
 function showHeroSelect() {
     hideElement('title-menu');
     showElement('hero-select-menu');
+    triggerTransitionLayer();
 }
 
 function hideHeroSidebar() {
@@ -154,12 +156,14 @@ function showDialogMenu() {
     hideElement('hero-select-menu');
     hideElement('battle-screen');
     showHeroSidebar();
+    triggerTransitionLayer();
 }
 
 function showEnemyIntro() {
     inititalizeRandomEnemy();
     showElement('enemy-intro-menu');
     hideElement('dialog-menu');
+    triggerTransitionLayer();
 }
 
 function startBattle() {
@@ -169,6 +173,15 @@ function startBattle() {
     deck = ["strike", "strike", "strike", "strike", "strike", "armor", "strike", "strike"];
     deck = deck.sort(() => Math.random() - 0.5);
     beginNextTurn();
+    triggerTransitionLayer();
+}
+
+function triggerTransitionLayer() {
+    transitionLayer.classList.add("transition-layer");
+
+    setTimeout(() => {
+        transitionLayer.classList.remove("transition-layer");
+    }, 1000);
 }
 
 function selectHero(type) {
@@ -194,6 +207,7 @@ if(type === 'warrior') {
     console.log('Player selected' + type)
     showDialogMenu();
     showHeroSidebar();
+    triggerTransitionLayer();
 }
 
 function highlightHero(type) {
