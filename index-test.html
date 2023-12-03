@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Test Screen</title>
+    <link rel="stylesheet" href="style-test.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="hero-sidebar">
+            <div>Hero Max HP: <span id="hero-max-hp">100</span></div>
+            <div>Hero Remaining HP: <span id="hero-hp">80</span></div>
+            <div>Hero Armor: <span id="hero-armor">5</span></div>
+        </div>
+
+        <div id="play-area">
+            <div id="card-container">
+                <!-- Example card buttons -->
+                <button class="card">Play card 1</button>
+                <button class="card">Play card 2</button>
+                <button class="card">Play card 3</button>
+                <button class="card">Play card 4</button>
+                <button class="card">Play card 5</button>
+                <button class="card">Play card 6</button>
+                <button class="card">Play card 7</button>
+            </div>
+            <div id="action-description">Last action: <span>N/A</span></div>
+        </div>
+
+        <div id="enemy-section">
+            <div>Enemy Name: <span id="enemy-name">Enemy</span></div>
+            <div>Enemy Max HP: <span id="enemy-max-hp">120</span></div>
+            <div>Enemy Armor: <span id="enemy-armor">10</span></div>
+            <div>Enemy Remaining HP: <span id="enemy-hp">100</span></div>
+            <div>Enemy Next Attack: <span id="enemy-attack">Unknown</span></div>
+        </div>
+    </div>
+    <script src="scripts/classes.js"></script>
+    <script src="app-test.js"></script>
+</body>
+</html>
