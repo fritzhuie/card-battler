@@ -17,11 +17,14 @@ const enemyAttack = document.getElementById('enemy-attack');
 
 let game = {};
 
-init() {
+function init() {
     game = new CardGame();
+}
+
+function chooseHero(choice) {
 
 }
 
-render () {
+function render () {
 
 }

@@ -17,9 +17,16 @@ class CardGame {
     #enemyAttackIndex = 0
 
     constructor() {
-        
+
     }
     // Public API ------------------
+
+    beginNewGame() {
+        this.remainingEnemies = [
+            new EnemyShaman, 
+            new EnemyBladeRevenant, 
+            new EnemyMecharaptor];
+    }
 
     playCard(position) {
         if (!hand || !hand[position] || !hand[position].effects) {
