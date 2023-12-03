@@ -99,40 +99,35 @@ performCardEffect(card) {
 
 ## MVP milestones
 
-* As a player, I should to be able to start a game, play cards, end my turn in a loop until my character dies, or the enemy dies.
-
-* As a player, I should see a win state when all enemies have been defeated, and a lose state when the player's health reaches 0 
-
-* As a player, I should be able to see at least 10 random enemy types and at least 3 unique cards per class (9 total), utilizing the following mechanics:
+- As a player, I should to be able to start a game, play cards, end my turn in a loop until my character dies, or the enemy dies.
+- As a player, I should see a win state when all enemies have been defeated, and a lose state when the player's health reaches 0 
+- As a player, I should be able to see at least 10 random enemy types and at least 3 unique cards per class (9 total), utilizing the following mechanics:
      - Damage
      - Armor
      - Draw card
      - Bleed (debuff)
      - Disable
-
-* As a player, I should be able to add a new card to my deck after defeating an enemy, creating a more powerful deck as more enemies are defeated
-
-* As a player, I should experience coherant dialog
+- As a player, I should be able to add a new card to my deck after defeating an enemy, creating a more powerful deck as more enemies are defeated
+- As a player, I should experience coherant dialog
 
 
 ## Stretch Goal Milestones
 
-* Add a final boss
-  
-* Balance gameplay
+- Add a final boss 
+- Balance gameplay
 
    | Level           | 1    | ... |  6  | ... |  Final Boss  |
    | :-------------- | :--: | :-: | :-: | :-: | :----------: |
    | Win Rate        | 99%  | ... | ~50% | ... | 10%          |
 
-* Add 15-20 randomized enemies, add thematic action sequences
+- Add 15-20 randomized enemies, add thematic action sequences
      - Damage
      - Armor
      - Bleed (debuff)
      - Enrage (buff)
      - Hide (buff)
 
-* Add cards with the following mechanics:
+- Add cards with the following mechanics:
    - Direct effects
         - Damage
         - Draw
@@ -150,23 +145,24 @@ performCardEffect(card) {
         - Bleed (damage per turn)
         - Stun (skip turn)
 
-* Add 8-bit background music
+- Add 8-bit background music
   
-* Sound effects for player actions that correspond to different card types
+- Sound effects for player actions that correspond to different card types
    - Physical attacks
    - Magic attacks
    
-* Sound effects for boss intros and attacks
+- Sound effects for boss intros and attacks
 
 
 ## Schedule
 
 | Friday          | Saturday    | Sunday  |  Monday         | Tuesday      |  Wednesday   | Thursday     | Friday   |
 | :-------------- | :--------- | :----- | :---------------- | :---------- | :---------- | :---------- | :-------|
-| Gameplay MVP    | (Relax)     | (Relax) | Expand Gameplay | Implement UI | Add content  | Content / UI | Scramble, panic, probably break everything |
+| Gameplay MVP    | (Relax)     | (Relax) | Expand Gameplay | Implement UI | Add content  | Content / UI / game balance / sound | Scramble / panic / break everything |
 
 
 
 ## Wire Frame (Battle scene)
 
-![wireframe](https://github.com/fritzhuie/card-battler/assets/1472318/b98391df-0798-457d-8f1d-e5cc60c150c0)
+![wireframe](https://github.com/fritzhuie/card-battler/assets/1472318/664bef3d-a8d1-4f27-9d73-681c65cd3ea2)
+
