@@ -1,34 +1,53 @@
 class CardGame {
 
-    #gameState
-    #currentLevel
+    #hero = null
+    #enemy = null
+    #enemies = null
+    #gameState = null
+    #currentLevel = 0
     #turn = 0
+    #enemySelectionIndex = 0
+    #enemyAttackIndex = 0
 
     #deck = []
     #hand = []
-    #discard = []
+    #discardPile = []
+    #cardOptions = []
 
-    #newCardOptions = []
-
-    #player = null
-    #currentEnemy = null
-
-    #remainingEnemies = null
-    #enemyAttackIndex = 0
+    get gameState ()    { return this.#gameState }
+    get currentLevel () { return this.#currentLevel }
+    get turn ()         { return this.#turn }
+    get deck ()         { return this.#deck }
+    get hand ()         { return this.#hand }
+    get discardPile ()  { return this.#discardPile }
+    get enemy ()        { return this.#enemy }
+    get hero ()         { return this.#hero }
+    get cardOptions ()  { return this.#cardOptions }
 
     constructor() {
-
-    }
-    // Public API ------------------
-
-    beginNewGame() {
-        this.remainingEnemies = [
+        this.enemies = [
             new EnemyShaman, 
             new EnemyBladeRevenant, 
-            new EnemyMecharaptor];
+            new EnemyMecharaptor
+        ]
+
+        this.#enemy = this.enemies[this.#enemySelectionIndex]
     }
 
-    playCard(position) {
+    playerDidChooseHero( choice ) {
+        const choices = ['warrior', 'wizard', 'barbarian']
+        if ( !this.#hero  && choices.indexOf(choice) >= 0 ) {
+            this.#hero = new Hero(choice)
+        } else {
+            console.log("Invalid hero selection")
+        }
+
+        this.#deck = this.hero.startingDeck
+        this.#dealHand()
+    }
+
+    
+    playerDidPlayCard(position) {
         if (!hand || !hand[position] || !hand[position].effects) {
             console.error('Invalid card or card effects. position:' + position);
             return;
@@ -37,32 +56,59 @@ class CardGame {
         let card = Card.called(hand[position])
 
         card.effects.forEach(effect => {
-            console.log(`Processing Effect: ${effect.name} with value ${effect.value}`)
+            // console.log(`Processing Effect: ${effect.name} with value ${effect.value}`)
             switch (effect.name) {
                 case 'damage':
-                    this.#currentEnemy.dealDamage(effect.value)
+                    this.#enemy.dealDamage(effect.value)
                     break;
                 case 'armor':
-                    this.#player.gainArmor(effect.value)
+                    this.#hero.gainArmor(effect.value)
                     break;
-                // ...
                 default:
                     console.log(`Effect type ${effect.name} not recognized.`);
             }
         });
     }
 
-    endTurn () {
+    playerDidEndTurn () {
         // deal enemy damage
         // discard hand
-        // draw new hand
     }
 
-    selectNewCard(name) {
+    playerDidSelectNewCard(name) {
         // player has chosen a card with 'name'
         // if card is valid, this.#deck.push(name)
         // cardChoices = []
         // set state to 
+    }
+
+    #dealHand () {
+        while (this.#hand.length < 5) {
+            if (this.#deck.length === 0) {
+                this.#recycleDiscard()
+            }
+            this.#drawCard(this.#deck.pop());
+        }
+    }
+
+    #drawCard(cardName) {
+        
+        if (this.#deck.length === 0) {
+            this.#recycleDiscard()
+        }
+
+        this.#hand.push(this.#deck.pop())
+    }
+
+    #recycleDiscard() {
+        while (this.#discardPile.length > 0) {
+            this.#deck.push(this.#discardPile.pop());
+        }
+        this.#deck = this.#deck.sort(() => Math.random() - 0.5);
+    }
+
+    #beginNewTurn() {
+        //draw cards
     }
 
     #performEffect(...effects) { 
@@ -81,68 +127,36 @@ class CardGame {
         
     }
 
-    get gameState () {
-        return this.#gameState
-    }
-
-    get currentLevel () {
-        return this.#currentLevel
-    }
-
-    get turn () {
-        return this.#turn
-    }
-
-    get deck () {
-        return this.#deck
-    }
-
-    get hand () {
-        return this.#hand
-    }
-
-    get discardPile () {
-        return this.#discard
-    }
-
-    get currentEnemy () {
-        return this.#currentEnemy
-    }
-
-    get player () {
-        return this.#player
-    }
-
-    get newCardOptions () {
-        return this.#newCardOptions
-    }
-
     init () {
         this.player = null
         this.turn = 0
         this.deck = []
         this.hand = []
         this.discardPile = []
-        this.currentEnemy = {}
+        this.enemy = {}
         this.remainingEnemies = []
         this.currentLevel = 1
-        this.currentEnemy = null;
+        this.enemy = null;
         this.enemyAttackIndex = 0;
     }
 }
 
 class Hero {
 
-    #architype;
-    #health = 0;
-    #armor = 0;
-    #debuffs = [];
-    #buffs = [];
-    #mana = 0;
+    #architype = null
+    #maxHealth = 0
+    #health = 0
+    #armor = 0
+    #debuffs = []
+    #buffs = []
+    #mana = 0
+    #startingDeck = ["strike", "strike", "strike", "strike", "strike", "strike", "armor", "armor"]
     #starting_mana = 0
 
+    get startingDeck() { return this.#startingDeck }
     get mana() { return this.#mana }
     get architype() { return this.#architype }
+    get maxHealth() { return this.#maxHealth }
     get health() { return this.#health }
     get armor() { return this.#armor }
     get debuffs() { return [...this.#debuffs] }
@@ -155,18 +169,16 @@ class Hero {
 
     #initializeWithName(architype) {
 
-        console.log(`Initializing hero: ${this.#architype}`);
-
         if (architype === 'warrior') {
-            this.health = 100
-            this.armor = 50
+            this.#health = 100
+            this.#armor = 50
         }else if (architype === 'wizard') {
             this.#health = 80
-            this.armor = 0
+            this.#armor = 0
             this.#mana = 3
         } else if (architype === 'barbarian' ) {
             this.#health = 100
-            this.armor = 0
+            this.#armor = 0
         } else {
             console.log('HERO TYPE NOT RECOGNIZED')
         }
@@ -183,6 +195,7 @@ class Enemy {
     buffs = []
     debuffs = []
     portrait = null
+    nextAttack = null
 
     takeDamage (value) {
 
@@ -281,7 +294,7 @@ Card.cards = {
     'flourish': new Card('flourish', 3, new Effect('damage', 9), new Effect('heal', 5))
 }
 
-const NAV_STATE = {
+const GAME_STATE = {
     MAIN_MENU: 'main_menu',
     HERO_SELECT: 'hero_menu',
     HERO_INTRO: 'hero_intro',
@@ -289,5 +302,6 @@ const NAV_STATE = {
     BATTLE: 'battle',
     REWARD: 'reward',
     WIN: 'win',
-    LOSE: 'lose'
+    LOSE: 'lose',
+    CREDITS: 'credits'
 };

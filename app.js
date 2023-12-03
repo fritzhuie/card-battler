@@ -171,7 +171,7 @@ function startBattle() {
     deck = ["strike", "strike", "strike", "strike", "strike", "armor", "strike", "strike"];
     deck = deck.sort(() => Math.random() - 0.5);
     beginNextTurn();
-    triggerPixelTransition();
+    triggerFadeTransition();
 }
 
 function triggerFadeTransition() {
@@ -201,8 +201,6 @@ function triggerPixelTransition(wide, high) {
             }, ((50 * j) + (50 * i)));
         }
     }
-
-    
 
     setTimeout(() => {
         transitionLayer.innerHTML = '';
@@ -360,12 +358,7 @@ function dealCards (count) {
     }
 }
 
-function recycleDiscard() {
-    while (discard.length > 0) {
-        deck.push(discard.pop());
-    }
-    deck = deck.sort(() => Math.random() - 0.5);
-}
+
 
 function win() {
     setDialog("One evil has been defeated. But many more enemies await...");

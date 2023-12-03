@@ -18,6 +18,8 @@ body {
     background-color: lightgray;
     padding: 20px;
     border-radius: 10px;
+    line-height: 1.5; /* Increase line spacing for better readability */
+    font-size: 12px; /* Slightly increase font size */
 }
 
 #play-area {
