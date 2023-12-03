@@ -79,7 +79,7 @@ button:hover {
 .text-flash { animation: textFlashEffect 0.5s; }
 @keyframes textFlashEffect {
     0% { color: red; }
-    100% { color: black); }
+    100% { color: black; }
 }
 
 .img-flash { animation: flashEffect 0.5s; }
@@ -305,12 +305,36 @@ button:hover {
     animation-timing-function: ease;
     animation-iteration-count: infinite;
     position: absolute;
+    z-index: 999;
     width:100vw;
     height: 100vw;
     background-color: black;
     opacity: 0.0;
   }
   @keyframes transition-layer {
+    0% {
+      opacity: 1.0;
+    }
+    100% {
+      opacity: 0.0;
+    }
+  }
+
+  .transition-layer-container {
+    position: absolute;
+    z-index: 999;
+    width:100vw;
+    height: 100vw;
+  }
+
+  .transition-layer-cell {
+    animation-name: transition-layer-cell;
+    animation-duration: 2.0s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    background-color: red;
+  }
+  @keyframes transition-layer-cell {
     0% {
       opacity: 1.0;
     }

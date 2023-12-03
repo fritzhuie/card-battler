@@ -202,7 +202,7 @@ class EnemyShaman extends Enemy {
     constructor() {
         super();
         this.name = 'Orthic Shaman'
-        this.description = 'His helmet is 100% organic boar skull'
+        this.description = '100% organic boar skull!'
         this.portrait = 'img/axe-shaman.png'
         this.maxHealth = 99
         this.health = 99

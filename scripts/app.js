@@ -93,7 +93,7 @@ function setEnemyDialog(text) {
 function showHeroSelect() {
     hideElement('title-menu');
     showElement('hero-select-menu');
-    triggerTransitionLayer();
+    triggerPixelTransition(20, 18)
 }
 
 function hideHeroSidebar() {
@@ -156,14 +156,12 @@ function showDialogMenu() {
     hideElement('hero-select-menu');
     hideElement('battle-screen');
     showHeroSidebar();
-    triggerTransitionLayer();
 }
 
 function showEnemyIntro() {
     inititalizeRandomEnemy();
     showElement('enemy-intro-menu');
     hideElement('dialog-menu');
-    triggerTransitionLayer();
 }
 
 function startBattle() {
@@ -173,15 +171,42 @@ function startBattle() {
     deck = ["strike", "strike", "strike", "strike", "strike", "armor", "strike", "strike"];
     deck = deck.sort(() => Math.random() - 0.5);
     beginNextTurn();
-    triggerTransitionLayer();
+    triggerPixelTransition();
 }
 
-function triggerTransitionLayer() {
+function triggerFadeTransition() {
     transitionLayer.classList.add("transition-layer");
 
     setTimeout(() => {
         transitionLayer.classList.remove("transition-layer");
     }, 1000);
+}
+
+function triggerPixelTransition(wide, high) {
+
+    for (let i = 0; i < wide; i++) {
+        for (let j = 0; j < high; j++) {
+            const width = window.innerWidth / wide;
+            const height = window.innerHeight / high;
+            const div = document.createElement('div');
+            div.style.width = width + 'px';
+            div.style.height = height + 'px';
+            div.style.position = 'absolute';
+            div.style.left = (i * width) + 'px';
+            div.style.top = (j * height) + 'px';
+            div.style.backgroundColor = 'black';
+            transitionLayer.appendChild(div);
+            setTimeout(() => {
+                div.parentElement.removeChild(div);
+            }, ((50 * j) + (50 * i)));
+        }
+    }
+
+    
+
+    setTimeout(() => {
+        transitionLayer.innerHTML = '';
+    }, 2000);
 }
 
 function selectHero(type) {
@@ -207,13 +232,12 @@ if(type === 'warrior') {
     console.log('Player selected' + type)
     showDialogMenu();
     showHeroSidebar();
-    triggerTransitionLayer();
 }
 
 function highlightHero(type) {
     if(type === 'warrior') {
         document.getElementById("hero-select-menu").style.backgroundImage = "url('img/warrior.png')";
-        document.getElementById("hero-select-menu").style.backgroundSize = "cover";
+        document.getElementById("hero-select-menu").style.backgroundSize = "fill";
     } else if(type === 'wizard') {
         document.getElementById("hero-select-menu").style.backgroundImage = "url('img/wizard.png')";
         document.getElementById("hero-select-menu").style.backgroundSize = "cover";
@@ -224,8 +248,8 @@ function highlightHero(type) {
 }
 
 function unhighlightHero() {
-    document.getElementById("hero-select-menu").style.backgroundImage = "url('img/selection-bg.png')";
-    document.getElementById("hero-select-menu").style.backgroundSize = "cover";
+    // document.getElementById("hero-select-menu").style.backgroundImage = "url('img/selection-bg.png')";
+    // document.getElementById("hero-select-menu").style.backgroundSize = "cover";
 }
 
 function hurtEnemy(value) {
