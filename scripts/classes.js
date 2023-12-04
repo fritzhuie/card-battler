@@ -1,9 +1,17 @@
+const GAME_STATE = {
+    HERO_SELECT: 'hero',
+    BATTLE: 'battle',
+    CARD_SELECT: 'select',
+    WIN: 'win',
+    LOSE: 'lose',
+};
+
 class CardGame {
 
     #hero = null
     #enemy = null
     #enemies = null
-    #gameState = null
+    #gameState = GAME_STATE.HERO_SELECT
     #currentLevel = 0
     #turn = 0
 
@@ -44,12 +52,27 @@ class CardGame {
             console.log("Invalid hero selection")
         }
 
+        this.#gameState = GAME_STATE.BATTLE
+
         this.#deck = this.hero.startingDeck
         console.log("DECK AT START: " + this.#deck)
         this.#dealHand()
     }
 
-    
+    endTurn () {
+        this.#performEnemyAction()
+        this.#checkForDeaths()
+        this.#discardHand()
+        // handle buffs and defuffs
+        this.#beginNewTurn()
+    }
+
+    selectNewCard(index) {
+        console.log(this.#cardOptions[index])
+        // if card is valid, this.#deck.push(name)
+        this.#gameState = GAME_STATE.BATTLE
+    }
+
     playCard(index) {
         if (!this.#hand || !this.#hand[index]) {
             console.error(`Invalid card - index: + '${index}'`);
@@ -74,25 +97,19 @@ class CardGame {
                     console.log(`Effect type '${effect.name}' not recognized.`);
             }
         });
+        this.#checkForDeaths()
     }
 
-    endTurn () {
-        this.#performEnemyAction()
-        // log (enemy) action
-        this.#discardHand()
-        this.#dealHand()
-    }
+    #performEnemyAction() { 
+        let action = this.#enemy.currentAction()
 
-    selectNewCard(name) {
-        // player has chosen a card with 'name'
-        // if card is valid, this.#deck.push(name)
-        // cardChoices = []
-        // set state
+        console.log(`Processing enemy action: '${JSON.stringify(action)}'`)
+
+        this.#enemy.actionIndex = this.#enemy.actionIndex >= this.#enemy.actionIndex.length ? 0 : this.#enemy.actionIndex + 1
     }
 
     #dealHand () {
         while (this.#hand.length < 5 && (this.#discardPile.length > 0 || this.#deck.length > 0)) {
-            // draw to 5 cards & make sure deck/discard has cards to deal
             this.#drawCard();
         }
     }
@@ -119,16 +136,33 @@ class CardGame {
     }
 
     #beginNewTurn() {
-        // draw cards
-        // decrement buffs and debuffs
+        this.#dealHand()
+        // handle buffs and debuffs
     }
 
-    #performEnemyAction() { 
-        let action = this.#enemy.currentAction()
+    #checkForDeaths() {
+        if (this.#hero.health <= 0) {
+            this.#gameState = GAME_STATE.LOSE
+        }
 
-        console.log(`Processing enemy action: '${JSON.stringify(action)}'`)
+        if (this.#enemy.health <= 0) {
 
-        this.#enemy.actionIndex = this.#enemy.actionIndex >= this.#enemy.actionIndex.length ? 0 : this.#enemy.actionIndex + 1
+            //load new enemy
+            this.#enemies.shift()
+            this.#enemy = this.#enemies[0]
+
+            //clear the board
+            this.#discardHand()
+            this.#recycleDiscard()
+
+            // offer new card
+            this.#gameState = GAME_STATE.CARD_SELECT
+            this.#offerNewCards()
+        }
+    }
+
+    #offerNewCards() {
+        this.#cardOptions = ["strike", "strike", "armor"]
     }
 
     #cardExists(name) { }
@@ -165,14 +199,17 @@ class Hero {
     #initializeWithName(architype) {
 
         if (architype === 'warrior') {
-            this.#health = 100
+            this.#maxHealth = 100
+            this.#health = this.#maxHealth
             this.#armor = 50
         }else if (architype === 'wizard') {
-            this.#health = 80
+            this.#maxHealth = 100
+            this.#health = this.#maxHealth
             this.#armor = 0
             this.#mana = 3
         } else if (architype === 'barbarian' ) {
-            this.#health = 100
+            this.#maxHealth = 100
+            this.#health = this.#maxHealth
             this.#armor = 0
         } else {
             console.log('HERO TYPE NOT RECOGNIZED')
@@ -227,8 +264,8 @@ class EnemyShaman extends Enemy {
         this.name = 'Orthic Shaman'
         this.description = '100% organic boar skull!'
         this.portrait = 'img/axe-shaman.png'
-        this.maxHealth = 99
-        this.health = 99
+        this.maxHealth = 10
+        this.health = this.maxHealth
         this.actions = [
             new EnemyAction('Boar Charge','rams you with its tusks!', {'damage': 6}),
             new EnemyAction('Axe Swing', 'swings its putrid axe!', {'damage': 16})
@@ -242,8 +279,8 @@ class EnemyBladeRevenant extends Enemy {
         this.name = 'Blade Revenant'
         this.description = "Hint: She's gonna hit you with the sword"
         this.portrait = 'img/female-undead.png'
-        this.maxHealth = 87
-        this.health = 87
+        this.maxHealth = 10
+        this.health = this.maxHealth
         this.actions = [
             new EnemyAction('Slash', 'swings its greatsword in a wide arc', {'damage': 13})
         ]
@@ -256,8 +293,8 @@ class EnemyMecharaptor extends Enemy {
         this.name = 'Mecha Raptor'
         this.description = 'They Didn’t Stop To Think If They Should'
         this.portrait = 'img/mecharaptor.png'
-        this.maxHealth = 69
-        this.health = 69
+        this.maxHealth = 10
+        this.health = this.maxHealth
         this.actions = [
             new EnemyAction('Swipe', 'jumps and swipes with its claws', {'damage': 10}),
             new EnemyAction('Pounce', 'leaps at you, attacking with fang and claw', {'damage': 11}),
@@ -296,15 +333,3 @@ Card.cards = {
     'cleave': new Card('cleave', -1, new Effect('damage', 6), new Effect('bleed', 3)),
     'flourish': new Card('flourish', 3, new Effect('damage', 9), new Effect('heal', 5))
 }
-
-const GAME_STATE = {
-    MAIN_MENU: 'main_menu',
-    HERO_SELECT: 'hero_menu',
-    HERO_INTRO: 'hero_intro',
-    ENEMY_INTRO: 'enemy_intro',
-    BATTLE: 'battle',
-    REWARD: 'reward',
-    WIN: 'win',
-    LOSE: 'lose',
-    CREDITS: 'credits'
-};

@@ -182,17 +182,38 @@ function triggerFadeTransition() {
     }, 1000);
 }
 
-function fibonacci(n) {
-    let a = 0, b = 1, sum = 0;
-    for (let i = 2; i <= n; i++) {
-        sum = a + b;
-        a = b;
-        b = sum;
-    }
-    return n > 0 ? b : a;
-}
-
 function triggerPixelTransition(wide, high, type) {
+
+    let delayIterator = 0
+    let delayGrid = new Array(wide);
+
+    for (let x = 0; x < wide; x++) {
+        delayGrid[x] = new Array(high);
+        for (let y = 0; y < high; y++) {
+            delayGrid[x][y] = null;
+        }
+    }
+
+    console.log(delayGrid)
+
+    function fillInDiagonal(i, j) {
+        while (i > 0 && j < high) {
+            delayGrid[i][j] = delayIterator * 25
+            delayIterator++
+            i--
+            j++
+        }
+    }
+
+    for(let i = 0; i<wide;i++) {
+        fillInDiagonal(i, 0)
+    }
+
+    for(let j = high; j<0;j--) {
+        fillInDiagonal(wide, j)
+    }
+
+    console.log(delayGrid)
 
     let secondaryOffset = 10
     let fibbi = 1
@@ -221,17 +242,10 @@ function triggerPixelTransition(wide, high, type) {
                     div.parentElement.removeChild(div);
                 }, 50*(i+j));
             } else {
-                let delay = (20 * (fibonacci(i+j)) - (20*i*j));
 
             setTimeout(() => {
                 div.parentElement.removeChild(div);
-            }, delay);
-
-            //     0,  1,  3,  6,  10,
-            //     2,  4,  7,  11, 15,
-            //     5,  8,  12, 16, 19,
-            //     9,  13, 17, 20, 22,
-            //     14, 18, 21, 23, 24
+            }, delayGrid[i][j]);
 
             }
 
