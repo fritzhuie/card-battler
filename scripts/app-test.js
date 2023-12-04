@@ -29,10 +29,10 @@ function chooseHero(choice) {
 }
 
 function render () {
-    console.log(game.hero)
-    console.log(game.enemy)
-    console.log(game.deck)
-    console.log(game.hand)
+    console.log("hero: " + game.hero)
+    console.log("enemy: " + game.enemy)
+    console.log("deck: " + game.deck)
+    console.log("hand: " + game.hand)
     html.heroMaxHp.innerText = game.hero.maxHealth
     html.heroHp.innerText =  game.hero.health
     html.heroArmor.innerText = game.hero.armor
@@ -46,4 +46,13 @@ function render () {
     html.chooseBarbarian.style.display = game.hero ? "none" : "block"
     html.chooseWarrior.style.display = game.hero ? "none" : "block"
     html.chooseWizard.style.display = game.hero ? "none" : "block"
+
+    let itr = 0;
+    for(let card of html.cards) {
+        card.style.display = "none";
+        if (game.hand[itr] && typeof game.hand[itr].name === typeof string) {
+            card.style.display = "block";
+            card.innerText = game.hand[itr].name
+        }
+    }
 }

@@ -43,6 +43,7 @@ class CardGame {
         }
 
         this.#deck = this.hero.startingDeck
+        console.log("DECK AT START: " + this.#deck)
         this.#dealHand()
     }
 
@@ -83,16 +84,14 @@ class CardGame {
     }
 
     #dealHand () {
-        while (this.#hand.length < 5) {
-            if (this.#deck.length === 0) {
-                this.#recycleDiscard()
-            }
-            this.#drawCard(this.#deck.pop());
-        }
+            this.#drawCard();
+            this.#drawCard();
+            this.#drawCard();
+            this.#drawCard();
+            this.#drawCard();
     }
 
     #drawCard(cardName) {
-        
         if (this.#deck.length === 0) {
             this.#recycleDiscard()
         }
@@ -101,9 +100,10 @@ class CardGame {
     }
 
     #recycleDiscard() {
-        while (this.#discardPile.length > 0) {
-            this.#deck.push(this.#discardPile.pop());
+        for(let card of this.#discardPile ){
+            this.#deck.push(card)
         }
+        this.#discardPile = []
         this.#deck = this.#deck.sort(() => Math.random() - 0.5);
     }
 

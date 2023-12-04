@@ -93,7 +93,7 @@ function setEnemyDialog(text) {
 function showHeroSelect() {
     hideElement('title-menu');
     showElement('hero-select-menu');
-    triggerPixelTransition(20, 20)
+    triggerPixelTransition(20, 20, 1)
 }
 
 function hideHeroSidebar() {
@@ -182,11 +182,24 @@ function triggerFadeTransition() {
     }, 1000);
 }
 
-function triggerPixelTransition(wide, high) {
+function fibonacci(n) {
+    let a = 0, b = 1, sum = 0;
+    for (let i = 2; i <= n; i++) {
+        sum = a + b;
+        a = b;
+        b = sum;
+    }
+    return n > 0 ? b : a;
+}
+
+function triggerPixelTransition(wide, high, type) {
 
     let secondaryOffset = 10
-
+    let fibbi = 1
+    let fi = 0
     for (i = 0; i < wide; i++) {
+        let fibbj = 2
+        let fj = 0
         for (j = 0; j < high; j++) {
             const width = window.innerWidth / wide;
             const height = window.innerHeight / high;
@@ -199,15 +212,29 @@ function triggerPixelTransition(wide, high) {
             div.style.backgroundColor = 'black';
             transitionLayer.appendChild(div);
 
-            /* Vertical scroll
-            setTimeout(() => {
-                div.parentElement.removeChild(div);
-            }, 50*(i+j) + (25*(i-j)));
-            */
+            if (type === 0) {
+                setTimeout(() => {
+                    div.parentElement.removeChild(div);
+                }, 50*(i+j) + (25*(i-j)));
+            } else if (type === 1) {
+                setTimeout(() => {
+                    div.parentElement.removeChild(div);
+                }, 50*(i+j));
+            } else {
+                let delay = (20 * (fibonacci(i+j)) - (20*i*j));
 
             setTimeout(() => {
                 div.parentElement.removeChild(div);
-            }, 50*(i+j));
+            }, delay);
+
+            //     0,  1,  3,  6,  10,
+            //     2,  4,  7,  11, 15,
+            //     5,  8,  12, 16, 19,
+            //     9,  13, 17, 20, 22,
+            //     14, 18, 21, 23, 24
+
+            }
+
         }
     }
 }
