@@ -6,22 +6,23 @@
     <link rel="stylesheet" href="css/style-test.css">
 </head>
 <body>
-    <div id="class-selection">
-        <button id="choose-warrior">Choose Warrior</button>
-        <button id="choose-wizard">Choose Wizard</button>
-        <button id="choose-barbarian">Choose Barbarian</button>
-    </div>
     <div id="game-container">
+        <div id="class-selection">
+            <button id="choose-warrior">Choose Warrior</button>
+            <button id="choose-wizard">Choose Wizard</button>
+            <button id="choose-barbarian">Choose Barbarian</button>
+        </div>
         <div id="hero-sidebar">
-            <div>Hero Max HP: <span id="hero-max-hp">?</span></div>
-            <div>Hero HP: <span id="hero-hp">?</span></div>
-            <div>Hero Armor: <span id="hero-armor">?</span></div>
+            <div>Hero Max HP: <span id="hero-max-hp">-</span></div>
+            <div>Hero HP: <span id="hero-hp">-</span></div>
+            <div>Hero Armor: <span id="hero-armor">-</span></div>
 
         </div>
         <div id="card-selection">
-            <button id="card-choice">?</button>
-            <button id="card-choice">?</button>
-            <button id="card-choice">?</button>
+            <button class="card-choice">-</button>
+            <button class="card-choice">-</button>
+            <button class="card-choice">-</button>
+            <button class="card-choice">-</button>
         </div>
         <div id="play-area">
             <div id="card-container">
@@ -36,15 +37,16 @@
             <div id="discard-pile"></div>
             <div id="deck-pile"></div>
             <button id="end-turn">End Turn</button>
+            <button id="begin-battle">Begin Next Battle</button>
             <div id="action-description">Last action: <span>N/A</span></div>
         </div>
 
         <div id="enemy-section">
-            <div>Enemy Name: <span id="enemy-name">?</span></div>
-            <div>Enemy Max HP: <span id="enemy-max-hp">?</span></div>
-            <div>Enemy Armor: <span id="enemy-armor">?</span></div>
-            <div>Enemy HP: <span id="enemy-hp">?</span></div>
-            <div>Enemy Next Attack: <span id="enemy-attack">?</span></div>
+            <div>Enemy Name: <span id="enemy-name">-</span></div>
+            <div>Enemy Max HP: <span id="enemy-max-hp">-</span></div>
+            <div>Enemy Armor: <span id="enemy-armor">-</span></div>
+            <div>Enemy HP: <span id="enemy-hp">-</span></div>
+            <div>Enemy Next Attack: <span id="enemy-attack">-</span></div>
         </div>
     </div>
 

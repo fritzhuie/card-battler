@@ -1,5 +1,6 @@
 const GAME_STATE = {
     HERO_SELECT: 'hero',
+    PRE_BATTLE: 'prebattle',
     BATTLE: 'battle',
     CARD_SELECT: 'select',
     WIN: 'win',
@@ -18,7 +19,7 @@ class CardGame {
     #deck = []
     #hand = []
     #discardPile = []
-    #cardOptions = []
+    #cardChoices = []
 
     #actions = []
 
@@ -30,7 +31,7 @@ class CardGame {
     get discardPile ()  { return this.#discardPile }
     get enemy ()        { return this.#enemy }
     get hero ()         { return this.#hero }
-    get cardOptions ()  { return this.#cardOptions }
+    get cardChoices ()  { return this.#cardChoices }
     get actions ()      { return this.#actions }
 
     constructor() {
@@ -45,11 +46,14 @@ class CardGame {
     }
 
     chooseHero( choice ) {
+        if (this.#gameState != GAME_STATE.HERO_SELECT) { return }
+
         const choices = ['warrior', 'wizard', 'barbarian']
         if ( !this.#hero  && choices.indexOf(choice) >= 0 ) {
             this.#hero = new Hero(choice)
         } else {
             console.log("Invalid hero selection")
+            return
         }
 
         this.#gameState = GAME_STATE.BATTLE
@@ -60,6 +64,8 @@ class CardGame {
     }
 
     endTurn () {
+        if (this.#gameState != GAME_STATE.BATTLE) { return }
+
         this.#performEnemyAction()
         this.#checkForDeaths()
         this.#discardHand()
@@ -68,12 +74,16 @@ class CardGame {
     }
 
     selectNewCard(index) {
-        console.log(this.#cardOptions[index])
-        // if card is valid, this.#deck.push(name)
+        if (this.#gameState != GAME_STATE.CARD_SELECT) { return }
+        this.#deck.push(this.#cardChoices[index])
+        this.#cardChoices = []
         this.#gameState = GAME_STATE.BATTLE
+        this.#beginPreBattle()
     }
 
     playCard(index) {
+        if (this.#gameState != GAME_STATE.BATTLE) { return }
+
         if (!this.#hand || !this.#hand[index]) {
             console.error(`Invalid card - index: + '${index}'`);
             return;
@@ -98,6 +108,17 @@ class CardGame {
             }
         });
         this.#checkForDeaths()
+    }
+
+    beginBattle() {
+        if (this.#gameState != GAME_STATE.PRE_BATTLE) { return }
+
+        this.#gameState = GAME_STATE.BATTLE
+        this.#beginNewTurn()
+    }
+
+    #beginPreBattle() {
+        this.#gameState = GAME_STATE.PRE_BATTLE
     }
 
     #performEnemyAction() { 
@@ -162,7 +183,7 @@ class CardGame {
     }
 
     #offerNewCards() {
-        this.#cardOptions = ["strike", "strike", "armor"]
+        this.#cardChoices = ["strike", "strike", "armor"]
     }
 
     #cardExists(name) { }
@@ -227,6 +248,7 @@ class Enemy {
     description = null
     maxHealth = null
     health = null
+    armor = null
     portrait = null
     buffs = []
     debuffs = []
@@ -266,6 +288,7 @@ class EnemyShaman extends Enemy {
         this.portrait = 'img/axe-shaman.png'
         this.maxHealth = 10
         this.health = this.maxHealth
+        this.armor = 0
         this.actions = [
             new EnemyAction('Boar Charge','rams you with its tusks!', {'damage': 6}),
             new EnemyAction('Axe Swing', 'swings its putrid axe!', {'damage': 16})
@@ -281,6 +304,7 @@ class EnemyBladeRevenant extends Enemy {
         this.portrait = 'img/female-undead.png'
         this.maxHealth = 10
         this.health = this.maxHealth
+        this.armor = 0
         this.actions = [
             new EnemyAction('Slash', 'swings its greatsword in a wide arc', {'damage': 13})
         ]
@@ -295,6 +319,7 @@ class EnemyMecharaptor extends Enemy {
         this.portrait = 'img/mecharaptor.png'
         this.maxHealth = 10
         this.health = this.maxHealth
+        this.armor = 0
         this.actions = [
             new EnemyAction('Swipe', 'jumps and swipes with its claws', {'damage': 10}),
             new EnemyAction('Pounce', 'leaps at you, attacking with fang and claw', {'damage': 11}),
