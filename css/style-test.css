@@ -42,3 +42,22 @@ body {
 #action-description {
     margin-top: 20px;
 }
+
+#discard-pile {
+    background-color: bisque;
+    margin: 10px;
+    padding: 10px;
+
+}
+
+#deck-pile {
+    background-color: cadetblue;
+    margin: 10px;
+    padding: 10px;
+}
+
+#end-turn {
+    background-color: aquamarine;
+    margin: 10px;
+    padding: 10px;
+}

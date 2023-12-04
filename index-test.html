@@ -14,21 +14,25 @@
     <div id="game-container">
         <div id="hero-sidebar">
             <div>Hero Max HP: <span id="hero-max-hp">?</span></div>
-            <div>Hero Remaining HP: <span id="hero-hp">?</span></div>
+            <div>Hero HP: <span id="hero-hp">?</span></div>
             <div>Hero Armor: <span id="hero-armor">?</span></div>
+
         </div>
 
         <div id="play-area">
             <div id="card-container">
                 <!-- Example card buttons -->
-                <button class="card">Play card 1</button>
-                <button class="card">Play card 2</button>
-                <button class="card">Play card 3</button>
-                <button class="card">Play card 4</button>
-                <button class="card">Play card 5</button>
-                <button class="card">Play card 6</button>
-                <button class="card">Play card 7</button>
+                <button class="card">Card 1</button>
+                <button class="card">Card 2</button>
+                <button class="card">Card 3</button>
+                <button class="card">Card 4</button>
+                <button class="card">Card 5</button>
+                <button class="card">Card 6</button>
+                <button class="card">Card 7</button>
             </div>
+            <div id="discard-pile"></div>
+            <div id="deck-pile"></div>
+            <button id="end-turn">End Turn</button>
             <div id="action-description">Last action: <span>N/A</span></div>
         </div>
 
@@ -36,10 +40,11 @@
             <div>Enemy Name: <span id="enemy-name">?</span></div>
             <div>Enemy Max HP: <span id="enemy-max-hp">?</span></div>
             <div>Enemy Armor: <span id="enemy-armor">?</span></div>
-            <div>Enemy Remaining HP: <span id="enemy-hp">?</span></div>
+            <div>Enemy HP: <span id="enemy-hp">?</span></div>
             <div>Enemy Next Attack: <span id="enemy-attack">?</span></div>
         </div>
     </div>
+
     <script src="scripts/classes.js"></script>
     <script src="scripts/app-test.js"></script>
 </body>

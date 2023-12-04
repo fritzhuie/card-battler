@@ -6,13 +6,13 @@ class CardGame {
     #gameState = null
     #currentLevel = 0
     #turn = 0
-    #enemySelectionIndex = 0
-    #enemyAttackIndex = 0
 
     #deck = []
     #hand = []
     #discardPile = []
     #cardOptions = []
+
+    #actions = []
 
     get gameState ()    { return this.#gameState }
     get currentLevel () { return this.#currentLevel }
@@ -23,18 +23,20 @@ class CardGame {
     get enemy ()        { return this.#enemy }
     get hero ()         { return this.#hero }
     get cardOptions ()  { return this.#cardOptions }
+    get actions ()      { return this.#actions }
 
     constructor() {
-        this.enemies = [
+
+        this.#enemies = [
             new EnemyShaman, 
             new EnemyBladeRevenant, 
             new EnemyMecharaptor
         ]
 
-        this.#enemy = this.enemies[this.#enemySelectionIndex]
+        this.#enemy = this.#enemies[0]
     }
 
-    playerDidChooseHero( choice ) {
+    chooseHero( choice ) {
         const choices = ['warrior', 'wizard', 'barbarian']
         if ( !this.#hero  && choices.indexOf(choice) >= 0 ) {
             this.#hero = new Hero(choice)
@@ -48,97 +50,90 @@ class CardGame {
     }
 
     
-    playerDidPlayCard(position) {
-        if (!hand || !hand[position] || !hand[position].effects) {
-            console.error('Invalid card or card effects. position:' + position);
+    playCard(index) {
+        if (!this.#hand || !this.#hand[index]) {
+            console.error(`Invalid card - index: + '${index}'`);
             return;
         }
 
-        let card = Card.called(hand[position])
+        let card = Card.called(this.#hand[index])
+        this.#discard(index)
 
         card.effects.forEach(effect => {
-            // console.log(`Processing Effect: ${effect.name} with value ${effect.value}`)
+            console.log(`Processing Effect: '${effect.name}' with value '${effect.value}'`)
             switch (effect.name) {
                 case 'damage':
-                    this.#enemy.dealDamage(effect.value)
+                    this.#enemy.takeDamage(effect.value)
+                    // log action
                     break;
                 case 'armor':
                     this.#hero.gainArmor(effect.value)
+                    //  log action
                     break;
                 default:
-                    console.log(`Effect type ${effect.name} not recognized.`);
+                    console.log(`Effect type '${effect.name}' not recognized.`);
             }
         });
     }
 
-    playerDidEndTurn () {
-        // deal enemy damage
-        // discard hand
+    endTurn () {
+        this.#performEnemyAction()
+        // log (enemy) action
+        this.#discardHand()
+        this.#dealHand()
     }
 
-    playerDidSelectNewCard(name) {
+    selectNewCard(name) {
         // player has chosen a card with 'name'
         // if card is valid, this.#deck.push(name)
         // cardChoices = []
-        // set state to 
+        // set state
     }
 
     #dealHand () {
+        while (this.#hand.length < 5 && (this.#discardPile.length > 0 || this.#deck.length > 0)) {
+            // draw to 5 cards & make sure deck/discard has cards to deal
             this.#drawCard();
-            this.#drawCard();
-            this.#drawCard();
-            this.#drawCard();
-            this.#drawCard();
+        }
     }
 
-    #drawCard(cardName) {
-        if (this.#deck.length === 0) {
-            this.#recycleDiscard()
-        }
-
+    #drawCard() {
+        if (this.#deck.length === 0) { this.#recycleDiscard() }
         this.#hand.push(this.#deck.pop())
     }
 
+    #discard(index) {
+        this.#discardPile.push(game.#hand.splice(index, 1)[0])
+    }
+
+    #discardHand() {
+        this.#discardPile = this.#discardPile.concat(this.#hand);
+        console.log(this.#discardPile)
+        this.#hand = []
+    }
+
     #recycleDiscard() {
-        for(let card of this.#discardPile ){
-            this.#deck.push(card)
-        }
+        this.#deck = this.#deck.concat(this.#discardPile);
         this.#discardPile = []
         this.#deck = this.#deck.sort(() => Math.random() - 0.5);
     }
 
     #beginNewTurn() {
-        //draw cards
+        // draw cards
+        // decrement buffs and debuffs
     }
 
-    #performEffect(...effects) { 
-        //private
+    #performEnemyAction() { 
+        let action = this.#enemy.currentAction()
+
+        console.log(`Processing enemy action: '${JSON.stringify(action)}'`)
+
+        this.#enemy.actionIndex = this.#enemy.actionIndex >= this.#enemy.actionIndex.length ? 0 : this.#enemy.actionIndex + 1
     }
 
-    #cardExists(name) {
-        return true
-    }
-
-    #addCardToDeck(name) {
-        // if card is valid, add to deck
-    }
-
-    #addCardToHand(name) {
-        
-    }
-
-    init () {
-        this.player = null
-        this.turn = 0
-        this.deck = []
-        this.hand = []
-        this.discardPile = []
-        this.enemy = {}
-        this.remainingEnemies = []
-        this.currentLevel = 1
-        this.enemy = null;
-        this.enemyAttackIndex = 0;
-    }
+    #cardExists(name) { }
+    #addCardToDeck(name) { }
+    #addCardToHand(name) { }
 }
 
 class Hero {
@@ -183,6 +178,10 @@ class Hero {
             console.log('HERO TYPE NOT RECOGNIZED')
         }
     }
+
+    gainArmor(value) {
+        this.#armor+=value
+    }
 }
 
 class Enemy {
@@ -191,22 +190,26 @@ class Enemy {
     description = null
     maxHealth = null
     health = null
-    actions = []
+    portrait = null
     buffs = []
     debuffs = []
-    portrait = null
-    nextAttack = null
+    actions = []
+    actionIndex = 0
 
     takeDamage (value) {
-
+        this.health-=value;
     }
 
     gainArmor (value) {
-
+        this.armor+=value;
     }
 
     gainEffect(name, value) {
-        
+
+    }
+
+    currentAction() {
+        return this.actions[this.actionIndex]
     }
 }
 
