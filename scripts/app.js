@@ -35,12 +35,12 @@ let nextEnemyAction = {
 
 // constants ----------------------------------------------------------------------
 
-const strikeCard = {      name:"Strike",      type:"damage",  value:5 , portrait: "url(img/strike-card.png)"};
-const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8 , portrait: "url(img/big-strike-card.png)"};
-const armorCard = {       name:"Armor",       type:"armor",   value:5 , portrait: "url(img/armor-card.png)"};
-const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12, portrait: "url(img/big-armor-card.png)"};
-const fireballCard = {    name:"Fireball",    type:"damage",  value:7 , portrait: "url(img/fireball-card.png)"};
-const manaCard = {        name:"Replenish",   type:"mana",    value:3 , portrait: "url(img/replenish-card.png)"};
+const strikeCard = {      name:"Strike",      type:"damage",  value:5 , portrait: "url(../img/strike-card.png)"};
+const bigStrikeCard = {   name:"Strike",      type:"damage",  value:8 , portrait: "url(../img/big-strike-card.png)"};
+const armorCard = {       name:"Armor",       type:"armor",   value:5 , portrait: "url(../img/armor-card.png)"};
+const bigArmorCard = {    name:"Big Armor",   type:"armor",   value:12, portrait: "url(../img/big-armor-card.png)"};
+const fireballCard = {    name:"Fireball",    type:"damage",  value:7 , portrait: "url(../img/fireball-card.png)"};
+const manaCard = {        name:"Replenish",   type:"mana",    value:3 , portrait: "url(../img/replenish-card.png)"};
 
     // const enemyRaptor = { name: "Mecharaptor", health: 48, actions: [5,5,7,7] }
     // const enemyWizard = { name: "Fallen Wizard", health: 29, actions: [0,12,0,12] }
@@ -93,7 +93,7 @@ function setEnemyDialog(text) {
 function showHeroSelect() {
     hideElement('title-menu');
     showElement('hero-select-menu');
-    triggerPixelTransition(20, 18)
+    triggerPixelTransition(20, 20)
 }
 
 function hideHeroSidebar() {
@@ -184,27 +184,32 @@ function triggerFadeTransition() {
 
 function triggerPixelTransition(wide, high) {
 
-    for (let i = 0; i < wide; i++) {
-        for (let j = 0; j < high; j++) {
+    let secondaryOffset = 10
+
+    for (i = 0; i < wide; i++) {
+        for (j = 0; j < high; j++) {
             const width = window.innerWidth / wide;
             const height = window.innerHeight / high;
             const div = document.createElement('div');
+            div.style.position = 'absolute';
             div.style.width = width + 'px';
             div.style.height = height + 'px';
-            div.style.position = 'absolute';
             div.style.left = (i * width) + 'px';
             div.style.top = (j * height) + 'px';
             div.style.backgroundColor = 'black';
             transitionLayer.appendChild(div);
+
+            /* Vertical scroll
             setTimeout(() => {
                 div.parentElement.removeChild(div);
-            }, ((50 * j) + (50 * i)));
+            }, 50*(i+j) + (25*(i-j)));
+            */
+
+            setTimeout(() => {
+                div.parentElement.removeChild(div);
+            }, 50*(i+j));
         }
     }
-
-    setTimeout(() => {
-        transitionLayer.innerHTML = '';
-    }, 2000);
 }
 
 function selectHero(type) {

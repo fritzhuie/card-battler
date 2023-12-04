@@ -193,7 +193,7 @@ button:hover {
 #title-menu {
     display: none;
     text-align: center;
-    background-image: url("img/crypt.png");
+    background-image: url("../img/crypt.png");
     background-position: center;
 }
 
@@ -225,7 +225,7 @@ button:hover {
     font-size: x-large;
     font-family: "Luminari", "fantasy";
     margin: 100px auto 100px;
-    background-image: url("img/scroll.png");
+    background-image: url("../img/scroll.png");
     background-size: 100% 100%;
     color:rgb(24, 37, 37);
     opacity: 80%;
@@ -257,7 +257,7 @@ button:hover {
 }
 
 #hero-select-menu {
-    background-image: url("img/selection-bg.png");
+    background-image: url("../img/selection-bg.png");
     background-size: cover;
     transition: background-image 0.15s ease-in-out;
 }
