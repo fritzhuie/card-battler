@@ -83,6 +83,20 @@ class CardGame {
     endTurn () {
         if (this.#gameState != GAME_STATE.BATTLE) { return }
 
+        const enemyAction = this.#enemy.performNextAction()
+        console.log(enemyAction.effects)
+        for(let effect of enemyAction.effects ) {
+            console.log(effect)
+            if (effect.name === 'damage') {
+                if (this.#enemy.hasStatusEffect('empower')) {
+                    this.#hero.takeDamage(effect.value) * 2
+                } else {
+                    this.#hero.takeDamage(effect.value)
+                }
+                
+            }
+        }
+
         this.#hero.processEndOfTurnStatusEffects()
         this.#enemy.processEndOfTurnStatusEffects()
         this.#checkForDeaths()
@@ -106,7 +120,15 @@ class CardGame {
             console.error(`Invalid card - index: + '${index}'`);
             return;
         }
-        
+
+        const card = Card.called(this.#hand[index])
+
+        if (card.cost > this.#mana) { 
+            console.error(`Not enough mana: + '${this.#hand[index]}'`);
+            return
+        }
+
+        this.#mana = this.#mana - card.cost
 
         let cardName = this.#hand[index]
         if (cardName in Card.cards) {
@@ -124,6 +146,9 @@ class CardGame {
             console.log(`Processing Effect: '${effect.name}' with value '${effect.value}'`)
             switch (effect.name) {
                 case 'damage':
+                    if (this.#hero.hasStatusEffect('empower')) {
+                        this.#enemy.takeDamage(effect.value * 2)
+                    }
                     this.#enemy.takeDamage(effect.value)
                     console.log(`${effect.name} dealt ${effect.value} damage to ${this.#enemy.name}`)
                     break;
@@ -133,6 +158,7 @@ class CardGame {
                 case 'enfeable':
                 case 'stun':
                 case 'bleed':
+                case 'burn':
                     this.#enemy.gainStatusEffect(effect.name, effect.value)
                     break;
                 case 'mana':
@@ -199,6 +225,7 @@ class CardGame {
 
     #beginNewTurn() {
         this.#dealHand()
+        this.#mana = this.#startingMana
         // handle buffs and debuffs
     }
 
@@ -280,6 +307,13 @@ class Hero {
         }
     }
 
+    hasStatusEffect(name) {
+        for (let effect of this.statusEffects) {
+            if (effect.name === name ) { return true }
+        }
+        return false
+    }
+
     takeDamage(value) {
         this.#health -= value
     }
@@ -290,6 +324,19 @@ class Hero {
 
     processEndOfTurnStatusEffects() {
         // *should* be the same as enemy version? (stretch goal)
+    }
+
+    processStartOfTurnStatusEffects() {
+
+        // decrement all status effects, remove the expired ones
+
+        for (let i = this.statusEffects.length - 1; i >= 0; i--) {
+            if (this.statusEffects[i].value <= 1) {
+                this.statusEffects.splice(i, 1);
+            } else {
+                this.statusEffects[i].value--;
+            }
+        }
     }
 }
 
@@ -344,24 +391,42 @@ class Enemy {
     }
 
     performNextAction() {
-        let action = this.actions[this.actionIndex]
 
-        this.actionIndex++
-        this.actionIndex >= this.actionIndex.length ? 0 : this.actionIndex
+        let action = this.actions[this.actionIndex]
+        this.actionIndex = this.actionIndex >= this.actions.length - 1 ? 0 : this.actionIndex + 1
 
         return action
     }
 
+    hasStatusEffect(name) {
+        for (let effect of this.statusEffects) {
+            if (effect.name === name ) { return true }
+        }
+        return false
+    }
+
     processEndOfTurnStatusEffects() {
+
+        // Effects that process at end of turn: 'bleed', 'burn'
+
         for (let effect of this.statusEffects) {
             if (effect.name === 'bleed' ) {
                 this.health-=effect.value
+            } else if (effect.name === 'burn' ) {
+                this.health-=effect.value
+            }
+        }
+    }
 
-                const index = this.statusEffects.findIndex(effect => effect.name === 'bleed');
-                if (index !== -1 && this.statusEffects[index].value <= 1) {
-                    this.statusEffects.splice(index, 1);
-                }
-                this.statusEffects[index].value--
+    processStartOfTurnStatusEffects() {
+
+        // decrement all status effects, remove the expired ones
+
+        for (let i = this.statusEffects.length - 1; i >= 0; i--) {
+            if (this.statusEffects[i].value <= 1) {
+                this.statusEffects.splice(i, 1);
+            } else {
+                this.statusEffects[i].value--;
             }
         }
     }
@@ -475,7 +540,7 @@ Card.cards = {
     'icebolt':      new Card('wizard', 1, new Effect('damage', 6), new Effect('enfeable', 1)),
     'polymorph':    new Card('wizard', 1, new Effect('stun', 1)),
     'arcaneblast':  new Card('wizard', 2, new Effect('damage', 16)),
-    'pyroblast':    new Card('wizard', 2, new Effect('damage', 12), new Effect('bleed', 5)),
+    'pyroblast':    new Card('wizard', 2, new Effect('damage', 12), new Effect('burn', 2)),
     'channel':      new Card('wizard', 1, new Effect('mana', 3)),
 }
 
