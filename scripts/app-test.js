@@ -2,6 +2,7 @@ const html = {
     "heroMaxHp": document.getElementById('hero-max-hp'),
     "heroHp": document.getElementById('hero-hp'),
     "heroArmor": document.getElementById('hero-armor'),
+    "heroMana": document.getElementById('hero-mana'),
     "cardContainer": document.getElementById('card-container'),
     "cards": document.querySelectorAll('.card'),
     "cardChoiceContainer": document.getElementById('card-selection'),
@@ -66,13 +67,15 @@ function chooseHero(choice) {
 }
 
 function render () {
-    console.log(game.hero);
-    console.log("enemy: " + JSON.stringify(game.enemy, null, 2));
-    console.log("deck: " + game.deck)
-    console.log("hand: " + game.hand)
+    // console.log(game.hero);
+    // console.log("enemy: " + JSON.stringify(game.enemy, null, 2));
+    // console.log("deck: " + game.deck)
+    // console.log("hand: " + game.hand)
+
     html.heroMaxHp.innerText = game.hero ? game.hero.maxHealth : "-"
     html.heroHp.innerText =  game.hero ? game.hero.health : "-"
     html.heroArmor.innerText = game.hero ? game.hero.armor : "-"
+    html.heroMana.innerText = game.hero ? `${game.mana} / ${game.startingMana}` : "-"
 
     html.enemyName.innerText = game.enemy.name ? game.enemy.name : "-"
     html.enemyMaxHp.innerText = game.enemy.maxHealth ? game.enemy.maxHealth : "-"

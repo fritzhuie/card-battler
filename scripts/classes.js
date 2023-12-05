@@ -16,14 +16,18 @@ class CardGame {
     #currentLevel = 0
     #turn = 0
 
+    #startingMana = null
+    #mana = null
+
     #deck = []
     #hand = []
     #discardPile = []
     #cardChoices = []
 
-    #actions = []
 
     get gameState ()    { return this.#gameState }
+    get startingMana () { return this.#startingMana }
+    get mana ()         { return this.#mana }
     get currentLevel () { return this.#currentLevel }
     get turn ()         { return this.#turn }
     get deck ()         { return this.#deck }
@@ -32,7 +36,6 @@ class CardGame {
     get enemy ()        { return this.#enemy }
     get hero ()         { return this.#hero }
     get cardChoices ()  { return this.#cardChoices }
-    get actions ()      { return this.#actions }
 
     constructor() {
 
@@ -50,10 +53,16 @@ class CardGame {
 
         if ( choice === 'warrior') {
             this.#hero = new Warrior()
+            this.#startingMana = 3
+            this.#mana = this.#startingMana
         } else if (choice === 'wizard') {
             this.#hero = new Wizard()
+            this.#startingMana = 3
+            this.#mana = this.#startingMana
         } else if (choice === 'barbarian') {
             this.#hero = new Barbarian()
+            this.#startingMana = 0
+            this.#mana = this.#startingMana
         } else {
             console.log("Invalid hero selection")
         }
@@ -120,23 +129,38 @@ class CardGame {
                 case 'armor':
                     this.#hero.gainArmor(effect.value)
                     break;
-                case 'slam':
+                case 'enfeable':
+                case 'stun':
+                case 'bleed':
+                    this.#enemy.gainStatusEffect(effect.name, effect.value)
+                    break;
+                case 'mana':
+                    this.#mana = Math.max(this.mana + effect.value, this.#startingMana)
+                    break;
+                case 'bleed-damage':
+                    const damage = 0
+                    damage = this.#enemy.statusEffects["bleed"] ? this.#enemy.statusEffects["bleed"].value * effect.value : 0
+                    this.#enemy.takeDamage(damage)
+                    break;
+                case 'empower':
+                    this.#hero.gainStatusEffect(effect.name, effect.value)
+                    break;
+                case 'armor-damage':
                     this.#enemy.takeDamage(this.#hero.armor * effect.value)
                     break;
                 case 'mana-damage':
                     this.#enemy.takeDamage(this.#hero.mana * effect.value)
                     break;
-                case 'bleed':
-                    this.#enemies.gainEffect(effect.name, effect.value)
-                    break;
                 case 'draw':
-                    this.#drawCard()
+                    for (let i=0; i<effect.value;i++){
+                        this.#drawCard()
+                    }
                     break;
                 case 'heal':
                     this.#hero.health = Math.max(this.#hero.maxHealth, this.#hero.health + effect.value)
                     break;
                 default:
-                    console.log(`Effect type '${effect.name}' not recognized.`);
+                    console.log(`ERROR: Effect type '${effect.name}' not recognized.`);
             }
         });
     }
@@ -146,11 +170,15 @@ class CardGame {
     }
 
     #performEnemyAction() { 
-        let action = this.#enemy.currentAction()
-
-        console.log(`Processing enemy action: '${JSON.stringify(action)}'`)
-
-        this.#enemy.actionIndex = this.#enemy.actionIndex >= this.#enemy.actionIndex.length ? 0 : this.#enemy.actionIndex + 1
+        for(let effect of this.#enemy.performNextAction()) {
+            if(effect.name === 'damage') {
+                this.#hero.takeDamage(effect.value)
+            } else if (effect.name === 'armor') {
+                this.#enemy.gainArmor(effect.value)
+            } else if (effect.name === 'bleed') {
+                this.#hero.gainStatusEffect(effect.name, value)
+            }
+        }
     }
 
     #dealHand () {
@@ -203,7 +231,26 @@ class CardGame {
     }
 
     #offerNewCards() {
-        this.#cardChoices = ["strike", "strike", "armor"]
+        if (this.#gameState !== GAME_STATE.CARD_SELECT) { return }
+
+        let shuffled = null
+        if (this.#hero.architype === 'warrior') {
+            shuffled = Card.warriorCards.slice();
+        } else if (this.#hero.architype === 'wizard') {
+            shuffled = Card.wizardCards.slice();
+        } else if (this.#hero.architype === 'barbarian') {
+            shuffled = Card.barbarianCards.slice();
+        } else {
+            console.log("CARD CHOICES NOT FOUND")
+            return
+        }
+        
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+    
+        this.#cardChoices = shuffled.slice(0, 3);
     }
     
     #addCardToDeck(name) { }
@@ -213,26 +260,24 @@ class CardGame {
 class Hero {
 
     #architype = null
-    #maxHealth = 0
-    #health = 0
+    #maxHealth = null
+    #health = null
     #armor = 0
     #statusEffects = []
     #startingDeck = []
-    #maxMana = 0
-    #mana = 0
 
-    get maxMana() { return this.#maxMana }
-    get mana() { return this.#mana }
+    get architype() { return this.#architype }
     get startingDeck() { return this.#startingDeck }
     get maxHealth() { return this.#maxHealth }
     get health() { return this.#health }
     get armor() { return this.#armor }
     get statusEffects() { return [...this.#statusEffects] }
 
-    constructor(maxMana, maxHealth, startingDeck) {
-        this.#maxMana = maxMana
+    constructor(architype, maxHealth, startingDeck) {
         this.#maxHealth = maxHealth
+        this.#health = maxHealth
         this.#startingDeck = startingDeck
+        this.#architype = architype
     }
 
     gainArmor(value) {
@@ -242,30 +287,31 @@ class Hero {
     takeDamage(value) {
         this.#health -= value
     }
+
+    gainStatusEffect(name, value) {
+
+    }
 }
 
 class Warrior extends Hero {
     constructor(){
+
         const warriorStartingDeck = ["strike", "strike", "strike", "strike", "strike", "armor", "armor"]
-        super(3, 100, warriorStartingDeck)
+        super('warrior', 100, warriorStartingDeck)
     }
 }
 
 class Wizard extends Hero {
     constructor(){
-        const wizardStartingDeck = ["fireblast", "fireblast", "fireblast", "fireblast", "magicmissile", "magicmissile", "manashield"]
-        super(3, 100, wizardStartingDeck)
+        const wizardStartingDeck = ["fireblast", "fireblast", "fireblast", "fireblast", "manashield", "manashield"]
+        super('wizard', 100, wizardStartingDeck)
     }
 }
 
 class Barbarian extends Hero {
-
-    #rage = 0
-    get rage() { return this.#rage }
-
     constructor(){
         const barbarianStartingDeck = ["cleave", "cleave", "cleave", "cleave", "cleave", "flourish", "flourish"]
-        super(0, 100, barbarianStartingDeck)
+        super('barbarian', 100, barbarianStartingDeck)
     }
 }
 
@@ -289,21 +335,34 @@ class Enemy {
         this.armor+=value;
     }
 
-    gainStatusEffects(name, value) {
+    gainStatusEffect(name, value) {
         statusEffects.push(new Effect(name, value))
     }
 
-    currentAction() {
+    nextAction() {
         return this.actions[this.actionIndex]
     }
 
+    performNextAction() {
+        let action = this.actions[this.actionIndex]
+
+        this.actionIndex++
+        this.actionIndex >= this.actionIndex.length ? 0 : this.actionIndex
+
+        return action
+    }
+
+
+
     processStatusEffects(name, value) {
-        // go through status effects
+        for (let effect of this.statusEffects) {
+            console.log(this.statusEffects)
+        }
     }
 }
 
 class EnemyAction {
-    constructor(name, description, effects) {
+    constructor(name, description, ...effects) {
         this.name = name
         this.description = description
         this.effects = effects
@@ -320,8 +379,10 @@ class EnemyShaman extends Enemy {
         this.health = this.maxHealth
         this.armor = 0
         this.actions = [
-            new EnemyAction('Boar Charge','rams you with its tusks!', {'damage': 6}),
-            new EnemyAction('Axe Swing', 'swings its putrid axe!', {'damage': 16})
+            new EnemyAction('Boar Charge','rams you with its tusks!', new Effect('damage', 1)),
+            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 2)),
+            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 3)),
+            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 4))
         ]
     }
 }
@@ -336,7 +397,7 @@ class EnemyBladeRevenant extends Enemy {
         this.health = this.maxHealth
         this.armor = 0
         this.actions = [
-            new EnemyAction('Slash', 'swings its greatsword in a wide arc', {'damage': 13})
+            new EnemyAction('Slash', 'swings its greatsword in a wide arc', new Effect('damage', 4))
         ]
     }
 }
@@ -366,8 +427,8 @@ class Effect {
 }
 
 class Card {
-    constructor(cardName, baseCost, ...effects) {
-        this.cardName = cardName;
+    constructor(architype, baseCost, ...effects) {
+        this.architype = architype;
         this.cost = baseCost;
         this.effects = effects;
     }
@@ -379,12 +440,33 @@ class Card {
 }
 
 Card.cards = {
-    'strike': new Card('strike', 1, new Effect('damage', 5)),
-    'armor': new Card('armor', 1, new Effect('armor', 5)),
-    'shieldslam': new Card('shieldslam', 1, new Effect('slam', 1)),
-    'fireblast': new Card('fireblast', 1, new Effect('damage', 6)),
-    'magicmissile': new Card('magicmissile', 0, new Effect('mana-damage', 3)),
-    'manashield': new Card('manashield', 2, new Effect('armor', 9), new Effect('draw', 1)),
-    'cleave': new Card('cleave', -1, new Effect('damage', 5), new Effect('bleed', 3)),
-    'flourish': new Card('flourish', 3, new Effect('damage', 9), new Effect('heal', 5))
+    'strike': new Card('warrior', 1, new Effect('damage', 5)),
+    'armor': new Card('warrior', 1, new Effect('armor', 5)),
+    'fireblast': new Card('wizard', 1, new Effect('damage', 5)),
+    'manashield': new Card('wizard', 1, new Effect('armor', 5), new Effect('draw', 1)),
+    'cleave': new Card('barbarian', -1, new Effect('damage', 5), new Effect('bleed', 3)),
+    'flourish': new Card('barbarian', 3, new Effect('damage', 8), new Effect('heal', 4)),
+
+    'hamstring':    new Card('warrior', 0, new Effect('damage', 3), new Effect('enfeable', 2)),
+    'hiltpummel':   new Card('warrior', 1, new Effect('damage', 3), new Effect('stun', 1)),
+    'raiseshield':  new Card('warrior', 2, new Effect('armor', 12)),
+    'shieldslam':   new Card('warrior', 1, new Effect('armor-damage', 1)),
+    'battlestance': new Card('warrior', 0, new Effect('empower', 1)),
+
+    'disenguinate': new Card('barbarian', -1, new Effect('bleed', 7), new Effect('bleed-damage', 1)),
+    'eyegouge':     new Card('barbarian', 2, new Effect('damage', 3), new Effect('stun', 1)),
+    'kick':         new Card('barbarian', -1, new Effect('damage', 3), new Effect('draw', 1)),
+    'howl':         new Card('barbarian', -3, new Effect('enfeable', 1)),
+    'batheinblood': new Card('barbarian', 3, new Effect('bleed-heal', 1)),
+
+    'magicmissile': new Card('wizard', 0, new Effect('mana-damage', 3)),
+    'icebolt':      new Card('wizard', 1, new Effect('damage', 6), new Effect('enfeable', 1)),
+    'polymorph':    new Card('wizard', 1, new Effect('stun', 1)),
+    'arcaneblast':  new Card('wizard', 2, new Effect('damage', 16)),
+    'pyroblast':    new Card('wizard', 2, new Effect('damage', 12), new Effect('bleed', 5)),
+    'channel':      new Card('wizard', 1, new Effect('mana', 3)),
 }
+
+Card.warriorCards = ['hamstring', 'hiltpummel', 'raiseshield', 'shieldslam', 'battlestance']
+Card.wizardCards = ['magicmissile', 'icebolt', 'polymorph', 'arcaneblast', 'pyroblast', 'channel']
+Card.barbarianCards = ['disenguinate', 'eyegouge', 'kick', 'howl', 'batheinblood']
