@@ -83,7 +83,8 @@ class CardGame {
     endTurn () {
         if (this.#gameState != GAME_STATE.BATTLE) { return }
 
-        this.#performEnemyAction()
+        this.#hero.processEndOfTurnStatusEffects()
+        this.#enemy.processEndOfTurnStatusEffects()
         this.#checkForDeaths()
         this.#discardHand()
         // handle buffs and defuffs
@@ -157,7 +158,7 @@ class CardGame {
                     }
                     break;
                 case 'heal':
-                    this.#hero.health = Math.max(this.#hero.maxHealth, this.#hero.health + effect.value)
+                    this.#hero.gainHealth(effect.value)
                     break;
                 default:
                     console.log(`ERROR: Effect type '${effect.name}' not recognized.`);
@@ -167,18 +168,6 @@ class CardGame {
 
     #beginPreBattle() {
         this.#gameState = GAME_STATE.PRE_BATTLE
-    }
-
-    #performEnemyAction() { 
-        for(let effect of this.#enemy.performNextAction()) {
-            if(effect.name === 'damage') {
-                this.#hero.takeDamage(effect.value)
-            } else if (effect.name === 'armor') {
-                this.#enemy.gainArmor(effect.value)
-            } else if (effect.name === 'bleed') {
-                this.#hero.gainStatusEffect(effect.name, effect.value)
-            }
-        }
     }
 
     #dealHand () {
@@ -284,12 +273,23 @@ class Hero {
         this.#armor+=value
     }
 
+    gainHealth(value) {
+        this.#health += value
+        if(this.#health > this.#maxHealth) {
+            this.#health = this.#maxHealth
+        }
+    }
+
     takeDamage(value) {
         this.#health -= value
     }
 
     gainStatusEffect(name, value) {
+        this.statusEffects.push(new Effect(name, value))
+    }
 
+    processEndOfTurnStatusEffects() {
+        // *should* be the same as enemy version? (stretch goal)
     }
 }
 
@@ -352,9 +352,17 @@ class Enemy {
         return action
     }
 
-    processStatusEffects(name, value) {
+    processEndOfTurnStatusEffects() {
         for (let effect of this.statusEffects) {
-            console.log(this.statusEffects)
+            if (effect.name === 'bleed' ) {
+                this.health-=effect.value
+
+                const index = this.statusEffects.findIndex(effect => effect.name === 'bleed');
+                if (index !== -1 && this.statusEffects[index].value <= 1) {
+                    this.statusEffects.splice(index, 1);
+                }
+                this.statusEffects[index].value--
+            }
         }
     }
 }
@@ -438,6 +446,7 @@ class Card {
 }
 
 Card.cards = {
+    /* Starting cards */
     'strike': new Card('warrior', 1, new Effect('damage', 5)),
     'armor': new Card('warrior', 1, new Effect('armor', 5)),
     'fireblast': new Card('wizard', 1, new Effect('damage', 5)),
@@ -445,18 +454,23 @@ Card.cards = {
     'cleave': new Card('barbarian', -1, new Effect('damage', 5), new Effect('bleed', 3)),
     'flourish': new Card('barbarian', 3, new Effect('damage', 8), new Effect('heal', 4)),
 
+    /* Shared cards */
+
+    /* Warrior cards */
     'hamstring':    new Card('warrior', 0, new Effect('damage', 3), new Effect('enfeable', 2)),
     'hiltpummel':   new Card('warrior', 1, new Effect('damage', 3), new Effect('stun', 1)),
     'raiseshield':  new Card('warrior', 2, new Effect('armor', 12)),
     'shieldslam':   new Card('warrior', 1, new Effect('armor-damage', 1)),
     'battlestance': new Card('warrior', 0, new Effect('empower', 1)),
 
+    /* Wizard cards */
     'disenguinate': new Card('barbarian', -1, new Effect('bleed', 7), new Effect('bleed-damage', 1)),
     'eyegouge':     new Card('barbarian', 2, new Effect('damage', 3), new Effect('stun', 1)),
     'kick':         new Card('barbarian', -1, new Effect('damage', 3), new Effect('draw', 1)),
     'howl':         new Card('barbarian', -3, new Effect('enfeable', 1)),
     'batheinblood': new Card('barbarian', 3, new Effect('bleed-heal', 1)),
 
+    /* Barbarian cards */
     'magicmissile': new Card('wizard', 0, new Effect('mana-damage', 3)),
     'icebolt':      new Card('wizard', 1, new Effect('damage', 6), new Effect('enfeable', 1)),
     'polymorph':    new Card('wizard', 1, new Effect('stun', 1)),

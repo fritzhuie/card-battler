@@ -70,7 +70,7 @@ function render () {
     // console.log("deck: " + game.deck)
     // console.log("hand: " + game.hand)
     console.log(game.hero ? JSON.stringify(game.hero.statusEffects) : "no hero found")
-    console.log(game.enemy ? JSON.stringify(game.enemy.statusEffects) : "no hero found")
+    console.log(game.enemy ? JSON.stringify(game.enemy.statusEffects) : "no enemy found")
 
     html.heroMaxHp.innerText = game.hero ? game.hero.maxHealth : "-"
     html.heroHp.innerText =  game.hero ? game.hero.health : "-"
