@@ -20,7 +20,11 @@ const html = {
     "chooseBarbarian": document.getElementById('choose-barbarian'),
     "playArea": document.getElementById('play-area'),
     "gameContainer": document.getElementById('game-container'),
-    "beginBattle": document.getElementById('begin-battle')
+    "beginBattle": document.getElementById('begin-battle'),
+    "hero-bleed-effect": document.getElementById("hero-bleed-effect"),
+    "hero-empower-effect": document.getElementById("hero-empower-effect"),
+    "enemy-bleed-effect": document.getElementById("enemy-bleed-effect"),
+    "enemy-disable-effect": document.getElementById("enemy-disable-effect")
 }
 
 
@@ -62,10 +66,10 @@ function chooseHero(choice) {
 }
 
 function render () {
-    // console.log("hero: " + game.hero)
-    // console.log("enemy: " + game.enemy)
-    // console.log("deck: " + game.deck)
-    // console.log("hand: " + game.hand)
+    console.log(game.hero);
+    console.log("enemy: " + JSON.stringify(game.enemy, null, 2));
+    console.log("deck: " + game.deck)
+    console.log("hand: " + game.hand)
     html.heroMaxHp.innerText = game.hero ? game.hero.maxHealth : "-"
     html.heroHp.innerText =  game.hero ? game.hero.health : "-"
     html.heroArmor.innerText = game.hero ? game.hero.armor : "-"

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Battler Game</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="transition-layer"></div>
+<div id="game-area">
+    <div class="game-container" id="title-menu">
+        <p id="sub-title">Crypt of the</p>
+        <h1 id="wavy-title">Generative Adversaries</h1>
+        <button onclick="showHeroSelect()">New Game</button>
+    </div>
+
+    <div class="game-container" id="hero-select-menu">
+        <h2>Choose your hero</h2>
+        <div id="hero-select-buttons">
+            <button id="warrior-select-button" onclick="selectHero('warrior')" onmouseover="highlightHero('warrior')" onmouseleave="unhighlightHero()">Warrior</button>
+            <button id="wizard-select-button" onclick="selectHero('wizard')" onmouseover="highlightHero('wizard')" onmouseleave="unhighlightHero()">Wizard</button>
+            <button id="barbarian-select-button" onclick="selectHero('barbarian')" onmouseover="highlightHero('barbarian')" onmouseleave="unhighlightHero()">Barbarian</button>
+        </div>
+    </div>
+    <div class="game-container" id="dialog-menu">
+        <p id="dialog-text">???</p>
+        <button id="dialog-button" onclick="showEnemyIntro()">Journey forth!</button>
+    </div>
+
+    <div class="game-container" id="enemy-intro-menu">
+        <img id="enemy-intro-portrait">
+        <h3 id="enemy-intro-description">???</h3>
+        <p id="enemy-intro-dialog">Before you stands a scary monster!</p>
+        <button onclick="startBattle()">FIGHT!</button>
+    </div>
+
+    <div class="game-container" id="battle-screen">
+        <div id="enemy-sidebar">
+            <img id="enemy-portrait">
+            <div id="enemy-status">
+                <p id="enemy-name">???</p>
+                <p id="enemy-health">Health: ???</p>
+                <p id="enemy-armor">Armor: 0</p>
+                <p id="enemy-attack">Action: Attack for 6</p>
+            </div>
+        </div>
+        <div class="hand" id="player-hand"></div>
+        <button id="end-turn" onclick="beginNextTurn()">End Turn</button>
+        <!-- <button id="win-cheat" onclick="win()">(win)</button>
+        <button id="give-up-button" onclick="gameOver()">"(die)"</button> -->
+    </div>
+
+    <div id="hero-sidebar">
+        <img src="" id="hero-portrait"> 
+        <p id="class-label">Warrior</p>
+        <p id="player-health">🫀: 100 / 100</p>
+        <p id="player-armor">Armor: 0</p>
+        <p id="player-mana">Mana: 1</p>
+        <p id="draw-pile">10</p>
+        <img id="draw-pile-image" src="img/draw.png" width="60px">
+    </div>
+</div>
+<script src="scripts/classes.js"></script>
+<script src="scripts/app.js"></script>
+</body>
+</html>

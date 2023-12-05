@@ -46,21 +46,29 @@ class CardGame {
     }
 
     chooseHero( choice ) {
-        if (this.#gameState != GAME_STATE.HERO_SELECT) { return }
+        if (this.#gameState != GAME_STATE.HERO_SELECT || this.#hero) { return }
 
-        const choices = ['warrior', 'wizard', 'barbarian']
-        if ( !this.#hero  && choices.indexOf(choice) >= 0 ) {
-            this.#hero = new Hero(choice)
+        if ( choice === 'warrior') {
+            this.#hero = new Warrior()
+        } else if (choice === 'wizard') {
+            this.#hero = new Wizard()
+        } else if (choice === 'barbarian') {
+            this.#hero = new Barbarian()
         } else {
             console.log("Invalid hero selection")
-            return
         }
 
-        this.#gameState = GAME_STATE.BATTLE
+        this.#gameState = GAME_STATE.PRE_BATTLE
 
         this.#deck = this.hero.startingDeck
         console.log("DECK AT START: " + this.#deck)
-        this.#dealHand()
+    }
+
+    beginBattle() {
+        if (this.#gameState != GAME_STATE.PRE_BATTLE) { return }
+
+        this.#gameState = GAME_STATE.BATTLE
+        this.#beginNewTurn()
     }
 
     endTurn () {
@@ -88,33 +96,49 @@ class CardGame {
             console.error(`Invalid card - index: + '${index}'`);
             return;
         }
+        
 
-        let card = Card.called(this.#hand[index])
+        let cardName = this.#hand[index]
+        if (cardName in Card.cards) {
+            this.#playCard(cardName);
+        }
+
         this.#discard(index)
+        this.#checkForDeaths()
+    }
 
+    #playCard(name) {
+
+        let card = Card.called(name)
         card.effects.forEach(effect => {
             console.log(`Processing Effect: '${effect.name}' with value '${effect.value}'`)
             switch (effect.name) {
                 case 'damage':
                     this.#enemy.takeDamage(effect.value)
-                    // log action
+                    console.log(`${effect.name} dealt ${effect.value} damage to ${this.#enemy.name}`)
                     break;
                 case 'armor':
                     this.#hero.gainArmor(effect.value)
-                    //  log action
+                    break;
+                case 'slam':
+                    this.#enemy.takeDamage(this.#hero.armor * effect.value)
+                    break;
+                case 'mana-damage':
+                    this.#enemy.takeDamage(this.#hero.mana * effect.value)
+                    break;
+                case 'bleed':
+                    this.#enemies.gainEffect(effect.name, effect.value)
+                    break;
+                case 'draw':
+                    this.#drawCard()
+                    break;
+                case 'heal':
+                    this.#hero.health = Math.max(this.#hero.maxHealth, this.#hero.health + effect.value)
                     break;
                 default:
                     console.log(`Effect type '${effect.name}' not recognized.`);
             }
         });
-        this.#checkForDeaths()
-    }
-
-    beginBattle() {
-        if (this.#gameState != GAME_STATE.PRE_BATTLE) { return }
-
-        this.#gameState = GAME_STATE.BATTLE
-        this.#beginNewTurn()
     }
 
     #beginPreBattle() {
@@ -167,16 +191,12 @@ class CardGame {
         }
 
         if (this.#enemy.health <= 0) {
-
-            //load new enemy
             this.#enemies.shift()
             this.#enemy = this.#enemies[0]
 
-            //clear the board
             this.#discardHand()
             this.#recycleDiscard()
 
-            // offer new card
             this.#gameState = GAME_STATE.CARD_SELECT
             this.#offerNewCards()
         }
@@ -185,8 +205,7 @@ class CardGame {
     #offerNewCards() {
         this.#cardChoices = ["strike", "strike", "armor"]
     }
-
-    #cardExists(name) { }
+    
     #addCardToDeck(name) { }
     #addCardToHand(name) { }
 }
@@ -197,48 +216,56 @@ class Hero {
     #maxHealth = 0
     #health = 0
     #armor = 0
-    #debuffs = []
-    #buffs = []
+    #statusEffects = []
+    #startingDeck = []
+    #maxMana = 0
     #mana = 0
-    #startingDeck = ["strike", "strike", "strike", "strike", "strike", "strike", "armor", "armor"]
-    #starting_mana = 0
 
-    get startingDeck() { return this.#startingDeck }
+    get maxMana() { return this.#maxMana }
     get mana() { return this.#mana }
-    get architype() { return this.#architype }
+    get startingDeck() { return this.#startingDeck }
     get maxHealth() { return this.#maxHealth }
     get health() { return this.#health }
     get armor() { return this.#armor }
-    get debuffs() { return [...this.#debuffs] }
-    get buffs() { return [...this.#buffs] }
+    get statusEffects() { return [...this.#statusEffects] }
 
-    constructor(architype) {
-        this.#architype = architype;
-        this.#initializeWithName(architype);
-    }
-
-    #initializeWithName(architype) {
-
-        if (architype === 'warrior') {
-            this.#maxHealth = 100
-            this.#health = this.#maxHealth
-            this.#armor = 50
-        }else if (architype === 'wizard') {
-            this.#maxHealth = 100
-            this.#health = this.#maxHealth
-            this.#armor = 0
-            this.#mana = 3
-        } else if (architype === 'barbarian' ) {
-            this.#maxHealth = 100
-            this.#health = this.#maxHealth
-            this.#armor = 0
-        } else {
-            console.log('HERO TYPE NOT RECOGNIZED')
-        }
+    constructor(maxMana, maxHealth, startingDeck) {
+        this.#maxMana = maxMana
+        this.#maxHealth = maxHealth
+        this.#startingDeck = startingDeck
     }
 
     gainArmor(value) {
         this.#armor+=value
+    }
+
+    takeDamage(value) {
+        this.#health -= value
+    }
+}
+
+class Warrior extends Hero {
+    constructor(){
+        const warriorStartingDeck = ["strike", "strike", "strike", "strike", "strike", "armor", "armor"]
+        super(3, 100, warriorStartingDeck)
+    }
+}
+
+class Wizard extends Hero {
+    constructor(){
+        const wizardStartingDeck = ["fireblast", "fireblast", "fireblast", "fireblast", "magicmissile", "magicmissile", "manashield"]
+        super(3, 100, wizardStartingDeck)
+    }
+}
+
+class Barbarian extends Hero {
+
+    #rage = 0
+    get rage() { return this.#rage }
+
+    constructor(){
+        const barbarianStartingDeck = ["cleave", "cleave", "cleave", "cleave", "cleave", "flourish", "flourish"]
+        super(0, 100, barbarianStartingDeck)
     }
 }
 
@@ -250,8 +277,7 @@ class Enemy {
     health = null
     armor = null
     portrait = null
-    buffs = []
-    debuffs = []
+    statusEffects = []
     actions = []
     actionIndex = 0
 
@@ -263,12 +289,16 @@ class Enemy {
         this.armor+=value;
     }
 
-    gainEffect(name, value) {
-
+    gainStatusEffects(name, value) {
+        statusEffects.push(new Effect(name, value))
     }
 
     currentAction() {
         return this.actions[this.actionIndex]
+    }
+
+    processStatusEffects(name, value) {
+        // go through status effects
     }
 }
 
@@ -344,17 +374,17 @@ class Card {
 
     static called(name) {
         return Card.cards[name]
-        // Example:
-        // let strike = Card.called('strike');
+        // Example: let strike = Card.called('strike');
     }
 }
 
 Card.cards = {
-    'strike': new Card('strike', 0, new Effect('damage', 6)),
-    'armor': new Card('armor', 0, new Effect('armor', 6)),
-    'shieldslam': new Card('shieldslam', 0, new Effect('slam', 1)),
-    'magicmissile': new Card('magicmissile', 1, new Effect('damage', 6)),
+    'strike': new Card('strike', 1, new Effect('damage', 5)),
+    'armor': new Card('armor', 1, new Effect('armor', 5)),
+    'shieldslam': new Card('shieldslam', 1, new Effect('slam', 1)),
+    'fireblast': new Card('fireblast', 1, new Effect('damage', 6)),
+    'magicmissile': new Card('magicmissile', 0, new Effect('mana-damage', 3)),
     'manashield': new Card('manashield', 2, new Effect('armor', 9), new Effect('draw', 1)),
-    'cleave': new Card('cleave', -1, new Effect('damage', 6), new Effect('bleed', 3)),
+    'cleave': new Card('cleave', -1, new Effect('damage', 5), new Effect('bleed', 3)),
     'flourish': new Card('flourish', 3, new Effect('damage', 9), new Effect('heal', 5))
 }
