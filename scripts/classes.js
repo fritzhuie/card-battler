@@ -176,7 +176,7 @@ class CardGame {
             } else if (effect.name === 'armor') {
                 this.#enemy.gainArmor(effect.value)
             } else if (effect.name === 'bleed') {
-                this.#hero.gainStatusEffect(effect.name, value)
+                this.#hero.gainStatusEffect(effect.name, effect.value)
             }
         }
     }
@@ -336,7 +336,7 @@ class Enemy {
     }
 
     gainStatusEffect(name, value) {
-        statusEffects.push(new Effect(name, value))
+        this.statusEffects.push(new Effect(name, value))
     }
 
     nextAction() {
@@ -352,20 +352,10 @@ class Enemy {
         return action
     }
 
-
-
     processStatusEffects(name, value) {
         for (let effect of this.statusEffects) {
             console.log(this.statusEffects)
         }
-    }
-}
-
-class EnemyAction {
-    constructor(name, description, ...effects) {
-        this.name = name
-        this.description = description
-        this.effects = effects
     }
 }
 
@@ -416,6 +406,14 @@ class EnemyMecharaptor extends Enemy {
             new EnemyAction('Pounce', 'leaps at you, attacking with fang and claw', {'damage': 11}),
             new EnemyAction('Screech', 'lets out a deafening screech', {'damage': 12})
         ]
+    }
+}
+
+class EnemyAction {
+    constructor(name, description, ...effects) {
+        this.name = name
+        this.description = description
+        this.effects = effects
     }
 }
 

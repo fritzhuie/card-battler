@@ -22,10 +22,8 @@ const html = {
     "playArea": document.getElementById('play-area'),
     "gameContainer": document.getElementById('game-container'),
     "beginBattle": document.getElementById('begin-battle'),
-    "hero-bleed-effect": document.getElementById("hero-bleed-effect"),
-    "hero-empower-effect": document.getElementById("hero-empower-effect"),
-    "enemy-bleed-effect": document.getElementById("enemy-bleed-effect"),
-    "enemy-disable-effect": document.getElementById("enemy-disable-effect")
+    "heroStatusEffects": document.getElementById("hero-status-effects"),
+    "enemyStatusEffect": document.getElementById("enemy-status-effects")
 }
 
 
@@ -71,6 +69,8 @@ function render () {
     // console.log("enemy: " + JSON.stringify(game.enemy, null, 2));
     // console.log("deck: " + game.deck)
     // console.log("hand: " + game.hand)
+    console.log(game.hero ? JSON.stringify(game.hero.statusEffects) : "no hero found")
+    console.log(game.enemy ? JSON.stringify(game.enemy.statusEffects) : "no hero found")
 
     html.heroMaxHp.innerText = game.hero ? game.hero.maxHealth : "-"
     html.heroHp.innerText =  game.hero ? game.hero.health : "-"
@@ -82,6 +82,9 @@ function render () {
     html.enemyHp.innerText = game.enemy.health ? game.enemy.health : "-"
     html.enemyArmor.innerText = game.enemy.armor ? game.enemy.armor : "0"
     html.enemyAttack.innerText = game.enemy.nextAttack ? game.enemy.nextAttack : "-"
+
+    html.heroStatusEffects = game.hero ? game.hero.statusEffects : "-"
+    html.enemyStatusEffects = game.enemy ? game.enemy.statusEffects : "-"
 
     html.discardPile.innerText = game.discardPile.join()
     html.deckPile.innerText = game.deck.join()
