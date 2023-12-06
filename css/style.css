@@ -1,4 +1,10 @@
+:root {
+    --gradient-background: linear-gradient(to top, #777, rgba(7,7,7,0.2));
+}
+
 * {
+    font-family: "Luminari", "fantasy";
+    /* font-family: "arial"; */
     padding: 0;
     margin: 0;
 }
@@ -7,26 +13,76 @@ body {
     background-color: black;
 }
 
+button {
+    font-family: "Papyrus";
+    font-weight: bolder;
+    padding: 20px;
+    font-size: 16px;
+    margin: 10px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
 .battle-container {
-    width: 80vw;
+    position: relative;
+}
+
+/* Background coloration ------------------------------------- */
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 60%;
+    bottom: 0;
+    background-image: url('../img/axe-shaman.png');
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.battle-container > *:not(.background-overlay) {
+    z-index: 2;
+    position: relative;
+}
+
+
+/* Game State Containers ------------------------------------------------------------------------ */
+
+.game-container {
+    width: 900px;
     min-width: 600px;
     aspect-ratio: 16 / 9;
     margin: 20px auto;
-    background-color: grey;
+}
+
+.battle-container {
+    width: 100%;
+    height: 100%;
     gap: 0px 0px;
     display: grid;
     grid-auto-flow: row;
+    background-color: white;
     grid-template-columns: 15% auto 15% 15% 15% 20%;
     grid-template-rows: 20% 1fr 30%;
     grid-template-areas :
-        "enemy-status       enemy-status    enemy-action    .               .               hero-status"
+        "enemy-health       enemy-health    enemy-action    .               .               hero-status"
         ".                  .               .               action-log      action-log               ."
         "deck-pile          cards           cards           cards           discard-pile    end-turn";
 }
 
+
+/* Cards in hand ------------------------------------------------------------------------------------ */
+
 .card-container {
     grid-area: cards;
-    background-color: teal;
+    background: var(--gradient-background);
     display: flex;
     flex-direction: row;
     position: relative;
@@ -34,7 +90,7 @@ body {
 }
 
 #card-preview {
-    position: absolute;
+    position: relative;
     bottom: 0;
     height: 45vh;
     width: 15vw;
@@ -45,8 +101,10 @@ body {
     background-color: yellow;
     color: #333;
     transform-origin: bottom center;
-    left: 35vw; transform: translateY(-15vw) rotate(-3deg); z-index: 10000;
-    opacity: 0.2;
+    left: -15vw;
+    transform: translateY(10vw) rotate(-3deg);
+    z-index: 10000;
+    opacity: 0.0;
 }
 
 .card {
@@ -57,7 +115,7 @@ body {
     font-size: 16px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
     background-color: #fff;
     color: #333;
     transform-origin: bottom center;
@@ -79,63 +137,189 @@ body {
 .card:nth-child(6) { left: 53.6%; transform: translateY(-30px) rotate(20deg); z-index: 6; }
 .card:nth-child(7) { left: 60%; transform: translateY(-20px) rotate(30deg); z-index: 7; }
 
-button {
-    font-family: "Papyrus";
-    font-weight: bolder;
-    padding: 20px;
-    font-size: 16px;
-    margin: 10px;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
+/* Draw and discard piles ------------------------------------------------------------------------------------ */
 
 .discard-pile-container {
     grid-area: discard-pile;
-    background-color: red;
-}
-
-.card-preview {
-    grid-area: card-preview;
-    background-color: yellow;
+    background: var(--gradient-background);
 }
 
 .deck-pile-container {
     grid-area: deck-pile;
-    background-color: red;
+    background: var(--gradient-background);
 }
 
-.hero-status-container {
-    grid-area: hero-status;
-    background-color: teal;
+.card-counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deck-count {
+    font-size: 300%;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: black; /* Text color */
+    text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px  2px 0 #fff, 2px  2px 0 #fff;
+    background-image: url('../img/draw.png');
+    background-size: 70%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.discard-count {
+    font-size: 300%;
+    width: 100%;
+    height: 100%;
+    color: black; /* Text color */
+    text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px  2px 0 #fff, 2px  2px 0 #fff;
+    background-image: url('../img/draw-small.png');
+    background-size: 70%;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .end-turn-container {
     grid-area: end-turn;
-    background-color: green;
+    background: var(--gradient-background);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.enemy-status-container {
-    grid-area: enemy-status;
-    background-color: teal;
+/* Health & status ---------------------------------------------------------------------------- */
+
+
+.hero-status-container {
+    grid-area: hero-status;
 }
 
-.action-log-container {
-    grid-area: action-log;
-    background-color: green;
+.enemy-health-container {
+    grid-area: enemy-health;
 }
+
+.status-grid {
+    margin: 10px;
+}
+
+.health-container {
+    position: relative;
+    width: 100%;
+    height: 20px;
+}
+
+.health-slider-background {
+    border: 2px solid black;
+    position: absolute;
+    background: linear-gradient(to top, grey, black);
+    width: 100%;
+    height: 20px;
+    z-index: 1;
+    border-radius: 40px;
+}
+
+.health-slider {
+    border: 2px solid black;
+    position: absolute;
+    background: linear-gradient(to top, red, darkred);
+    width: 69%;
+    height: 20px;
+    z-index: 2;
+    border-radius: 40px;
+}
+
+.health-container p {
+    position: absolute;
+    z-index: 3;
+    width: 50%;
+    text-align: center;
+    color: black; /* Text color */
+}
+
+.status-icon {
+    background-color: grey;
+    width: 25px;
+    height: 25px;
+    margin: 5px 2px;
+}
+
+
+.bleed-status {
+    
+}
+.stun-status {
+
+}
+.empower-status {
+
+}
+.enfeable-status {
+
+}
+.burn-status {
+
+}
+
+.status-effects-container {
+    display: flex;
+    justify-content: start;
+}
+
+#hero-health {
+    text-align: right;
+}
+
+#hero-name {
+    margin: 0 5px;
+    text-align: right;
+}
+
+#enemy-name {
+    margin: 0 7px;
+}
+
+#hero-status-effects {
+    justify-content: end;
+}
+
+/* 
+
+/* Enemy Action -------------------------------------------------------------------------------- */
 
 .enemy-action-container {
     grid-area: enemy-action;
-    background-color: red;
 }
 
-#transition-layer {
-    grid-area: transition;
+.enemy-action {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.enemy-action h1 {
+    margin: 0 15px 0 15px;
+    font-size: 40px;
+    background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	background-color: red;
+    text-align: center;
+}
+
+.enemy-action h2 {
+    font-weight: 900;
+    color: red;
+    font-size: 40px;
+    text-align: center;
+}
+
+
+/* Action Log ---------------------------------------------------------------------------------- */
+
+.action-log-container {
+    grid-area: action-log;
 }

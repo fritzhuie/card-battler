@@ -6,8 +6,11 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- <div id="transition-layer"></div> -->
+    <div id="transition-layer"></div>
+<div class="game-container">
     <div class="battle-container">
+        <div class="background-overlay"></div>
+        <div class="hero-overlay"></div>
         <div class="card-container">
             <div class="card"></div>
             <div class="card"></div>
@@ -18,18 +21,58 @@
             <div class="card"></div>
         </div>
         <div id="card-preview"></div>
-        <div class="discard-pile-container">discard-pile</div>
-        <div class="deck-pile-container">deck-pile</div>
+        <div class="discard-pile-container card-counter">
+            <h1 class="discard-count">5</h1>
+        </div>
+        <div class="deck-pile-container card-counter">
+            <h1 class="deck-count">5</h1>
+        </div>
         <div class="hero-status-container">
-            <div>Hero HP: <span id="hero-hp">-</span></div>
+            <div class='status-grid'>
+                <h3 id="hero-name">Name of Hero</h3>
+                <div class="health-container">
+                    <div class="health-slider-background"></div>
+                    <div class="health-slider"></div>
+                    <p id="hero-health">69 / 100</p>
+                </div>
+                <div class="status-effects-container" id="hero-status-effects">
+                    <p class="status-icon bleed-status">5</p>
+                    <p class="status-icon stun-status">5</p>
+                    <p class="status-icon empower-status">5</p>
+                    <p class="status-icon enfeable-status">5</p>
+                    <p class="status-icon burn-status">5</p>
+                </div>
+            </div>
         </div>
         <div class="end-turn-container">
             <button class="button end-turn">End Turn</button>
         </div>
-        <div class="enemy-status-container">enemy-status</div>
+        <div class="enemy-health-container">
+            <div class='status-grid'>
+                <h3 id="enemy-name">Name of Enemy</h3>
+                <div class="health-container">
+                    <div class="health-slider-background"></div>
+                    <div class="health-slider"></div>
+                    <p id="enemy-health">69 / 100</p>
+                </div>
+                <div class="status-effects-container" id="enemy-status-effects">
+                    <p class="status-icon bleed-status">5</p>
+                    <p class="status-icon stun-status">5</p>
+                    <p class="status-icon empower-status">5</p>
+                    <p class="status-icon enfeable-status">5</p>
+                    <p class="status-icon burn-status">5</p>
+                </div>
+            </div>
+        </div>
         <div class="action-log-container">action-log</div>
-        <div class="enemy-action-container">enemy-action</div>
+        <div class="enemy-action-container">
+            <div class="enemy-action">
+                <h1>⚔️</h1>
+                <h2 class="enemy-action">5</h3>
+            </div>
+        </div>
     </div>
+</div>
     <script src="scripts/classes.js"></script>
     <script src="scripts/app.js"></script>
 </body>
