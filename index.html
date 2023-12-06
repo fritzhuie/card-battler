@@ -10,7 +10,28 @@
 <div class="game-container">
     <div class="battle-container">
         <div class="background-overlay"></div>
-        <div class="hero-portrait"></div>
+        <div class="hero-portrait-container">
+            <div class="hero-status-container">
+                <div class='status-grid'>
+                    <h3 id="hero-name">Aiyruk</h3>
+                    <div class="health-container">
+                        <div class="health-slider-background"></div>
+                        <div class="health-slider"></div>
+                        <p id="hero-health">69 / 100</p>
+                    </div>
+                    <div class="status-effects-container" id="hero-status-effects">
+                        <p class="status-icon bleed-status">5</p>
+                        <p class="status-icon stun-status">5</p>
+                        <p class="status-icon empower-status">5</p>
+                        <p class="status-icon enfeable-status">5</p>
+                        <p class="status-icon burn-status">5</p>
+                    </div>
+                </div>
+            </div>
+            <div class="end-turn-container">
+                <button class="button end-turn">End Turn</button>
+            </div>
+        </div>
         <div class="card-container">
             <div class="card"></div>
             <div class="card"></div>
@@ -26,26 +47,6 @@
         </div>
         <div class="deck-pile-container card-counter">
             <h1 class="deck-count">5</h1>
-        </div>
-        <div class="hero-status-container">
-            <div class='status-grid'>
-                <h3 id="hero-name">Aiyruk</h3>
-                <div class="health-container">
-                    <div class="health-slider-background"></div>
-                    <div class="health-slider"></div>
-                    <p id="hero-health">69 / 100</p>
-                </div>
-                <div class="status-effects-container" id="hero-status-effects">
-                    <p class="status-icon bleed-status">5</p>
-                    <p class="status-icon stun-status">5</p>
-                    <p class="status-icon empower-status">5</p>
-                    <p class="status-icon enfeable-status">5</p>
-                    <p class="status-icon burn-status">5</p>
-                </div>
-            </div>
-        </div>
-        <div class="end-turn-container">
-            <button class="button end-turn">End Turn</button>
         </div>
         <div class="enemy-health-container">
             <div class='status-grid'>

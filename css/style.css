@@ -52,13 +52,15 @@ button {
     position: relative;
 }
 
-.hero-portrait {
+.hero-portrait-container {
     grid-area: hero-portrait;
-    background-image: url("../img/barbarian.png");
-    background-size: 225%;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-image: url("../img/barbarian2.png");
+    background-size: cover;
+    background-position: -237px;
     background-color: lightgrey;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: space-between;
 }
 
 /* Game State Containers ------------------------------------------------------------------------ */
@@ -80,9 +82,9 @@ button {
     grid-template-columns: 15% auto 15% 15% 15% 20%;
     grid-template-rows: 20% 1fr 16%;
     grid-template-areas :
-        "enemy-health       enemy-health    enemy-action    .               .               hero-status"
+        "enemy-health       enemy-health    enemy-action    .               .               hero-portrait"
         ".                  .               .               action-log      action-log      hero-portrait"
-        "deck-pile          cards           cards           cards           discard-pile    end-turn";
+        "deck-pile          cards           cards           cards           discard-pile    hero-portrait";
 }
 
 
@@ -190,20 +192,14 @@ button {
 }
 
 .end-turn-container {
-    grid-area: end-turn;
-    background: var(--gradient-background);
+    background: linear-gradient(to top, #333, rgba(128, 128, 128, 0.7));
+    height: 30%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 /* Health & status ---------------------------------------------------------------------------- */
-
-
-.hero-status-container {
-    grid-area: hero-status;
-    background-color: lightgrey;
-}
 
 .enemy-health-container {
     grid-area: enemy-health;
