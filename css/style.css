@@ -31,12 +31,12 @@ button {
     position: relative;
 }
 
-/* Background coloration ------------------------------------- */
+/* Background images ------------------------------------- */
 
 .background-overlay {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 2%;
     right: 60%;
     bottom: 0;
     background-image: url('../img/axe-shaman.png');
@@ -52,6 +52,14 @@ button {
     position: relative;
 }
 
+.hero-portrait {
+    grid-area: hero-portrait;
+    background-image: url("../img/barbarian.png");
+    background-size: 225%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: lightgrey;
+}
 
 /* Game State Containers ------------------------------------------------------------------------ */
 
@@ -73,7 +81,7 @@ button {
     grid-template-rows: 20% 1fr 30%;
     grid-template-areas :
         "enemy-health       enemy-health    enemy-action    .               .               hero-status"
-        ".                  .               .               action-log      action-log               ."
+        ".                  .               .               action-log      action-log      hero-portrait"
         "deck-pile          cards           cards           cards           discard-pile    end-turn";
 }
 
@@ -193,6 +201,7 @@ button {
 
 .hero-status-container {
     grid-area: hero-status;
+    background-color: lightgrey;
 }
 
 .enemy-health-container {
@@ -246,7 +255,7 @@ button {
 
 
 .bleed-status {
-    
+
 }
 .stun-status {
 
