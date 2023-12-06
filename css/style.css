@@ -9,8 +9,8 @@ body {
 
 .battle-container {
     width: 90vw;
-    height: 90vh;
-    min-width: 250px;
+    min-width: 800px;
+    aspect-ratio: 16 / 9;
     margin: 20px auto;
     background-color: lightgray;
     gap: 0px 0px;
@@ -20,7 +20,7 @@ body {
     grid-template-rows: 20% 1fr 30%;
     grid-template-areas :
         "enemy-status       enemy-status    enemy-action    .               .               hero-status"
-        ".                  .               .               action-log      .               ."
+        ".                  .               .               action-log      action-log               ."
         "deck-pile          cards           cards           cards           discard-pile    end-turn";
 }
 
@@ -56,12 +56,12 @@ body {
 
 .action-log {
     grid-area: action-log;
-    background-color: magenta;
+    background-color: white;
 }
 
 .enemy-action {
     grid-area: enemy-action;
-    background-color: teal;
+    background-color: red;
 }
 
 #transition-layer {
