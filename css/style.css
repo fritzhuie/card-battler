@@ -1,56 +1,69 @@
-#battle-container {
-    width: 100vw;
-    height: 100vh;
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: black;
+}
+
+.battle-container {
+    width: 90vw;
+    height: 90vh;
     min-width: 250px;
-    background-color: grey;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    margin: 20px auto;
+    background-color: lightgray;
+    gap: 0px 0px;
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: 15% 15% 15% 15% 15% 25%;
+    grid-template-rows: 20% 1fr 30%;
     grid-template-areas :
-        "enemy-status enemy-status enemy-action . .  hero-status"
-        ". . . action-log . ."
-        "deck-pile cards cards cards discard-pile end-turn";
+        "enemy-status       enemy-status    enemy-action    .               .               hero-status"
+        ".                  .               .               action-log      .               ."
+        "deck-pile          cards           cards           cards           discard-pile    end-turn";
 }
 
-#transition-layer {
-    grid-area: transition;
-}
-
-#card-container {
+.card-container {
     grid-area: cards;
     background-color: teal;
 }
 
-#discard-pile {
+.discard-pile {
     grid-area: discard-pile;
     background-color: red;
 }
 
-#deck-pile {
+.deck-pile {
     grid-area: deck-pile;
     background-color: red;
 }
 
-#hero-status {
+.hero-status {
     grid-area: hero-status;
     background-color: teal;
 }
 
-#end-turn {
+.end-turn {
     grid-area: end-turn;
     background-color: green;
 }
 
-#enemy-status {
+.enemy-status {
     grid-area: enemy-status;
     background-color: teal;
 }
 
-#action-log {
+.action-log {
     grid-area: action-log;
     background-color: magenta;
 }
 
-#enemy-action {
+.enemy-action {
     grid-area: enemy-action;
     background-color: teal;
+}
+
+#transition-layer {
+    grid-area: transition;
 }
