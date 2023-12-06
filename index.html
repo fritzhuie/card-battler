@@ -8,11 +8,24 @@
 <body>
     <!-- <div id="transition-layer"></div> -->
     <div class="battle-container">
-        <div class="card-container">card-container</div>
+        <div class="card-container">
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+        </div>
+        <div id="card-preview"></div>
         <div class="discard-pile-container">discard-pile</div>
         <div class="deck-pile-container">deck-pile</div>
-        <div class="hero-status-container">hero-status</div>
-        <div class="end-turn-container">End Turn</div>
+        <div class="hero-status-container">
+            <div>Hero HP: <span id="hero-hp">-</span></div>
+        </div>
+        <div class="end-turn-container">
+            <button class="button end-turn">End Turn</button>
+        </div>
         <div class="enemy-status-container">enemy-status</div>
         <div class="action-log-container">action-log</div>
         <div class="enemy-action-container">enemy-action</div>
@@ -21,15 +34,3 @@
     <script src="scripts/app.js"></script>
 </body>
 </html>
-
-<!--
-battle-container
-transition-layer
-card-container
-discard-pile
-deck-pile
-hero-status
-end-turn
-enemy-status
-action-log
-enemy-action -->
