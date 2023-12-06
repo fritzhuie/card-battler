@@ -1,42 +1,56 @@
-#game-container {
+#battle-container {
     width: 100vw;
     height: 100vh;
-    display: grid;
-    grid-area: ;
+    min-width: 250px;
+    background-color: grey;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas :
+        "enemy-status enemy-status enemy-action . .  hero-status"
+        ". . . action-log . ."
+        "deck-pile cards cards cards discard-pile end-turn";
 }
 
 #transition-layer {
     grid-area: transition;
 }
 
-#game-container {
-
-}
-
-#battle-container {
-
-}
-
 #card-container {
-
+    grid-area: cards;
+    background-color: teal;
 }
 
 #discard-pile {
-
+    grid-area: discard-pile;
+    background-color: red;
 }
 
 #deck-pile {
-
+    grid-area: deck-pile;
+    background-color: red;
 }
 
-#hero-sidebar {
-
+#hero-status {
+    grid-area: hero-status;
+    background-color: teal;
 }
 
 #end-turn {
-
+    grid-area: end-turn;
+    background-color: green;
 }
 
 #enemy-status {
+    grid-area: enemy-status;
+    background-color: teal;
+}
 
+#action-log {
+    grid-area: action-log;
+    background-color: magenta;
+}
+
+#enemy-action {
+    grid-area: enemy-action;
+    background-color: teal;
 }
