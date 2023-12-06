@@ -9,7 +9,7 @@ body {
 
 .battle-container {
     width: 90vw;
-    min-width: 800px;
+    min-width: 600px;
     aspect-ratio: 16 / 9;
     margin: 20px auto;
     background-color: lightgray;
@@ -29,37 +29,37 @@ body {
     background-color: teal;
 }
 
-.discard-pile {
+.discard-pile-container {
     grid-area: discard-pile;
     background-color: red;
 }
 
-.deck-pile {
+.deck-pile-container {
     grid-area: deck-pile;
     background-color: red;
 }
 
-.hero-status {
+.hero-status-container {
     grid-area: hero-status;
     background-color: teal;
 }
 
-.end-turn {
+.end-turn-container {
     grid-area: end-turn;
     background-color: green;
 }
 
-.enemy-status {
+.enemy-status-container {
     grid-area: enemy-status;
     background-color: teal;
 }
 
-.action-log {
+.action-log-container {
     grid-area: action-log;
     background-color: white;
 }
 
-.enemy-action {
+.enemy-action-container {
     grid-area: enemy-action;
     background-color: red;
 }
