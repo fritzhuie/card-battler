@@ -164,5 +164,9 @@ performCardEffect(card) {
 
 ## Wire Frame (Battle scene)
 
-![wireframe](https://github.com/fritzhuie/card-battler/assets/1472318/664bef3d-a8d1-4f27-9d73-681c65cd3ea2)
+![wireframe-experimental](https://github.com/fritzhuie/card-battler/assets/1472318/6b343c05-2249-4315-8ad1-8eb12172f7fb)
+
+![wireframe-color](https://github.com/fritzhuie/card-battler/assets/1472318/88aacb3d-f6ef-4350-9f45-f3a53eccaaa1)
+
+
 
