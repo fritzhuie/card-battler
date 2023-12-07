@@ -1,5 +1,5 @@
 :root {
-    --gradient-background: linear-gradient(to top, #333, rgba(7,7,7,0.7));
+    --gradient-background: linear-gradient(to top, #333, rgba(7,7,7,0.3));
 }
 
 * {
@@ -54,12 +54,12 @@ button {
 
 .hero-portrait-container {
     grid-area: hero-portrait;
-    background-image: url("../img/barbarian2.png");
+    background-image: url("../img/barbarian-tall.png");
     background-size: cover;
-    background-position: -237px;
+    background-position: center;
     background-color: lightgrey;
     display: flex;
-    flex-direction: column; /* Stack children vertically */
+    flex-direction: column;
     justify-content: space-between;
 }
 
@@ -80,7 +80,7 @@ button {
     grid-auto-flow: row;
     background-color: white;
     grid-template-columns: 15% auto 15% 15% 15% 20%;
-    grid-template-rows: 20% 1fr 16%;
+    grid-template-rows: 20% 1fr 20%;
     grid-template-areas :
         "enemy-health       enemy-health    enemy-action    .               .               hero-portrait"
         ".                  .               .               action-log      action-log      hero-portrait"
@@ -108,7 +108,7 @@ button {
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-    background-color: yellow;
+    background-color: white;
     color: #333;
     transform-origin: bottom center;
     left: -15vw;
@@ -132,11 +132,8 @@ button {
 }
 
 .card:hover {
-    opacity: 0.3;
-}
-
-.card:hover #card-preview {
-    opacity: 1.0;
+    height: 30vh;
+    width: 10.5vw;
 }
 
 .card:nth-child(1) { left: 20%; transform: translateY(-20px) rotate(-30deg); z-index: 1; }
@@ -192,8 +189,8 @@ button {
 }
 
 .end-turn-container {
-    background: linear-gradient(to top, #333, rgba(128, 128, 128, 0.7));
-    height: 30%;
+    background: linear-gradient(to top, #000, rgba(128, 128, 128, 0.0));
+    height: 40%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -244,27 +241,41 @@ button {
 }
 
 .status-icon {
-    background-color: grey;
+    /* background-color: grey; */
     width: 25px;
     height: 25px;
     margin: 5px 2px;
+
+    background-size: cover;
+    background-position: center;
+
+    background-color: rgba(255,255,255,0.6);
+    border-radius: 5px;
+
+    text-align: center;
+    text-justify: center;
+
 }
 
 
 .bleed-status {
-
+    background-image: url('../img/bleed-icon.png');
 }
 .stun-status {
-
+    background-image: url('../img/stun-icon.png');
 }
 .empower-status {
-
+    background-image: url('../img/empower-icon.png');
 }
 .enfeable-status {
-
+    background-image: url('../img/enfeable-icon.png');
 }
 .burn-status {
+    background-image: url('../img/burn-icon.png');
+}
 
+.chill-status {
+    background-image: url('../img/chill-icon.png');
 }
 
 .status-effects-container {
