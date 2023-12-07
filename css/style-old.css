@@ -191,7 +191,6 @@ button:hover {
 }
 
 #title-menu {
-    display: none;
     text-align: center;
     background-image: url("../img/crypt.png");
     background-position: center;

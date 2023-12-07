@@ -86,13 +86,30 @@ function endTurn() {
 // Menu navigation ----------------------------------------------------------------------------------------
 
 function show(element) {
-    element.style.opacity = 1.0;
+    if (element === html.battleContainer){
+        element.style.display = "grid";
+    }else {
+        element.style.display = "block";
+    }
 }
 
 function hide(...elements) {
     console.log(elements)
     for (let element of elements) {
-        element.style.opacity = 0;
+        element.style.display = "none";
+    }
+}
+
+function highlightHero(type) {
+    if(type === 'warrior') {
+        document.getElementById("hero-select-menu").style.backgroundImage = "url('img/warrior.png')";
+        document.getElementById("hero-select-menu").style.backgroundSize = "fill";
+    } else if(type === 'wizard') {
+        document.getElementById("hero-select-menu").style.backgroundImage = "url('img/wizard.png')";
+        document.getElementById("hero-select-menu").style.backgroundSize = "cover";
+    } else if(type === 'barbarian') {
+        document.getElementById("hero-select-menu").style.backgroundImage = "url('img/barbarian.png')";
+        document.getElementById("hero-select-menu").style.backgroundSize = "cover";
     }
 }
 

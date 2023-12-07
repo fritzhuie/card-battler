@@ -11,6 +11,8 @@
 
 body {
     background-color: black;
+    height: 100%;
+    overflow: hidden;
 }
 
 button {
@@ -25,6 +27,10 @@ button {
     cursor: pointer;
     transition: background-color 0.3s ease;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    background-color: lightgreen;
 }
 
 .battle-container {
@@ -339,4 +345,70 @@ button {
 
 .action-log-container {
     grid-area: action-log;
+}
+
+/* Main Menu ------------------------------------------------------------------------------------ */
+
+#title-menu {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-image: url("../img/crypt.png");
+    background-position: center;
+}
+
+#title-menu p {
+    font-size: 150%;
+    color: white;
+    transform: translateY(90px);
+}
+
+#title-menu button {
+    width: 150px;
+    height: 100px;
+    transform: translateY(200px);
+}
+
+#title-menu h1 {
+    color:white;
+    transform: translateY(90px);
+    font-size: 400%
+}
+
+/* Hero select Menu ------------------------------------------------------------------------------------ */
+
+#hero-select-menu {
+    width: 100%;
+    height: 100%;
+    background-color: grey;
+    background-image: url("../img/selection-bg.png");
+    background-size: cover;
+    transition: background-image 0.15s ease-in-out;
+}
+
+#hero-select-menu h2 {
+    margin:0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: white;
+}
+
+#hero-select-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    transform: translateY(325px);
+}
+
+#warrior-select-button:hover {
+
+}
+#wizard-select-button:hover {
+
+}
+#barbarian-select-button:hover {
+
 }
