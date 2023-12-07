@@ -72,8 +72,7 @@ button:hover {
 /* Game State Containers ------------------------------------------------------------------------ */
 
 .game-container {
-    width: 900px;
-    min-width: 600px;
+    width: 80vw;
     aspect-ratio: 16 / 9;
     margin: 20px auto;
 }
@@ -130,6 +129,8 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
     background-color: #fff;
     color: #333;
+    transition: width 0.1s ease;
+    transition: height 0.1s ease;
 }
 
 .card-in-hand:hover {

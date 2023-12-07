@@ -62,7 +62,7 @@ html.barbarianButton.addEventListener('click', function() { chooseHero('barbaria
 html.preBattleMenuButton.addEventListener('click', function() { beginBattle() })
 html.endTurnButton.addEventListener('click', function() { endTurn() })
 
-html.cards.forEach((card, index) => {
+html.hand.forEach((card, index) => {
     card.addEventListener('click', () => playCard(index));
 });
 
@@ -79,6 +79,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     render() 
 })
+
+window.addEventListener('load', () => {
+    const gameContainer = document.querySelector('.game-container');
+    if (gameContainer) {
+        const computedWidth = gameContainer.offsetWidth;
+        gameContainer.style.width = `${computedWidth}px`;
+    }
+});
 
 function createCardHTML(title, emoji, description) {
     return `
@@ -120,6 +128,14 @@ function endTurn() {
     game.endTurn()
     game.beginBattle()
     render()
+}
+
+function performEffect(effect) {
+    if (effect === "damage") {
+        console.log("PERFORM DAMAGE EFFECT")
+    } else {
+        console.log("NOT DAMAGE EFFECT")
+    }
 }
 
 // Menu navigation ----------------------------------------------------------------------------------------
@@ -188,18 +204,24 @@ function render () {
         })
     }
 
-    console.log("hand: " + game.hand)
     for (let [index, element] of html.hand.entries()) {
         game.hand[index]
         if(game.hand[index]) {
-            element.style.opacity = 1.0
-            // element.innerHTML = `
-            // <div class='title'>${game.hand[index]}</h1>
-            // `
-            element.innerHTML = createCardHTML(game.hand[index], Card.image[game.hand[index]], "Description goes here, and will be long" )
+            element.style.display = "block"
+            element.innerHTML = createCardHTML(
+                Card.called(game.hand[index]).name, 
+                Card.image[game.hand[index]], 
+                Card.description[game.hand[index]] )
         } else {
-            element.style.opacity = 0.0
+            element.style.display = "none"
         }
+    }
+
+    for (let [index, element] of html.cardChoices.entries()) {
+        element.innerHTML = createCardHTML(
+            game.cardChoices[index], 
+            Card.image[game.cardChoices[index]], 
+            Card.description[game.cardChoices[index]] )
     }
 }
 
