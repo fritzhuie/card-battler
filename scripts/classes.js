@@ -498,7 +498,8 @@ class Effect {
 }
 
 class Card {
-    constructor(architype, baseCost, ...effects) {
+    constructor(name, architype, baseCost, ...effects) {
+        this.name = name;
         this.architype = architype;
         this.cost = baseCost;
         this.effects = effects;
@@ -516,7 +517,23 @@ Card.image = {
     'fireblast': '🔥',
     'manashield': '✨',
     'cleave': '🗡️',
-    'flourish': '⽍'
+    'flourish': '⽍',
+    'hamstring': '🔪',
+    'hiltpummel':'🗡️',
+    'raiseshield':'🛡️',
+    'shieldslam':'💥',
+    'battlestance':'🕺',
+    'disenguinate':'🩸',
+    'eyegouge':'✌️',
+    'kick':'🦶',
+    'howl':'💬',
+    'batheinblood':'🍴',
+    'magicmissile':'🪄',
+    'icebolt':'❄️',
+    'polymorph':'🐑',
+    'arcaneblast':'❈',
+    'pyroblast':'💥',
+    'channel':'⚡️'
 }
 
 Card.cards = {
