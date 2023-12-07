@@ -506,8 +506,17 @@ class Card {
 
     static called(name) {
         return Card.cards[name]
-        // Example: let strike = Card.called('strike');
+        //  Card.called('strike');
     }
+}
+
+Card.image = {
+    'strike': '🗡️',
+    'armor': '🛡️',
+    'fireblast': '🔥',
+    'manashield': '✨',
+    'cleave': '🗡️',
+    'flourish': '⽍'
 }
 
 Card.cards = {

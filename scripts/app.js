@@ -73,19 +73,20 @@ html.cardChoices.forEach((card, index) => {
 document.addEventListener('DOMContentLoaded', function() { 
     html.cards = document.querySelectorAll('.card')
 
-    function createCardHTML() {
-        return `
-            <div class='title'>Title</h1>
-            <p class='description'>Description</p>
-        `;
-    }
-
     html.cards.forEach((card, index) => {
         card.innerHTML = createCardHTML();
     });
 
     render() 
 })
+
+function createCardHTML(title, emoji, description) {
+    return `
+        <div class='title'>${title}</h1>
+        <div class='card-image'>${emoji}</div>
+        <p class='description'>${description}</p>
+    `;
+}
 
 // gameplay buttons ----------------------------------------------------------------------------------------
 
@@ -189,9 +190,13 @@ function render () {
 
     console.log("hand: " + game.hand)
     for (let [index, element] of html.hand.entries()) {
+        game.hand[index]
         if(game.hand[index]) {
-            //style the card
             element.style.opacity = 1.0
+            // element.innerHTML = `
+            // <div class='title'>${game.hand[index]}</h1>
+            // `
+            element.innerHTML = createCardHTML(game.hand[index], Card.image[game.hand[index]], "Description goes here, and will be long" )
         } else {
             element.style.opacity = 0.0
         }
