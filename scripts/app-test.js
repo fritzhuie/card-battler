@@ -1,3 +1,5 @@
+
+
 const html = {
     "heroMaxHp": document.getElementById('hero-max-hp'),
     "heroHp": document.getElementById('hero-hp'),

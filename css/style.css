@@ -1,33 +1,18 @@
-@font-face {
-    font-family: 'Eater';
-    src: url('Eater-Regular.ttf') format('truetype');
+:root {
+    --gradient-background: linear-gradient(to top, #333, rgba(7,7,7,0.3));
 }
 
-body, html {
+* {
     font-family: "Luminari", "fantasy";
+    /* font-family: "arial"; */
+    padding: 0;
+    margin: 0;
+}
+
+body {
     background-color: black;
-}
-
-h1 {
-    text-align: center;
-    font-family: "Luminari", "fantasy";
-    font-size: 75px;
-    color: white;
-    font-weight: 900;
-    margin: 150px 0 80px 0;
-    text-shadow: 3px 3px #000000;
-}
-
-h2 {
-    font-family: "Luminari", "fantasy";
-    font-size: 48px;
-    margin: 100px;
-}
-
-h3 {
-    font-family: "Luminari", "fantasy";
-    font-size: 36px;
-    margin: 10px;
+    height: 100%;
+    overflow: hidden;
 }
 
 button {
@@ -45,153 +30,332 @@ button {
 }
 
 button:hover {
-    background-color: #cdefcf;
+    background-color: lightgreen;
 }
+
+.battle-container {
+    position: relative;
+}
+
+/* Background images ------------------------------------- */
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 2%;
+    right: 60%;
+    bottom: 0;
+    background-image: url('../img/axe-shaman.png');
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.battle-container > *:not(.background-overlay) {
+    z-index: 2;
+    position: relative;
+}
+
+.hero-portrait-container {
+    grid-area: hero-portrait;
+    background-image: url("../img/barbarian-tall.png");
+    background-size: cover;
+    background-position: center;
+    background-color: lightgrey;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Game State Containers ------------------------------------------------------------------------ */
 
 .game-container {
-    width: 100%;
-    margin: 200px auto;
-    background-color: #999;
-    display: none;
-    margin: 0 auto;
+    width: 900px;
+    min-width: 600px;
+    aspect-ratio: 16 / 9;
+    margin: 20px auto;
 }
 
-.hand {
+.battle-container {
+    width: 100%;
+    height: 100%;
+    gap: 0px 0px;
+    display: grid;
+    grid-auto-flow: row;
+    background-color: white;
+    grid-template-columns: 15% auto 15% 15% 15% 20%;
+    grid-template-rows: 20% 1fr 20%;
+    grid-template-areas :
+        "enemy-health       enemy-health    enemy-action    .               .               hero-portrait"
+        ".                  .               .               action-log      action-log      hero-portrait"
+        "deck-pile          cards           cards           cards           discard-pile    hero-portrait";
+}
+
+
+/* Cards in hand ------------------------------------------------------------------------------------ */
+
+.card-container {
+    grid-area: cards;
+    background: var(--gradient-background);
     display: flex;
     flex-direction: row;
+    position: relative;
+    /* overflow: hidden; */
+}
+
+#card-preview {
+    position: relative;
+    bottom: 0;
+    height: 45vh;
+    width: 15vw;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    background-color: white;
+    color: #333;
+    transform-origin: bottom center;
+    left: -15vw;
+    transform: translateY(10vw) rotate(-3deg);
+    z-index: 10000;
+    opacity: 0.0;
 }
 
 .card {
-    width: 120px;
-    height: 150px;
-    background-color: #fff;
+    font-size: 16px;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin: 0 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
+    border-radius: 2px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    background-color: #fff;
     color: #333;
 }
 
-.text-flash { animation: textFlashEffect 0.5s; }
-@keyframes textFlashEffect {
-    0% { color: red; }
-    100% { color: black; }
+.card-in-hand:hover {
+    height: 175px;
+    width: 125px;
+    z-index: 10;
 }
 
-.img-flash { animation: flashEffect 0.5s; }
-@keyframes flashEffect {
-    0% { background-color: red; }
-    100% { background-color: white; }
-}
-
-.border-flash { animation: flashBorderEffect 2.0s; }
-@keyframes flashBorderEffect {
-    0% { border-color: red;}
-    100% { border-color: black; }
-}
-
-.text-flash-blue { animation: textFlashEffectBlue 2.0s; }
-@keyframes textFlashEffectBlue {
-    0% { color: rgb(50, 255, 255); }
-    100% { color: black; }
-}
-
-.border-flash-blue { animation: flashBorderEffectBlue 2.0s; }
-@keyframes flashBorderEffectBlue {
-    0% { border-color: rgb(50, 255, 255);}
-    100% { border-color: black; }
-}
-
-.wavy {
-    animation-name: wavy;
-    animation-duration: 1.3s;
-    animation-timing-function: ease;
-    animation-iteration-count: infinite;
-    position: relative;
-    top: 0;
-    left: 0;
-    color:#fff;
-  }
-  @keyframes wavy {
-    0% {
-      top: 0px;
-      color:#555;
-    }
-    50% {
-      top: -10px;
-      color:#fff;
-    }
-    100% {
-      top: 0px;
-      color:#555;
-    }
-  }
-
-#hero-sidebar {
-    display: none;
-    width: 200px;
-    height: 100%;
-    background-color: #8b8b8b;
-    padding: 10px;
-    box-sizing: border-box;
-    flex-direction: column;
-    align-items: center;
-    font-style: italic;
-}
-
-#hero-sidebar p {
-    transition: opacity 800ms;
-}
-
-#hero-portrait {
-    border-radius: 15px;
-    border: 5px solid #000;
-    width: 80%;
-    height: auto;
-}
-
-#draw-pile {
-    font-weight: bold;
-    margin: 100px 0 0 0;
-}
-
-#draw-pile-image {
+.card-in-hand {
+    position: absolute;
+    bottom: 0;
+    height: 100px;
     width: 75px;
+    transform-origin: bottom center;
 }
 
-#enemy-sidebar {
-    padding: 20px;
+.card-in-hand:nth-child(1) { left: 20%; transform: translateY(-20px) rotate(-30deg); z-index: 1; }
+.card-in-hand:nth-child(2) { left: 26.3%; transform: translateY(-30px) rotate(-20deg); z-index: 2; }
+.card-in-hand:nth-child(3) { left: 33.6%; transform: translateY(-35px) rotate(-10deg); z-index: 3; }
+.card-in-hand:nth-child(4) { left: 40%; transform: translateY(-40px) rotate(0deg);  z-index: 4; }
+.card-in-hand:nth-child(5) { left: 46.3%; transform: translateY(-35px) rotate(10deg); z-index: 5; }
+.card-in-hand:nth-child(6) { left: 53.6%; transform: translateY(-30px) rotate(20deg); z-index: 6; }
+.card-in-hand:nth-child(7) { left: 60%; transform: translateY(-20px) rotate(30deg); z-index: 7; }
+
+/* Draw and discard piles ------------------------------------------------------------------------------------ */
+
+.discard-pile-container {
+    grid-area: discard-pile;
+    background: var(--gradient-background);
+}
+
+.deck-pile-container {
+    grid-area: deck-pile;
+    background: var(--gradient-background);
+}
+
+.card-counter {
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#enemy-sidebar img {
-    border-radius: 35px;
-    border: 7px solid #000;
-    width: 200px;
-    height: 200px;
+.deck-count {
+    font-size: 300%;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: black;
+    text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px  2px 0 #fff, 2px  2px 0 #fff;
+    background-image: url('../img/draw.png');
+    background-size: 70%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.discard-count {
+    font-size: 300%;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: black;
+    text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px  2px 0 #fff, 2px  2px 0 #fff;
+    background-image: url('../img/draw-small.png');
+    background-size: 70%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.end-turn-container {
+    background: linear-gradient(to top, #000, rgba(128, 128, 128, 0.0));
+    height: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Health & status ---------------------------------------------------------------------------- */
+
+.enemy-health-container {
+    grid-area: enemy-health;
+}
+
+.status-grid {
     margin: 10px;
-    background-color: white;
+}
+
+.health-container {
+    position: relative;
+    width: 100%;
+    height: 20px;
+}
+
+.health-slider-background {
+    border: 2px solid black;
+    position: absolute;
+    background: linear-gradient(to top, grey, black);
+    width: 100%;
+    height: 20px;
+    z-index: 1;
+    border-radius: 40px;
+}
+
+.health-slider {
+    border: 2px solid black;
+    position: absolute;
+    background: linear-gradient(to top, red, darkred);
+    width: 69%;
+    height: 20px;
+    z-index: 2;
+    border-radius: 40px;
+}
+
+.health-container p {
+    position: absolute;
+    z-index: 3;
+    width: 50%;
+    text-align: center;
+    color: black; /* Text color */
+}
+
+.status-icon {
+    /* background-color: grey; */
+    width: 25px;
+    height: 25px;
+    margin: 5px 2px;
+
+    background-size: cover;
+    background-position: center;
+
+    background-color: rgba(255,255,255,0.6);
+    border-radius: 5px;
+
+    text-align: center;
+    text-justify: center;
+
+}
+
+
+.bleed-status {
+    background-image: url('../img/bleed-icon.png');
+}
+.stun-status {
+    background-image: url('../img/stun-icon.png');
+}
+.empower-status {
+    background-image: url('../img/empower-icon.png');
+}
+.enfeable-status {
+    background-image: url('../img/enfeable-icon.png');
+}
+.burn-status {
+    background-image: url('../img/burn-icon.png');
+}
+
+.chill-status {
+    background-image: url('../img/chill-icon.png');
+}
+
+.status-effects-container {
+    display: flex;
+    justify-content: start;
+}
+
+#hero-health {
+    text-align: right;
+}
+
+#hero-name {
+    margin: 0 5px;
+    text-align: right;
 }
 
 #enemy-name {
-    font-weight: bold;
+    margin: 0 7px;
 }
 
-#enemy-status {
-    padding: 10px;
+#hero-status-effects {
+    justify-content: end;
 }
 
-#class-label  {
-    font-weight: bold;
-    font-family: "Luminari", "fantasy";
+/* 
+
+/* Enemy Action -------------------------------------------------------------------------------- */
+
+.enemy-action-container {
+    grid-area: enemy-action;
 }
+
+.enemy-action {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.enemy-action h1 {
+    margin: 0 15px 0 15px;
+    font-size: 40px;
+    background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	background-color: red;
+    text-align: center;
+}
+
+.enemy-action h2 {
+    font-weight: 900;
+    color: red;
+    font-size: 40px;
+    text-align: center;
+}
+
+
+/* Action Log ---------------------------------------------------------------------------------- */
+
+.action-log-container {
+    grid-area: action-log;
+}
+
+/* Main Menu ------------------------------------------------------------------------------------ */
 
 #title-menu {
-    display: none;
+    width: 100%;
+    height: 100%;
     text-align: center;
     background-image: url("../img/crypt.png");
     background-position: center;
@@ -200,63 +364,27 @@ button:hover {
 #title-menu p {
     font-size: 150%;
     color: white;
-    transform: translateY(150px);
+    transform: translateY(90px);
 }
 
 #title-menu button {
     width: 150px;
     height: 100px;
-    background-color:#4CAF50;
+    transform: translateY(200px);
 }
 
-#title-menu button:hover {
-    background-color: #8dac8e;
+#title-menu h1 {
+    color:white;
+    transform: translateY(90px);
+    font-size: 400%
 }
 
-#dialog-menu {
-    display: none;
-    text-align: center;
-}
-
-#dialog-menu p {
-    text-align: justify;
-    width: 600px;
-    padding: 70px;
-    font-size: x-large;
-    font-family: "Luminari", "fantasy";
-    margin: 100px auto 100px;
-    background-image: url("../img/scroll.png");
-    background-size: 100% 100%;
-    color:rgb(24, 37, 37);
-    opacity: 80%;
-}
-
-#enemy-intro-menu {
-    text-align: center;
-}
-
-#enemy-intro-menu img {
-    width: 300px;
-    margin: 30px 0 0 0;
-    border-radius: 80px;
-    background-color: white;
-}
-
-#enemy-intro-menu h3 {
-    font-family: "Eater";
-    font-weight: bolder;
-    font-size: 48px;
-    border-radius: 30px;
-
-}
-
-#enemy-intro-menu p {
-    text-align: center;
-    font-style: italic;
-    margin: 16px;
-}
+/* Hero select Menu ------------------------------------------------------------------------------------ */
 
 #hero-select-menu {
+    width: 100%;
+    height: 100%;
+    background-color: grey;
     background-image: url("../img/selection-bg.png");
     background-size: cover;
     transition: background-image 0.15s ease-in-out;
@@ -276,71 +404,48 @@ button:hover {
     display: flex;
     justify-content: space-around;
     width: 100%;
-    margin-top: 400px;
+    transform: translateY(325px);
 }
 
-#hero-select-buttons button {
-    font-family: "Luminari", "fantasy";
-    width: 20%;
-    height: 50px;
-    padding: 10px;
-    margin: 0 5px;
+/* Card select Menu ------------------------------------------------------------------------------------ */
+
+#card-select-menu {
+    width: 100%;
+    height: 100%;
+    background-color: black;
 }
 
-#battle-screen {
-    display: none;
-}
-
-#game-area {
+.card-selection-container {
+    width: 100%;
     display: flex;
-    width: 1000px;
-    height: 600px;
-    background-color: #999;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-content: center;
+    transform: translateY(150px);
+    
 }
 
-.transition-layer {
-    animation-name: transition-layer;
-    animation-duration: 1.5s;
-    animation-timing-function: ease;
-    animation-iteration-count: infinite;
-    position: absolute;
-    z-index: 999;
-    width:100vw;
-    height: 100vw;
+#card-select-menu h1 {
+    width: 100%;
+    color: white;
+    text-align: center;
+    transform: translateY(100px);
+}
+
+.card-choice {
+    width: 100px;
+    height: 135px;
     background-color: white;
-    opacity: 0.0;
-  }
-  @keyframes transition-layer {
-    0% {
-      opacity: 1.0;
-    }
-    100% {
-      opacity: 0.0;
-    }
-  }
+    margin-left: 50px;
+    margin-right: 50px;
+}
 
-  .transition-layer-container {
-    position: absolute;
-    z-index: 999;
-    width:100vw;
-    height: 100vw;
-  }
+.card .description {
+    font-size: 50%;
+    font-family: 'arial'
+}
 
-  .transition-layer-cell {
-    animation-name: transition-layer-cell;
-    animation-duration: 2.0s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    background-color: red;
-  }
-  @keyframes transition-layer-cell {
-    0% {
-      opacity: 1.0;
-    }
-    100% {
-      opacity: 0.0;
-    }
-  }
-
-  
+.card .title {
+    font-size: 100%;
+    color:black;
+    margin: 5px;
+}
