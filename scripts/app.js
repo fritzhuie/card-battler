@@ -43,9 +43,9 @@ const html = {
     wizardButton: document.getElementById('wizard-select-button'),
     barbarianButton: document.getElementById('barbarian-select-button'),
 
-    dialogMenu: document.getElementById('dialog-menu'),
-    dialogText: document.getElementById('dialog-text'),
-    dialogMenuButton: document.getElementById('dialog-button')
+    preBattleMenu: document.getElementById('dialog-menu'),
+    preBattleText: document.getElementById('dialog-text'),
+    preBattleMenuButton: document.getElementById('dialog-button')
 }
 
 // event listeners ----------------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ html.newGameButton.addEventListener('click', function() { beginNewGame() })
 html.warriorButton.addEventListener('click', function() { chooseHero('warrior') })
 html.wizardButton.addEventListener('click', function() { chooseHero('wizard') })
 html.barbarianButton.addEventListener('click', function() { chooseHero('barbarian') })
-html.dialogMenuButton.addEventListener('click', function() { beginBattle() })
+html.preBattleMenuButton.addEventListener('click', function() { beginBattle() })
 html.endTurnButton.addEventListener('click', function() { endTurn() })
 
 document.addEventListener('DOMContentLoaded', function() { render() })
@@ -67,6 +67,11 @@ function beginNewGame() {
     render()
 }
 
+function chooseHero(choice) {
+    game.chooseHero(choice)
+    render()
+}
+
 function beginBattle() {
     game.beginBattle()
     render()
@@ -75,11 +80,6 @@ function beginBattle() {
 function endTurn() {
     game.endTurn()
     game.beginBattle()
-    render()
-}
-
-function chooseHero(choice) {
-    game.chooseHero(choice)
     render()
 }
 
@@ -101,21 +101,22 @@ function hide(...elements) {
 let titleMenu = true;
 function render () {
     if (titleMenu) {
-        hide(html.battleContainer, html.dialogMenu, html.heroSelectMenu)
+        hide(html.battleContainer, html.preBattleMenu, html.heroSelectMenu)
         show(html.titleMenu)
-    } else if (game.gameState = GAME_STATE.HERO_SELECT) {
-        hide(html.battleContainer, html.dialogMenu, html.titleMenu)
+    } else if (game.gameState === GAME_STATE.HERO_SELECT) {
+        console.log("HERO SELECT")
+        hide(html.battleContainer, html.preBattleMenu, html.titleMenu)
         show(html.heroSelectMenu)
-    } else if (game.gameState = GAME_STATE.PRE_BATTLE) {
+    } else if (game.gameState === GAME_STATE.PRE_BATTLE) {
+        console.log("PREBATTLE")
         hide(html.battleContainer, html.heroSelectMenu, html.titleMenu)
-        show(html.dialogMenu)
-    } else if (game.gameState = GAME_STATE.BATTLE) {
-        hide(html.dialogMenu, html.heroSelectMenu, html.titleMenu)
+        show(html.preBattleMenu)
+    } else if (game.gameState === GAME_STATE.BATTLE) {
+        hide(html.preBattleMenu, html.heroSelectMenu, html.titleMenu)
         show(html.battleContainer)
-    } else if (game.gameState = GAME_STATE.LOSE) {
+    } else if (game.gameState === GAME_STATE.LOSE) {
 
-    } else if (game.gameState = GAME_STATE.WIN) {
+    } else if (game.gameState === GAME_STATE.WIN) {
 
     }
-
 }
