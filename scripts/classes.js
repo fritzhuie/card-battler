@@ -149,6 +149,7 @@ class CardGame {
                     if (this.#hero.hasStatusEffect('empower')) {
                         this.#enemy.takeDamage(effect.value * 2)
                     }
+                    performEffect('damage')
                     this.#enemy.takeDamage(effect.value)
                     console.log(`${effect.name} dealt ${effect.value} damage to ${this.#enemy.name}`)
                     break;

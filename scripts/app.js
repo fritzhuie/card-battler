@@ -130,6 +130,14 @@ function endTurn() {
     render()
 }
 
+function performEffect(effect) {
+    if (effect === "damage") {
+        console.log("PERFORM DAMAGE EFFECT")
+    } else {
+        console.log("NOT DAMAGE EFFECT")
+    }
+}
+
 // Menu navigation ----------------------------------------------------------------------------------------
 
 function show(element) {
