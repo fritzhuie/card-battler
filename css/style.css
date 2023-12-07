@@ -124,31 +124,35 @@ button:hover {
 }
 
 .card {
-    position: absolute;
-    bottom: 0;
-    height: 20vh;
-    width: 7vw;
     font-size: 16px;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 2px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
     background-color: #fff;
     color: #333;
+}
+
+.card-in-hand:hover {
+    height: 175px;
+    width: 125px;
+    z-index: 10;
+}
+
+.card-in-hand {
+    position: absolute;
+    bottom: 0;
+    height: 100px;
+    width: 75px;
     transform-origin: bottom center;
 }
 
-.card:hover {
-    height: 30vh;
-    width: 10.5vw;
-}
-
-.card:nth-child(1) { left: 20%; transform: translateY(-20px) rotate(-30deg); z-index: 1; }
-.card:nth-child(2) { left: 26.3%; transform: translateY(-30px) rotate(-20deg); z-index: 2; }
-.card:nth-child(3) { left: 33.6%; transform: translateY(-35px) rotate(-10deg); z-index: 3; }
-.card:nth-child(4) { left: 40%; transform: translateY(-40px) rotate(0deg);  z-index: 4; }
-.card:nth-child(5) { left: 46.3%; transform: translateY(-35px) rotate(10deg); z-index: 5; }
-.card:nth-child(6) { left: 53.6%; transform: translateY(-30px) rotate(20deg); z-index: 6; }
-.card:nth-child(7) { left: 60%; transform: translateY(-20px) rotate(30deg); z-index: 7; }
+.card-in-hand:nth-child(1) { left: 20%; transform: translateY(-20px) rotate(-30deg); z-index: 1; }
+.card-in-hand:nth-child(2) { left: 26.3%; transform: translateY(-30px) rotate(-20deg); z-index: 2; }
+.card-in-hand:nth-child(3) { left: 33.6%; transform: translateY(-35px) rotate(-10deg); z-index: 3; }
+.card-in-hand:nth-child(4) { left: 40%; transform: translateY(-40px) rotate(0deg);  z-index: 4; }
+.card-in-hand:nth-child(5) { left: 46.3%; transform: translateY(-35px) rotate(10deg); z-index: 5; }
+.card-in-hand:nth-child(6) { left: 53.6%; transform: translateY(-30px) rotate(20deg); z-index: 6; }
+.card-in-hand:nth-child(7) { left: 60%; transform: translateY(-20px) rotate(30deg); z-index: 7; }
 
 /* Draw and discard piles ------------------------------------------------------------------------------------ */
 
@@ -173,7 +177,7 @@ button:hover {
     width: 100%;
     height: 100%;
     text-align: center;
-    color: black; /* Text color */
+    color: black;
     text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px  2px 0 #fff, 2px  2px 0 #fff;
     background-image: url('../img/draw.png');
     background-size: 70%;
@@ -186,7 +190,7 @@ button:hover {
     width: 100%;
     height: 100%;
     text-align: center;
-    color: black; /* Text color */
+    color: black;
     text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px  2px 0 #fff, 2px  2px 0 #fff;
     background-image: url('../img/draw-small.png');
     background-size: 70%;
@@ -403,12 +407,45 @@ button:hover {
     transform: translateY(325px);
 }
 
-#warrior-select-button:hover {
+/* Card select Menu ------------------------------------------------------------------------------------ */
 
+#card-select-menu {
+    width: 100%;
+    height: 100%;
+    background-color: black;
 }
-#wizard-select-button:hover {
 
+.card-selection-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    transform: translateY(150px);
+    
 }
-#barbarian-select-button:hover {
 
+#card-select-menu h1 {
+    width: 100%;
+    color: white;
+    text-align: center;
+    transform: translateY(100px);
+}
+
+.card-choice {
+    width: 100px;
+    height: 135px;
+    background-color: white;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.card .description {
+    font-size: 50%;
+    font-family: 'arial'
+}
+
+.card .title {
+    font-size: 100%;
+    color:black;
+    margin: 5px;
 }
