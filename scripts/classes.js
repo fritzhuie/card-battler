@@ -536,38 +536,63 @@ Card.image = {
     'channel':'⚡️'
 }
 
+Card.description = {
+    'strike': 'Deals Damage.',
+    'armor': 'Gain armor.',
+    'fireblast': 'Deal Damage & burn the enemy.',
+    'manashield': 'Gain armor, draw a card',
+    'cleave': 'Deal damage, cause bleed.',
+    'flourish': 'Deal X damage, heal for X',
+    'hamstring': '',
+    'hiltpummel':'',
+    'raiseshield':'',
+    'shieldslam':'',
+    'battlestance':'',
+    'disenguinate':'',
+    'eyegouge':'',
+    'kick':'',
+    'howl':'',
+    'batheinblood':'',
+    'magicmissile':'',
+    'icebolt':'',
+    'polymorph':'',
+    'arcaneblast':'',
+    'pyroblast':'',
+    'channel':''
+}
+
 Card.cards = {
     /* Starting cards */
-    'strike': new Card('warrior', 1, new Effect('damage', 5)),
-    'armor': new Card('warrior', 1, new Effect('armor', 5)),
-    'fireblast': new Card('wizard', 1, new Effect('damage', 5)),
-    'manashield': new Card('wizard', 1, new Effect('armor', 5), new Effect('draw', 1)),
-    'cleave': new Card('barbarian', -1, new Effect('damage', 5), new Effect('bleed', 3)),
-    'flourish': new Card('barbarian', 3, new Effect('damage', 8), new Effect('heal', 4)),
+    'strike':       new Card('Strike', 'warrior', 1, new Effect('damage', 5)),
+    'armor':        new Card('Armor Up', 'warrior', 1, new Effect('armor', 5)),
+    'fireblast':    new Card('Fire Blast', 'wizard', 1, new Effect('damage', 5)),
+    'manashield':   new Card('Mana Shield', 'wizard', 1, new Effect('armor', 5), new Effect('draw', 1)),
+    'cleave':       new Card('Cleave', 'barbarian', -1, new Effect('damage', 5), new Effect('bleed', 3)),
+    'flourish':     new Card('Flourish', 'barbarian', 3, new Effect('damage', 8), new Effect('heal', 4)),
 
     /* Shared cards */
 
     /* Warrior cards */
-    'hamstring':    new Card('warrior', 0, new Effect('damage', 3), new Effect('enfeable', 2)),
-    'hiltpummel':   new Card('warrior', 1, new Effect('damage', 3), new Effect('stun', 1)),
-    'raiseshield':  new Card('warrior', 2, new Effect('armor', 12)),
-    'shieldslam':   new Card('warrior', 1, new Effect('armor-damage', 1)),
-    'battlestance': new Card('warrior', 0, new Effect('empower', 1)),
+    'hamstring':    new Card('Hamstring', 'warrior', 0, new Effect('damage', 3), new Effect('enfeable', 2)),
+    'hiltpummel':   new Card('Hilt Pummel', 'warrior', 1, new Effect('damage', 3), new Effect('stun', 1)),
+    'raiseshield':  new Card('Raise Shield', 'warrior', 2, new Effect('armor', 12)),
+    'shieldslam':   new Card('Shield Slam', 'warrior', 1, new Effect('armor-damage', 1)),
+    'battlestance': new Card('Battlestance', 'warrior', 0, new Effect('empower', 1)),
 
     /* Wizard cards */
-    'disenguinate': new Card('barbarian', -1, new Effect('bleed', 7), new Effect('bleed-damage', 1)),
-    'eyegouge':     new Card('barbarian', 2, new Effect('damage', 3), new Effect('stun', 1)),
-    'kick':         new Card('barbarian', -1, new Effect('damage', 3), new Effect('draw', 1)),
-    'howl':         new Card('barbarian', -3, new Effect('enfeable', 1)),
-    'batheinblood': new Card('barbarian', 3, new Effect('bleed-heal', 1)),
+    'eyegouge':     new Card('Disenguinate', 'barbarian', 2, new Effect('damage', 3), new Effect('stun', 1)),
+    'kick':         new Card('Eye Gouge', 'barbarian', -1, new Effect('damage', 3), new Effect('draw', 1)),
+    'howl':         new Card('Kick', 'barbarian', -3, new Effect('enfeable', 1)),
+    'disenguinate': new Card('Howl', 'barbarian', -1, new Effect('bleed', 7), new Effect('bleed-damage', 1)),
+    'batheinblood': new Card('Bathe in Blood', 'barbarian', 3, new Effect('bleed-heal', 1)),
 
     /* Barbarian cards */
-    'magicmissile': new Card('wizard', 0, new Effect('mana-damage', 3)),
-    'icebolt':      new Card('wizard', 1, new Effect('damage', 6), new Effect('enfeable', 1)),
-    'polymorph':    new Card('wizard', 1, new Effect('stun', 1)),
-    'arcaneblast':  new Card('wizard', 2, new Effect('damage', 16)),
-    'pyroblast':    new Card('wizard', 2, new Effect('damage', 12), new Effect('burn', 2)),
-    'channel':      new Card('wizard', 1, new Effect('mana', 3)),
+    'magicmissile': new Card('Magicmissile', 'wizard', 0, new Effect('mana-damage', 3)),
+    'icebolt':      new Card('Icebolt', 'wizard', 1, new Effect('damage', 6), new Effect('enfeable', 1)),
+    'polymorph':    new Card('Polymorph', 'wizard', 1, new Effect('stun', 1)),
+    'arcaneblast':  new Card('Arcaneblast', 'wizard', 2, new Effect('damage', 16)),
+    'pyroblast':    new Card('Pyroblast', 'wizard', 2, new Effect('damage', 12), new Effect('burn', 2)),
+    'channel':      new Card('Channel', 'wizard', 1, new Effect('mana', 3)),
 }
 
 Card.warriorCards = ['hamstring', 'hiltpummel', 'raiseshield', 'shieldslam', 'battlestance']
