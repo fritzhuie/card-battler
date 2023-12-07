@@ -149,7 +149,6 @@ class CardGame {
                     if (this.#hero.hasStatusEffect('empower')) {
                         this.#enemy.takeDamage(effect.value * 2)
                     }
-                    performEffect('damage')
                     this.#enemy.takeDamage(effect.value)
                     console.log(`${effect.name} dealt ${effect.value} damage to ${this.#enemy.name}`)
                     break;
@@ -191,6 +190,8 @@ class CardGame {
                     console.log(`ERROR: Effect type '${effect.name}' not recognized.`);
             }
         });
+
+        performEffect(name)
     }
 
     #beginPreBattle() {
@@ -438,7 +439,7 @@ class EnemyShaman extends Enemy {
         super();
         this.name = 'Orthic Shaman'
         this.description = '100% organic boar skull!'
-        this.portrait = 'img/axe-shaman.png'
+        this.portrait = '../img/axe-shaman.png'
         this.maxHealth = 10
         this.health = this.maxHealth
         this.armor = 0
@@ -455,8 +456,8 @@ class EnemyBladeRevenant extends Enemy {
     constructor() {
         super();
         this.name = 'Blade Revenant'
-        this.description = "Hint: She's gonna hit you with the sword"
-        this.portrait = 'img/female-undead.png'
+        this.description = "Hint: He's gonna hit you with the sword."
+        this.portrait = '../img/male-undead.png'
         this.maxHealth = 10
         this.health = this.maxHealth
         this.armor = 0
@@ -471,14 +472,14 @@ class EnemyMecharaptor extends Enemy {
         super();
         this.name = 'Mecha Raptor'
         this.description = 'They Didn’t Stop To Think If They Should'
-        this.portrait = 'img/mecharaptor.png'
+        this.portrait = '../img/mecharaptor.png'
         this.maxHealth = 10
         this.health = this.maxHealth
         this.armor = 0
         this.actions = [
-            new EnemyAction('Swipe', 'jumps and swipes with its claws', {'damage': 10}),
-            new EnemyAction('Pounce', 'leaps at you, attacking with fang and claw', {'damage': 11}),
-            new EnemyAction('Screech', 'lets out a deafening screech', {'damage': 12})
+            new EnemyAction('Swipe', 'jumps and swipes with its claws', new Effect('damage', 10)),
+            new EnemyAction('Pounce', 'leaps at you, attacking with fang and claw', new Effect('damage', 11)),
+            new EnemyAction('Screech', 'lets out a deafening screech', new Effect('damage', 12))
         ]
     }
 }

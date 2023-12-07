@@ -2,13 +2,12 @@
 let game = new CardGame()
 
 
-// HTML elements --------------------------------------------------------------------------------
+// HTML elements --------------------------------------------------------------------------------------------
 
 const html = {
-    gameContainer: document.querySelector('.game-container'), // Contains whole game
-
-// Selecting elements by ID
-    transitionLayer: document.getElementById('transition-layer'),
+// Root container
+    gameContainer: document.querySelector('.game-container'),
+        transitionLayer: document.getElementById('transition-layer'),
     
 // Hero values
     heroName: document.getElementById('hero-name'),
@@ -19,37 +18,37 @@ const html = {
 // Enemy Values
     enemyName: document.getElementById('enemy-name'),
     enemyHealth: document.getElementById('enemy-health'),
+    enemyHealthSlider: document.getElementById('enemy-health-slider'),
     enemyStatusEffects: document.getElementById('enemy-status-effects'),
     enemyPortrait: document.querySelector('.background-overlay'),
-    enemyActionContainer: document.querySelector('.enemy-action-container'),
+    enemyAction: document.querySelector('.enemy-action'),
+    enemyActionIcon: document.querySelector('.enemy-action-icon'),
 
-// cards
+// Cards
     cards: document.querySelectorAll('.card'),
     hand: document.querySelectorAll('.card-in-hand'),
-    cardPreview: document.getElementById('card-preview'),
     discardPileContainer: document.querySelector('.discard-pile-container'),
     deckPileContainer: document.querySelector('.deck-pile-container'),
 
-// Selecting buttons
-    endTurnButton: document.querySelector('.end-turn'),
-
-// Scenes
+// Gamestate Scene containers
     battleContainer: document.querySelector('.battle-container'),
+        endTurnButton: document.querySelector('.end-turn'),
 
     titleMenu: document.getElementById('title-menu'),
-    newGameButton: document.getElementById('new-game-button'),
+        newGameButton: document.getElementById('new-game-button'),
+        
 
     heroSelectMenu: document.getElementById('hero-select-menu'),
-    warriorButton: document.getElementById('warrior-select-button'),
-    wizardButton: document.getElementById('wizard-select-button'),
-    barbarianButton: document.getElementById('barbarian-select-button'),
+        warriorButton: document.getElementById('warrior-select-button'),
+        wizardButton: document.getElementById('wizard-select-button'),
+        barbarianButton: document.getElementById('barbarian-select-button'),
 
     preBattleMenu: document.getElementById('dialog-menu'),
-    preBattleText: document.getElementById('dialog-text'),
-    preBattleMenuButton: document.getElementById('dialog-button'),
+        preBattleText: document.getElementById('dialog-text'),
+        preBattleMenuButton: document.getElementById('dialog-button'),
 
     cardSelectMenu: document.getElementById('card-select-menu'),
-    cardChoices: document.querySelectorAll('.card-choice'),
+        cardChoices: document.querySelectorAll('.card-choice'),
 
 }
 
@@ -130,6 +129,8 @@ function endTurn() {
     render()
 }
 
+// Effects callback function ------------------------------------------------------------------------------
+
 function performEffect(effect) {
     if (effect === "damage") {
         console.log("PERFORM DAMAGE EFFECT")
@@ -173,59 +174,75 @@ function highlightHero(type) {
 let titleMenu = true;
 function render () {
     if (titleMenu) {
+    // TITLE MENU ----------------------------------------------------------------------
+
         hide(html.battleContainer, html.preBattleMenu, html.heroSelectMenu, html.cardSelectMenu)
         show(html.titleMenu)
     } else if (game.gameState === GAME_STATE.HERO_SELECT) {
+    // HERO SELECT MENU ----------------------------------------------------------------
+
         console.log("HERO SELECT")
         hide(html.battleContainer, html.preBattleMenu, html.titleMenu, html.cardSelectMenu)
         show(html.heroSelectMenu)
     } else if (game.gameState === GAME_STATE.PRE_BATTLE) {
+    // PRE BATTLE MENU -----------------------------------------------------------------
+
         console.log("PREBATTLE")
         hide(html.battleContainer, html.heroSelectMenu, html.titleMenu, html.cardSelectMenu)
         show(html.preBattleMenu)
     } else if (game.gameState === GAME_STATE.BATTLE) {
+    // BATTLE MENU ---------------------------------------------------------------------
+
         console.log("BATTLE")
         hide(html.preBattleMenu, html.heroSelectMenu, html.titleMenu, html.cardSelectMenu)
         show(html.battleContainer)
+
+        for (let [index, element] of html.hand.entries()) {
+            game.hand[index]
+            if(game.hand[index]) {
+                element.style.display = "block"
+                element.innerHTML = createCardHTML(
+                    Card.called(game.hand[index]).name, 
+                    Card.image[game.hand[index]], 
+                    Card.description[game.hand[index]] )
+            } else {
+                element.style.display = "none"
+            }
+        }
+
+        for (const element of html.enemyStatusEffects.children) {
+            console.log(element);
+            element.style.display = "none";
+        }
+
+        html.enemyName.textContent = game.enemy.name
+        html.enemyAction.textContent =  `⚔️ ${game.enemy.nextAction().effects[0].value}`
+        html.enemyHealth.textContent = `${game.enemy.health} / ${game.enemy.maxHealth}`
+        html.enemyPortrait.style.backgroundImage = `url(${game.enemy.portrait})`
+        html.enemyHealthSlider.style.width = `${100 * game.enemy.health / game.enemy.maxHealth}%`
+
+
     } else if (game.gameState === GAME_STATE.CARD_SELECT) {
+    // CARD SELECT MENU MENU ---------------------------------------------------------------------
+
         console.log("CARD SELECT")
         hide(html.preBattleMenu, html.heroSelectMenu, html.titleMenu, html.battleContainer)
         show(html.cardSelectMenu)
-    } else if (game.gameState === GAME_STATE.LOSE) {
-        console.log("LOSE")
 
+        for (let [index, element] of html.cardChoices.entries()) {
+            element.innerHTML = createCardHTML(
+                game.cardChoices[index], 
+                Card.image[game.cardChoices[index]], 
+                Card.description[game.cardChoices[index]] )
+        }
+
+    } else if (game.gameState === GAME_STATE.LOSE) {
+    // CARD SELECT MENU MENU ---------------------------------------------------------------------
+
+        console.log("LOSE")
     } else if (game.gameState === GAME_STATE.WIN) {
+    // CARD SELECT MENU MENU ---------------------------------------------------------------------
+
         console.log("WIN")
     }
-
-    if (game.cardChoices.length > 0) {
-        game.cardChoices.forEach((card, index) => {
-            renderCard(card, game.cardChoices[index])
-        })
-    }
-
-    for (let [index, element] of html.hand.entries()) {
-        game.hand[index]
-        if(game.hand[index]) {
-            element.style.display = "block"
-            element.innerHTML = createCardHTML(
-                Card.called(game.hand[index]).name, 
-                Card.image[game.hand[index]], 
-                Card.description[game.hand[index]] )
-        } else {
-            element.style.display = "none"
-        }
-    }
-
-    for (let [index, element] of html.cardChoices.entries()) {
-        element.innerHTML = createCardHTML(
-            game.cardChoices[index], 
-            Card.image[game.cardChoices[index]], 
-            Card.description[game.cardChoices[index]] )
-    }
-}
-
-function renderCard(cardElement, cardName) {
-    if (!cardName) { console.error("invalid card name") }
-    cardElement.innerHTML = `<h1>${cardName}</h1>`
 }
