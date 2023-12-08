@@ -13,6 +13,7 @@ const html = {
     heroName: document.getElementById('hero-name'),
     heroHealth: document.getElementById('hero-health'),
     heroHealthSlider: document.getElementById('hero-health-slider'),
+    heroPortrait: document.querySelector('.hero-portrait-container'),
 
     heroBleedStatus: document.getElementById('hero-bleed-status'),
     heroStunStatus: document.getElementById('hero-stun-status'),
@@ -296,6 +297,7 @@ function render () {
         html.heroName.textContent = game.hero.name
         html.heroHealth.textContent = `${game.hero.health} / ${game.hero.maxHealth}`
         html.heroHealthSlider.style.width = `${100 * game.hero.health / game.hero.maxHealth}%`
+        html.heroPortrait.style.backgroundImage = `url(../img/${game.hero.architype}-tall.png)`
 
         html.heroBleedStatus.style.display = game.hero.hasStatusEffect('bleed') ? "block" : "none"
         html.heroStunStatus.style.display = game.hero.hasStatusEffect('stun') ? "block" : "none"
