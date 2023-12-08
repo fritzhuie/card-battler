@@ -42,12 +42,12 @@ button:hover {
 .background-overlay {
     position: absolute;
     top: 0;
-    left: 2%;
+    left: 0;
     right: 60%;
     bottom: 0;
     background-image: url('../img/axe-shaman.png');
     background-size: 100%;
-    background-position: center;
+    background-position: left;
     background-repeat: no-repeat;
     opacity: 0.5;
     z-index: 1;
@@ -60,14 +60,16 @@ button:hover {
 
 .hero-portrait-container {
     grid-area: hero-portrait;
-    background-image: url("../img/barbarian-tall.png");
+    /* background-image: url("../img/barbarian-tall.png"); */
     background-size: cover;
     background-position: center;
     background-color: lightgrey;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border-left: 5px solid black;
 }
+
 
 /* Game State Containers ------------------------------------------------------------------------ */
 
@@ -109,7 +111,7 @@ button:hover {
     bottom: 0;
     height: 45vh;
     width: 15vw;
-    font-size: 16px;
+    font-size: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
@@ -129,8 +131,25 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
     background-color: #fff;
     color: #333;
-    transition: width 0.1s ease;
-    transition: height 0.1s ease;
+    transition: width 0.2s ease;
+    transition: height 0.2s ease;
+    transition: translation 0.5s ease;
+    border: 2px solid black;
+}
+
+.card .description {
+    font-size: 50%;
+    font-family: 'arial'
+}
+
+. card-image {
+    font-size: 400%;
+}
+
+.card .title {
+    font-size: 80%;
+    color:black;
+    margin: 5px;
 }
 
 .card-in-hand:hover {
@@ -174,7 +193,7 @@ button:hover {
 }
 
 .deck-count {
-    font-size: 300%;
+    font-size: 200%;
     width: 100%;
     height: 100%;
     text-align: center;
@@ -187,7 +206,7 @@ button:hover {
 }
 
 .discard-count {
-    font-size: 300%;
+    font-size: 200%;
     width: 100%;
     height: 100%;
     text-align: center;
@@ -237,10 +256,10 @@ button:hover {
     border: 2px solid black;
     position: absolute;
     background: linear-gradient(to top, red, darkred);
-    width: 69%;
     height: 20px;
     z-index: 2;
     border-radius: 40px;
+    transition: width 1.0s ease-in-out;
 }
 
 .health-container p {
@@ -248,11 +267,10 @@ button:hover {
     z-index: 3;
     width: 50%;
     text-align: center;
-    color: black; /* Text color */
+    color: black;
 }
 
 .status-icon {
-    /* background-color: grey; */
     width: 25px;
     height: 25px;
     margin: 5px 2px;
@@ -311,7 +329,12 @@ button:hover {
     justify-content: end;
 }
 
-/* 
+#mana-container {
+    display:flex;
+    width: 100%;
+    padding: 2px;
+    justify-content: right;
+}
 
 /* Enemy Action -------------------------------------------------------------------------------- */
 
@@ -319,7 +342,7 @@ button:hover {
     grid-area: enemy-action;
 }
 
-.enemy-action {
+.enemy-action-container {
     width: 100%;
     height: 100%;
     margin: 0;
@@ -328,7 +351,7 @@ button:hover {
     justify-content: left;
 }
 
-.enemy-action h1 {
+.enemy-action {
     margin: 0 15px 0 15px;
     font-size: 40px;
     background-clip: text;
@@ -338,18 +361,29 @@ button:hover {
     text-align: center;
 }
 
-.enemy-action h2 {
-    font-weight: 900;
-    color: red;
-    font-size: 40px;
-    text-align: center;
-}
-
 
 /* Action Log ---------------------------------------------------------------------------------- */
 
 .action-log-container {
     grid-area: action-log;
+}
+
+#mana-container {
+    width: 100%;
+    height: 100%;
+    align-items:end;
+    justify-content: end;
+    font-size: 200%;
+}
+
+#mana1 {
+    margin: 5px;
+}
+#mana2 {
+    margin: 5px;
+}
+#mana3 {
+    margin: 5px 5px 5px 5px;
 }
 
 /* Main Menu ------------------------------------------------------------------------------------ */
@@ -389,6 +423,7 @@ button:hover {
     background-image: url("../img/selection-bg.png");
     background-size: cover;
     transition: background-image 0.15s ease-in-out;
+    transition: opacity 1.0 ease-in-out;
 }
 
 #hero-select-menu h2 {
@@ -411,9 +446,19 @@ button:hover {
 /* Card select Menu ------------------------------------------------------------------------------------ */
 
 #card-select-menu {
-    width: 100%;
-    height: 100%;
-    background-color: black;
+    width: 60%;
+    height: 70%;
+    color: white;
+    text-align: center;
+    transform: translateY(30%);
+    background-color: grey;
+    position: absolute;
+    top: -8%;
+    left: 20%;
+    z-index: 1000;
+    border: 5px solid black;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
 }
 
 .card-selection-container {
@@ -421,15 +466,21 @@ button:hover {
     display: flex;
     justify-content: center;
     align-content: center;
-    transform: translateY(150px);
-    
+    transform: translateY(30%);
 }
 
 #card-select-menu h1 {
     width: 100%;
     color: white;
     text-align: center;
-    transform: translateY(100px);
+    padding: 20px;
+}
+
+#card-select-menu h3 {
+    width: 100%;
+    color: white;
+    text-align: center;
+    padding: 10px;
 }
 
 .card-choice {
@@ -440,13 +491,9 @@ button:hover {
     margin-right: 50px;
 }
 
-.card .description {
-    font-size: 50%;
-    font-family: 'arial'
+.card-choice .card-image {
+    font-size: 300%;
+    text-align: center;
 }
 
-.card .title {
-    font-size: 100%;
-    color:black;
-    margin: 5px;
-}
+/* Fancy transition ---------------------- */
