@@ -594,7 +594,8 @@ Card.image = {
     'polymorph':'🐑',
     'arcaneblast':'❈',
     'pyroblast':'💥',
-    'channel':'⚡️'
+    'channel':'⚡️',
+    'drinkblood': "🧛‍♀️"
 }
 
 Card.description = {

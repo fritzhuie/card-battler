@@ -255,6 +255,9 @@ function render () {
     } else if (game.gameState === GAME_STATE.BATTLE) {
     // BATTLE MENU ---------------------------------------------------------------------
 
+
+        document.getElementById('armor-indicator').textContent = `🛡️${game.hero.armor}`
+
         console.log("BATTLE")
         hide(html.preBattleMenu, html.heroSelectMenu, html.titleMenu)
         show(html.battleContainer)
