@@ -9,6 +9,18 @@
     margin: 0;
 }
 
+#warrior-select-button {
+    width: 10vw;
+}
+
+#wizard-select-button {
+    width: 10vw; 
+}
+
+#barbarian-select-button {
+    width: 10vw;
+}
+
 body {
     background-color: black;
     height: 100%;
@@ -153,9 +165,10 @@ button:hover {
 }
 
 .card-in-hand:hover {
-    height: 30vh;
+    height: 40vh;
     width: 10vw;
     z-index: 10;
+
 }
 
 .card-in-hand {
