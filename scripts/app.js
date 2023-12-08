@@ -250,7 +250,7 @@ function render () {
         hide(html.battleContainer, html.heroSelectMenu, html.titleMenu, html.cardSelectMenu)
         show(html.preBattleMenu)
 
-    } else if (game.gameState === GAME_STATE.BATTLE || game.gameState === GAME_STATE.CARD_SELECT) {
+    } else if (game.gameState === GAME_STATE.BATTLE) {
     // BATTLE MENU ---------------------------------------------------------------------
 
         console.log("BATTLE")
@@ -279,6 +279,10 @@ function render () {
             html.mana1.style.opacity = 0.2
             html.mana2.style.opacity = 0.2
             html.mana3.style.opacity = 0.2
+        } else {
+            html.mana1.style.opacity = 1.0
+            html.mana2.style.opacity = 1.0
+            html.mana3.style.opacity = 1.0
         }
 
         html.enemyName.textContent = game.enemy.name
@@ -309,8 +313,12 @@ function render () {
         html.discardPileContainer.textContent = game.discardPile.length
         html.deckPileContainer.textContent = game.deck.length
 
-        if (game.gameState === GAME_STATE.CARD_SELECT) {
-            html.cardSelectMenu.style.display = "block"
+        if (game.gameState !== GAME_STATE.CARD_SELECT) {
+            html.cardSelectMenu.style.display = "none"
+        }
+
+    } else if (game.gameState === GAME_STATE.CARD_SELECT) {
+        html.cardSelectMenu.style.display = "block"
 
             for (let [index, element] of html.cardChoices.entries()) {
                 element.innerHTML = createCardHTML(
@@ -318,10 +326,6 @@ function render () {
                     Card.image[game.cardChoices[index]], 
                     Card.description[game.cardChoices[index]] )
             }
-        } else {
-            html.cardSelectMenu.style.display = "none"
-        }
-
     } else if (game.gameState === GAME_STATE.LOSE) {
     // CARD SELECT MENU MENU ---------------------------------------------------------------------
 
