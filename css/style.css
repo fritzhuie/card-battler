@@ -443,6 +443,16 @@ button:hover {
     transform: translateY(325px);
 }
 
+#armor-indicator {
+    text-align: right;
+    margin: 30px;
+    background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	background-color: lightskyblue;
+    text-align: center;
+}
+
 /* Card select Menu ------------------------------------------------------------------------------------ */
 
 #card-select-menu {
