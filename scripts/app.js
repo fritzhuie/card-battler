@@ -20,6 +20,9 @@ const html = {
     heroEnfeableStatus: document.getElementById('hero-enfeable-status'),
     heroBurnStatus: document.getElementById('hero-burn-status'),
     heroChillStatus: document.getElementById('hero-chill-status'),
+    mana1: document.getElementById('mana1'),
+    mana2: document.getElementById('mana2'),
+    mana3: document.getElementById('mana3'),
 
 // Enemy Values
     enemyName: document.getElementById('enemy-name'),
@@ -264,6 +267,17 @@ function render () {
             } else {
                 element.style.display = "none"
             }
+        }
+
+        if (game.mana === 2) {
+            html.mana3.style.opacity = 0.2
+        } else if (game.mana === 1) {
+            html.mana2.style.opacity = 0.2
+            html.mana3.style.opacity = 0.2
+        } else if (game.mana === 0 ) {
+            html.mana1.style.opacity = 0.2
+            html.mana2.style.opacity = 0.2
+            html.mana3.style.opacity = 0.2
         }
 
         html.enemyName.textContent = game.enemy.name
