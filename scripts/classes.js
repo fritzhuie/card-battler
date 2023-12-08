@@ -159,6 +159,7 @@ class CardGame {
                 case 'stun':
                 case 'bleed':
                 case 'burn':
+                case 'chill':
                     this.#enemy.gainStatusEffect(effect.name, effect.value)
                     break;
                 case 'mana':
@@ -447,10 +448,10 @@ class EnemyShaman extends Enemy {
         this.health = this.maxHealth
         this.armor = 0
         this.actions = [
-            new EnemyAction('Boar Charge','rams you with its tusks!', new Effect('damage', 1)),
-            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 2)),
-            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 3)),
-            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 4))
+            new EnemyAction('Boar Charge','rams you with its tusks!', new Effect('damage', 5)),
+            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 6)),
+            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 7)),
+            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 8))
         ]
     }
 }
@@ -465,7 +466,10 @@ class EnemyBladeRevenant extends Enemy {
         this.health = this.maxHealth
         this.armor = 0
         this.actions = [
-            new EnemyAction('Slash', 'swings its greatsword in a wide arc', new Effect('damage', 4))
+            new EnemyAction('Slash', 'begins winding up',                   new Effect('damage', 0)),
+            new EnemyAction('Slash', 'swings its greatsword in a wide arc', new Effect('damage', 15)),
+            new EnemyAction('Slash', 'swings its greatsword in a wide arc', new Effect('damage', 15)),
+            new EnemyAction('Slash', 'swings its greatsword in a wide arc', new Effect('damage', 15))
         ]
     }
 }

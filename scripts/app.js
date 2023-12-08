@@ -136,6 +136,7 @@ function selectNewCard(index) {
     game.selectNewCard(index)
     game.beginBattle()
     render()
+    triggerPixelTransition(30, 21)
 }
 
 function endTurn() {
@@ -184,14 +185,12 @@ function show(element) {
     } else {
         element.style.display = "block"
     }
-    element.style.opacity = 1.0;
 }
 
 function hide(...elements) {
     console.log(elements)
     for (let element of elements) {
         element.style.display = "none"
-        element.style.opacity = 0.0
     }
 }
 
@@ -286,6 +285,8 @@ function render () {
                     Card.image[game.cardChoices[index]], 
                     Card.description[game.cardChoices[index]] )
             }
+        } else {
+            html.cardSelectMenu.style.display = "none"
         }
 
     } else if (game.gameState === GAME_STATE.LOSE) {
