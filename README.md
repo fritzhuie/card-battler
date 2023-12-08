@@ -1,12 +1,22 @@
 # Generative Adversaties
 
-Basic browser-based dungeon crawler card battler game
+Basic browser-based dungeon crawler card battler game (images produced by a Generational Adversarial Network)
 
 ## Project Description
 
 Crypt of the Generative Adversaties is a turn-based card battler dungeon crawler, inspired by *Dream Quest* and *Slay the Spire*.
 
 _Delve into the hauted crypt. Battle increasingly stronger enemies, and build a deck full of potent cards and devistating combinations. Will you uncover the shocking secret hidden at the bottom of the crypt, or will you fall to the terrifying creatures that protect it?_
+
+## Technologies Used
+
+Javascript, CSS, HTML, DALL-E image generator, Chat GPT
+
+## Getting Started
+
+Go to: https://fritzhuie.github.io/card-battler
+
+Click "New Game"
 
 ## Gameplay
 - Players start with a deck of cards, and a health pool, and three power crystals.
@@ -169,4 +179,10 @@ performCardEffect(card) {
 ![wireframe-color](https://github.com/fritzhuie/card-battler/assets/1472318/88aacb3d-f6ef-4350-9f45-f3a53eccaaa1)
 
 
+# Next Steps 
 
+Add dozens of new cards and enemies
+
+Make cards look nice
+
+Balance the gameplay
