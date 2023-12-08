@@ -72,6 +72,7 @@ html.wizardButton.addEventListener('click', function() { chooseHero('wizard') })
 html.barbarianButton.addEventListener('click', function() { chooseHero('barbarian') })
 html.preBattleMenuButton.addEventListener('click', function() { beginBattle() })
 html.endTurnButton.addEventListener('click', function() { endTurn() })
+html.discardPileContainer.addEventListener('click', function() { showEffectsPreview() })
 
 html.hand.forEach((card, index) => {
     card.addEventListener('click', () => playCard(index));
@@ -167,6 +168,21 @@ function triggerPixelTransition(wide, high) {
     }
 }
 
+function showEffectsPreview() {
+    html.enemyBleedStatus.style.display = "block"
+    html.enemyStunStatus.style.display = "block"
+    html.enemyEmpowerStatus.style.display = "block"
+    html.enemyEnfeableStatus.style.display = "block"
+    html.enemyBurnStatus.style.display = "block"
+    html.enemyChillStatus.style.display = "block"
+    html.heroBleedStatus.style.display = "block"
+    html.heroStunStatus.style.display = "block"
+    html.heroEmpowerStatus.style.display = "block"
+    html.heroEnfeableStatus.style.display = "block"
+    html.heroBurnStatus.style.display = "block"
+    html.heroChillStatus.style.display = "block"
+}
+
 // Effects callback function ------------------------------------------------------------------------------
 
 function performEffect(effect) {
@@ -176,6 +192,7 @@ function performEffect(effect) {
         console.log("NOT DAMAGE EFFECT")
     }
 }
+
 
 // Menu navigation ----------------------------------------------------------------------------------------
 
