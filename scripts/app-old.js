@@ -182,49 +182,13 @@ function triggerFadeTransition() {
     }, 1000);
 }
 
-function triggerPixelTransition(wide, high, type) {
-
-    let delayIterator = 0
-    let delayGrid = new Array(wide);
-
-    for (let x = 0; x < wide; x++) {
-        delayGrid[x] = new Array(high);
-        for (let y = 0; y < high; y++) {
-            delayGrid[x][y] = null;
-        }
-    }
-
-    console.log(delayGrid)
-
-    function fillInDiagonal(i, j) {
-        while (i > 0 && j < high) {
-            delayGrid[i][j] = delayIterator * 25
-            delayIterator++
-            i--
-            j++
-        }
-    }
-
-    for(let i = 0; i<wide;i++) {
-        fillInDiagonal(i, 0)
-    }
-
-    for(let j = high; j<0;j--) {
-        fillInDiagonal(wide, j)
-    }
-
-    console.log(delayGrid)
-
-    let secondaryOffset = 10
-    let fibbi = 1
-    let fi = 0
+function triggerPixelTransition(wide, high) {
     for (i = 0; i < wide; i++) {
-        let fibbj = 2
-        let fj = 0
         for (j = 0; j < high; j++) {
             const width = window.innerWidth / wide;
             const height = window.innerHeight / high;
             const div = document.createElement('div');
+
             div.style.position = 'absolute';
             div.style.width = width + 'px';
             div.style.height = height + 'px';
@@ -232,23 +196,9 @@ function triggerPixelTransition(wide, high, type) {
             div.style.top = (j * height) + 'px';
             div.style.backgroundColor = 'black';
             transitionLayer.appendChild(div);
-
-            if (type === 0) {
-                setTimeout(() => {
-                    div.parentElement.removeChild(div);
-                }, 50*(i+j) + (25*(i-j)));
-            } else if (type === 1) {
-                setTimeout(() => {
-                    div.parentElement.removeChild(div);
-                }, 50*(i+j));
-            } else {
-
             setTimeout(() => {
                 div.parentElement.removeChild(div);
-            }, delayGrid[i][j]);
-
-            }
-
+            }, 50*(i+j));
         }
     }
 }

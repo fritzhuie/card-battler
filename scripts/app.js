@@ -39,8 +39,8 @@ const html = {
 // Cards
     cards: document.querySelectorAll('.card'),
     hand: document.querySelectorAll('.card-in-hand'),
-    discardPileContainer: document.querySelector('.discard-pile-container'),
-    deckPileContainer: document.querySelector('.deck-pile-container'),
+    discardPileContainer: document.querySelector('.discard-count'),
+    deckPileContainer: document.querySelector('.deck-count'),
 
 // Gamestate Scene containers
     battleContainer: document.querySelector('.battle-container'),
@@ -113,17 +113,18 @@ function beginNewGame() {
     game = new CardGame()
     titleMenu = false
     render()
-    triggerPixelTransition()
 }
 
 function chooseHero(choice) {
     game.chooseHero(choice)
+    game.beginBattle()
     render()
 }
 
 function beginBattle() {
     game.beginBattle()
     render()
+    triggerPixelTransition(30, 21)
 }
 
 function playCard(index) {
@@ -133,6 +134,7 @@ function playCard(index) {
 
 function selectNewCard(index) {
     game.selectNewCard(index)
+    game.beginBattle()
     render()
 }
 
@@ -148,15 +150,15 @@ function triggerPixelTransition(wide, high) {
             const width = window.innerWidth / wide;
             const height = window.innerHeight / high;
             const div = document.createElement('div');
+
             div.style.position = 'absolute';
             div.style.width = width + 'px';
             div.style.height = height + 'px';
             div.style.left = (i * width) + 'px';
             div.style.top = (j * height) + 'px';
             div.style.backgroundColor = 'black';
-
-            transitionLayer.appendChild(div);
-
+            div.style.zIndex = 1000;
+            html.transitionLayer.appendChild(div);
             setTimeout(() => {
                 div.parentElement.removeChild(div);
             }, 50*(i+j));
@@ -182,12 +184,14 @@ function show(element) {
     } else {
         element.style.display = "block"
     }
+    element.style.opacity = 1.0;
 }
 
 function hide(...elements) {
     console.log(elements)
     for (let element of elements) {
         element.style.display = "none"
+        element.style.opacity = 0.0
     }
 }
 
@@ -225,11 +229,12 @@ function render () {
         console.log("PREBATTLE")
         hide(html.battleContainer, html.heroSelectMenu, html.titleMenu, html.cardSelectMenu)
         show(html.preBattleMenu)
-    } else if (game.gameState === GAME_STATE.BATTLE) {
+
+    } else if (game.gameState === GAME_STATE.BATTLE || game.gameState === GAME_STATE.CARD_SELECT) {
     // BATTLE MENU ---------------------------------------------------------------------
 
         console.log("BATTLE")
-        hide(html.preBattleMenu, html.heroSelectMenu, html.titleMenu, html.cardSelectMenu)
+        hide(html.preBattleMenu, html.heroSelectMenu, html.titleMenu)
         show(html.battleContainer)
 
         for (let [index, element] of html.hand.entries()) {
@@ -269,20 +274,19 @@ function render () {
         html.heroBurnStatus.style.display = game.hero.hasStatusEffect('burn') ? "block" : "none"
         html.heroChillStatus.style.display = game.hero.hasStatusEffect('chill') ? "block" : "none"
 
-    } else if (game.gameState === GAME_STATE.CARD_SELECT) {
-    // CARD SELECT MENU MENU ---------------------------------------------------------------------
-        console.log("CARD SELECT")
-        hide(html.preBattleMenu, html.heroSelectMenu, html.titleMenu, html.battleContainer)
-        show(html.cardSelectMenu)
+        html.discardPileContainer.textContent = game.discardPile.length
+        html.deckPileContainer.textContent = game.deck.length
 
-        for (let [index, element] of html.cardChoices.entries()) {
-            element.innerHTML = createCardHTML(
-                game.cardChoices[index], 
-                Card.image[game.cardChoices[index]], 
-                Card.description[game.cardChoices[index]] )
+        if (game.gameState === GAME_STATE.CARD_SELECT) {
+            html.cardSelectMenu.style.display = "block"
+
+            for (let [index, element] of html.cardChoices.entries()) {
+                element.innerHTML = createCardHTML(
+                    game.cardChoices[index], 
+                    Card.image[game.cardChoices[index]], 
+                    Card.description[game.cardChoices[index]] )
+            }
         }
-
-        // TODO: ADD CARD SELECTION AS MODAL POP UP OVER BATTLE SCENE, TEST EXISTING STATUS EFFECTS
 
     } else if (game.gameState === GAME_STATE.LOSE) {
     // CARD SELECT MENU MENU ---------------------------------------------------------------------
