@@ -40,6 +40,8 @@ class CardGame {
     constructor() {
 
         this.#enemies = [
+            new EnemyGoblin,
+            new EnemyWizard,
             new EnemyShaman, 
             new EnemyBladeRevenant, 
             new EnemyMecharaptor
@@ -61,7 +63,7 @@ class CardGame {
             this.#mana = this.#startingMana
         } else if (choice === 'barbarian') {
             this.#hero = new Barbarian()
-            this.#startingMana = 0
+            this.#startingMana = 3
             this.#mana = this.#startingMana
         } else {
             console.log("Invalid hero selection")
@@ -312,9 +314,10 @@ class Hero {
 
     hasStatusEffect(name) {
         for (let effect of this.statusEffects) {
-            if (effect.name === name ) { return true }
+            console.log("Found effect:", effect.value);
+            if (effect.name === name ) { return effect.value }
         }
-        return false
+        return 0
     }
 
     takeDamage(value) {
@@ -322,7 +325,10 @@ class Hero {
     }
 
     gainStatusEffect(name, value) {
-        this.statusEffects.push(new Effect(name, value))
+        if (this.hasStatusEffect(name)) {
+            this.#statusEffects[name].value += value
+        }
+        this.#statusEffects.push(new Effect(name, value))
     }
 
     processEndOfTurnStatusEffects() {
@@ -362,7 +368,7 @@ class Wizard extends Hero {
 
 class Barbarian extends Hero {
     constructor(){
-        const barbarianStartingDeck = ["cleave", "cleave", "cleave", "cleave", "cleave", "flourish", "flourish"]
+        const barbarianStartingDeck = ["cleave", "cleave", "cleave", "cleave", "cleave", "drinkblood", "drinkblood"]
         super('barbarian', 100, barbarianStartingDeck)
         this.name = "Aiyaruk"
     }
@@ -389,7 +395,16 @@ class Enemy {
     }
 
     gainStatusEffect(name, value) {
-        this.statusEffects.push(new Effect(name, value))
+        if (this.hasStatusEffect(name)) {
+            for(let effect of this.statusEffects) {
+                if(effect.name === name) {
+                    effect.value += value
+                    return
+                }
+            }
+        }else {
+            this.statusEffects.push(new Effect(name, value))
+        }
     }
 
     nextAction() {
@@ -406,9 +421,10 @@ class Enemy {
 
     hasStatusEffect(name) {
         for (let effect of this.statusEffects) {
-            if (effect.name === name ) { return true }
+            console.log("Found effect:", effect.value);
+            if (effect.name === name ) { return effect.value }
         }
-        return false
+        return 0
     }
 
     processEndOfTurnStatusEffects() {
@@ -438,13 +454,13 @@ class Enemy {
     }
 }
 
-class EnemyShaman extends Enemy {
+class EnemyGoblin extends Enemy {
     constructor() {
         super();
-        this.name = 'Orthic Shaman'
-        this.description = '100% organic boar skull!'
-        this.portrait = '../img/axe-shaman.png'
-        this.maxHealth = 10
+        this.name = 'Stinky Goblin'
+        this.description = 'Stinky Goblin.'
+        this.portrait = '../img/goblin.png'
+        this.maxHealth = 25
         this.health = this.maxHealth
         this.armor = 0
         this.actions = [
@@ -456,13 +472,48 @@ class EnemyShaman extends Enemy {
     }
 }
 
+class EnemyShaman extends Enemy {
+    constructor() {
+        super();
+        this.name = 'Orthic Shaman'
+        this.description = '100% organic boar skull!'
+        this.portrait = '../img/axe-shaman.png'
+        this.maxHealth = 25
+        this.health = this.maxHealth
+        this.armor = 0
+        this.actions = [
+            new EnemyAction('Boar Charge','rams you with its tusks!', new Effect('damage', 6)),
+            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 7)),
+            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 8)),
+            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 9))
+        ]
+    }
+}
+
+class EnemyWizard extends Enemy {
+    constructor() {
+        super();
+        this.name = 'Necrotic Wizard'
+        this.description = 'wizard'
+        this.portrait = '../img/old-wizard.png'
+        this.maxHealth = 25
+        this.health = this.maxHealth
+        this.armor = 0
+        this.actions = [
+            new EnemyAction('Boar Charge','rams you with its tusks!', new Effect('damage', 6), new Effect('burn', 3)),
+            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 7), new Effect('chill', 3)),
+            new EnemyAction('Axe Swing', 'swings its putrid axe!', new Effect('damage', 8), new Effect('enfeable', 3)),
+        ]
+    }
+}
+
 class EnemyBladeRevenant extends Enemy {
     constructor() {
         super();
         this.name = 'Blade Revenant'
         this.description = "Hint: He's gonna hit you with the sword."
         this.portrait = '../img/male-undead.png'
-        this.maxHealth = 10
+        this.maxHealth = 25
         this.health = this.maxHealth
         this.armor = 0
         this.actions = [
@@ -480,7 +531,7 @@ class EnemyMecharaptor extends Enemy {
         this.name = 'Mecha Raptor'
         this.description = 'They Didn’t Stop To Think If They Should'
         this.portrait = '../img/mecharaptor.png'
-        this.maxHealth = 10
+        this.maxHealth = 200
         this.health = this.maxHealth
         this.armor = 0
         this.actions = [
@@ -557,11 +608,11 @@ Card.description = {
     'raiseshield':'',
     'shieldslam':'',
     'battlestance':'',
-    'disenguinate':'',
-    'eyegouge':'',
-    'kick':'',
+    'disenguinate':`Deal damage equal to 'bleed'`,
+    'eyegouge':'Poke your enemy in both eyes, stunning them',
+    'kick':'Deal damage, draw a card',
     'howl':'',
-    'batheinblood':'',
+    'drinkblood':'Drink your enemies blood to gain health',
     'magicmissile':'',
     'icebolt':'',
     'polymorph':'',
@@ -576,8 +627,8 @@ Card.cards = {
     'armor':        new Card('Armor Up', 'warrior', 1, new Effect('armor', 5)),
     'fireblast':    new Card('Fire Blast', 'wizard', 1, new Effect('damage', 5)),
     'manashield':   new Card('Mana Shield', 'wizard', 1, new Effect('armor', 5), new Effect('draw', 1)),
-    'cleave':       new Card('Cleave', 'barbarian', -1, new Effect('damage', 5), new Effect('bleed', 3)),
-    'flourish':     new Card('Flourish', 'barbarian', 3, new Effect('damage', 8), new Effect('heal', 4)),
+    'cleave':       new Card('Cleave', 'barbarian', 1, new Effect('damage', 5), new Effect('bleed', 3)),
+    'flourish':     new Card('Flourish', 'barbarian', 1, new Effect('damage', 5), new Effect('heal', 4)),
 
     /* Shared cards */
 
@@ -588,15 +639,15 @@ Card.cards = {
     'shieldslam':   new Card('Shield Slam', 'warrior', 1, new Effect('armor-damage', 1)),
     'battlestance': new Card('Battlestance', 'warrior', 0, new Effect('empower', 1)),
 
-    /* Wizard cards */
-    'eyegouge':     new Card('Disenguinate', 'barbarian', 2, new Effect('damage', 3), new Effect('stun', 1)),
-    'kick':         new Card('Eye Gouge', 'barbarian', -1, new Effect('damage', 3), new Effect('draw', 1)),
-    'howl':         new Card('Kick', 'barbarian', -3, new Effect('enfeable', 1)),
-    'disenguinate': new Card('Howl', 'barbarian', -1, new Effect('bleed', 7), new Effect('bleed-damage', 1)),
-    'batheinblood': new Card('Bathe in Blood', 'barbarian', 3, new Effect('bleed-heal', 1)),
-
     /* Barbarian cards */
-    'magicmissile': new Card('Magicmissile', 'wizard', 0, new Effect('mana-damage', 3)),
+    'eyegouge':     new Card('Eye poke', 'barbarian', 1, new Effect('stun', 1)),
+    'kick':         new Card('Kick', 'barbarian', 1, new Effect('damage', 3), new Effect('draw', 1)),
+    'howl':         new Card('Hown', 'barbarian', 1, new Effect('enfeable', 1)),
+    'disenguinate': new Card('Disenguinate', 'barbarian', 1, new Effect('bleed-damage', 1)),
+    'drinkblood':   new Card('Drink Blood', 'barbarian', 1, new Effect('bleed-heal', 1)),
+
+    /* Wizard cards */
+    'magicmissile': new Card('Magic Missile', 'wizard', 0, new Effect('mana-damage', 3)),
     'icebolt':      new Card('Icebolt', 'wizard', 1, new Effect('damage', 6), new Effect('chill', 1)),
     'polymorph':    new Card('Polymorph', 'wizard', 1, new Effect('stun', 1)),
     'arcaneblast':  new Card('Arcaneblast', 'wizard', 2, new Effect('damage', 16)),
@@ -606,4 +657,4 @@ Card.cards = {
 
 Card.warriorCards = ['hamstring', 'hiltpummel', 'raiseshield', 'shieldslam', 'battlestance']
 Card.wizardCards = ['magicmissile', 'icebolt', 'polymorph', 'arcaneblast', 'pyroblast', 'channel']
-Card.barbarianCards = ['disenguinate', 'eyegouge', 'kick', 'howl', 'batheinblood']
+Card.barbarianCards = ['disenguinate', 'eyegouge', 'kick', 'drinkblood']

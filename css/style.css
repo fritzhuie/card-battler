@@ -67,6 +67,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border-left: 5px solid black;
 }
 
 
@@ -130,8 +131,9 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
     background-color: #fff;
     color: #333;
-    transition: width 0.1s ease;
-    transition: height 0.1s ease;
+    transition: width 0.2s ease;
+    transition: height 0.2s ease;
+    transition: translation 0.5s ease;
     border: 2px solid black;
 }
 

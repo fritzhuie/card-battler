@@ -33,6 +33,7 @@ const html = {
     enemyAction: document.querySelector('.enemy-action'),
     enemyActionIcon: document.querySelector('.enemy-action-icon'),
 
+
     enemyBleedStatus: document.getElementById('enemy-bleed-status'),
     enemyStunStatus: document.getElementById('enemy-stun-status'),
     enemyEmpowerStatus: document.getElementById('enemy-empower-status'),
@@ -124,6 +125,7 @@ function chooseHero(choice) {
     game.chooseHero(choice)
     game.beginBattle()
     render()
+    triggerPixelTransition(30, 21)
 }
 
 function beginBattle() {
@@ -292,6 +294,11 @@ function render () {
         html.enemyHealthSlider.style.width = `${100 * game.enemy.health / game.enemy.maxHealth}%`
 
         html.enemyBleedStatus.style.display = game.enemy.hasStatusEffect('bleed') ? "block" : "none"
+        if (game.enemy.hasStatusEffect('bleed')) {
+            html.enemyBleedStatus.textContent = Number(game.enemy.hasStatusEffect('bleed'))
+
+        }
+
         html.enemyStunStatus.style.display = game.enemy.hasStatusEffect('stun') ? "block" : "none"
         html.enemyEmpowerStatus.style.display = game.enemy.hasStatusEffect('empower') ? "block" : "none"
         html.enemyEnfeableStatus.style.display = game.enemy.hasStatusEffect('enfeable') ? "block" : "none"
@@ -320,6 +327,10 @@ function render () {
     } else if (game.gameState === GAME_STATE.CARD_SELECT) {
         html.cardSelectMenu.style.display = "block"
 
+        html.enemyAction.textContent =  ``
+        html.enemyHealth.textContent = `0 / ${game.enemy.maxHealth}`
+        html.enemyHealthSlider.style.width = `${0}%`
+
             for (let [index, element] of html.cardChoices.entries()) {
                 element.innerHTML = createCardHTML(
                     game.cardChoices[index], 
@@ -328,11 +339,14 @@ function render () {
             }
     } else if (game.gameState === GAME_STATE.LOSE) {
     // CARD SELECT MENU MENU ---------------------------------------------------------------------
-
-        console.log("LOSE")
+        titleMenu = true
+        document.getElementById('sub-title').textContent = ""
+        document.getElementById('wavy-title').textContent = "YOU DIED"
     } else if (game.gameState === GAME_STATE.WIN) {
     // CARD SELECT MENU MENU ---------------------------------------------------------------------
-
+        titleMenu = true
+        document.getElementById('sub-title').textContent = ""
+        document.getElementById('wavy-title').textContent = "YOU DIED"
         console.log("WIN")
     }
 }
