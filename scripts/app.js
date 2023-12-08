@@ -7,22 +7,34 @@ let game = new CardGame()
 const html = {
 // Root container
     gameContainer: document.querySelector('.game-container'),
-        transitionLayer: document.getElementById('transition-layer'),
+    transitionLayer: document.getElementById('transition-layer'),
     
 // Hero values
     heroName: document.getElementById('hero-name'),
     heroHealth: document.getElementById('hero-health'),
-    heroStatusEffects: document.getElementById('hero-status-effects'),
-    heroPortrait: document.querySelector('.hero-portrait-container'),
+    heroHealthSlider: document.getElementById('hero-health-slider'),
+
+    heroBleedStatus: document.getElementById('hero-bleed-status'),
+    heroStunStatus: document.getElementById('hero-stun-status'),
+    heroEmpowerStatus: document.getElementById('hero-empower-status'),
+    heroEnfeableStatus: document.getElementById('hero-enfeable-status'),
+    heroBurnStatus: document.getElementById('hero-burn-status'),
+    heroChillStatus: document.getElementById('hero-chill-status'),
 
 // Enemy Values
     enemyName: document.getElementById('enemy-name'),
     enemyHealth: document.getElementById('enemy-health'),
     enemyHealthSlider: document.getElementById('enemy-health-slider'),
-    enemyStatusEffects: document.getElementById('enemy-status-effects'),
     enemyPortrait: document.querySelector('.background-overlay'),
     enemyAction: document.querySelector('.enemy-action'),
     enemyActionIcon: document.querySelector('.enemy-action-icon'),
+
+    enemyBleedStatus: document.getElementById('enemy-bleed-status'),
+    enemyStunStatus: document.getElementById('enemy-stun-status'),
+    enemyEmpowerStatus: document.getElementById('enemy-empower-status'),
+    enemyEnfeableStatus: document.getElementById('enemy-enfeable-status'),
+    enemyBurnStatus: document.getElementById('enemy-burn-status'),
+    enemyChillStatus: document.getElementById('enemy-chill-status'),
 
 // Cards
     cards: document.querySelectorAll('.card'),
@@ -101,6 +113,7 @@ function beginNewGame() {
     game = new CardGame()
     titleMenu = false
     render()
+    triggerPixelTransition()
 }
 
 function chooseHero(choice) {
@@ -127,6 +140,28 @@ function endTurn() {
     game.endTurn()
     game.beginBattle()
     render()
+}
+
+function triggerPixelTransition(wide, high) {
+    for (i = 0; i < wide; i++) {
+        for (j = 0; j < high; j++) {
+            const width = window.innerWidth / wide;
+            const height = window.innerHeight / high;
+            const div = document.createElement('div');
+            div.style.position = 'absolute';
+            div.style.width = width + 'px';
+            div.style.height = height + 'px';
+            div.style.left = (i * width) + 'px';
+            div.style.top = (j * height) + 'px';
+            div.style.backgroundColor = 'black';
+
+            transitionLayer.appendChild(div);
+
+            setTimeout(() => {
+                div.parentElement.removeChild(div);
+            }, 50*(i+j));
+        }
+    }
 }
 
 // Effects callback function ------------------------------------------------------------------------------
@@ -171,7 +206,8 @@ function highlightHero(type) {
 
 // Render ------------------------------------------------------------------------------------------
 
-let titleMenu = true;
+let titleMenu = true
+
 function render () {
     if (titleMenu) {
     // TITLE MENU ----------------------------------------------------------------------
@@ -186,7 +222,6 @@ function render () {
         show(html.heroSelectMenu)
     } else if (game.gameState === GAME_STATE.PRE_BATTLE) {
     // PRE BATTLE MENU -----------------------------------------------------------------
-
         console.log("PREBATTLE")
         hide(html.battleContainer, html.heroSelectMenu, html.titleMenu, html.cardSelectMenu)
         show(html.preBattleMenu)
@@ -210,21 +245,32 @@ function render () {
             }
         }
 
-        for (const element of html.enemyStatusEffects.children) {
-            console.log(element);
-            element.style.display = "none";
-        }
-
         html.enemyName.textContent = game.enemy.name
         html.enemyAction.textContent =  `⚔️ ${game.enemy.nextAction().effects[0].value}`
         html.enemyHealth.textContent = `${game.enemy.health} / ${game.enemy.maxHealth}`
         html.enemyPortrait.style.backgroundImage = `url(${game.enemy.portrait})`
         html.enemyHealthSlider.style.width = `${100 * game.enemy.health / game.enemy.maxHealth}%`
 
+        html.enemyBleedStatus.style.display = game.enemy.hasStatusEffect('bleed') ? "block" : "none"
+        html.enemyStunStatus.style.display = game.enemy.hasStatusEffect('stun') ? "block" : "none"
+        html.enemyEmpowerStatus.style.display = game.enemy.hasStatusEffect('empower') ? "block" : "none"
+        html.enemyEnfeableStatus.style.display = game.enemy.hasStatusEffect('enfeable') ? "block" : "none"
+        html.enemyBurnStatus.style.display = game.enemy.hasStatusEffect('burn') ? "block" : "none"
+        html.enemyChillStatus.style.display = game.enemy.hasStatusEffect('chill') ? "block" : "none"
+
+        html.heroName.textContent = game.hero.name
+        html.heroHealth.textContent = `${game.hero.health} / ${game.hero.maxHealth}`
+        html.heroHealthSlider.style.width = `${100 * game.hero.health / game.hero.maxHealth}%`
+
+        html.heroBleedStatus.style.display = game.hero.hasStatusEffect('bleed') ? "block" : "none"
+        html.heroStunStatus.style.display = game.hero.hasStatusEffect('stun') ? "block" : "none"
+        html.heroEmpowerStatus.style.display = game.hero.hasStatusEffect('empower') ? "block" : "none"
+        html.heroEnfeableStatus.style.display = game.hero.hasStatusEffect('enfeable') ? "block" : "none"
+        html.heroBurnStatus.style.display = game.hero.hasStatusEffect('burn') ? "block" : "none"
+        html.heroChillStatus.style.display = game.hero.hasStatusEffect('chill') ? "block" : "none"
 
     } else if (game.gameState === GAME_STATE.CARD_SELECT) {
     // CARD SELECT MENU MENU ---------------------------------------------------------------------
-
         console.log("CARD SELECT")
         hide(html.preBattleMenu, html.heroSelectMenu, html.titleMenu, html.battleContainer)
         show(html.cardSelectMenu)
@@ -235,6 +281,8 @@ function render () {
                 Card.image[game.cardChoices[index]], 
                 Card.description[game.cardChoices[index]] )
         }
+
+        // TODO: ADD CARD SELECTION AS MODAL POP UP OVER BATTLE SCENE, TEST EXISTING STATUS EFFECTS
 
     } else if (game.gameState === GAME_STATE.LOSE) {
     // CARD SELECT MENU MENU ---------------------------------------------------------------------

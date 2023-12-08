@@ -347,6 +347,7 @@ class Warrior extends Hero {
 
         const warriorStartingDeck = ["strike", "strike", "strike", "strike", "strike", "armor", "armor"]
         super('warrior', 100, warriorStartingDeck)
+        this.name = "Ser Kavin"
     }
 }
 
@@ -354,6 +355,7 @@ class Wizard extends Hero {
     constructor(){
         const wizardStartingDeck = ["fireblast", "fireblast", "fireblast", "fireblast", "manashield", "manashield"]
         super('wizard', 100, wizardStartingDeck)
+        this.name = "Merlin"
     }
 }
 
@@ -361,6 +363,7 @@ class Barbarian extends Hero {
     constructor(){
         const barbarianStartingDeck = ["cleave", "cleave", "cleave", "cleave", "cleave", "flourish", "flourish"]
         super('barbarian', 100, barbarianStartingDeck)
+        this.name = "Aiyaruk"
     }
 }
 
@@ -590,7 +593,7 @@ Card.cards = {
 
     /* Barbarian cards */
     'magicmissile': new Card('Magicmissile', 'wizard', 0, new Effect('mana-damage', 3)),
-    'icebolt':      new Card('Icebolt', 'wizard', 1, new Effect('damage', 6), new Effect('enfeable', 1)),
+    'icebolt':      new Card('Icebolt', 'wizard', 1, new Effect('damage', 6), new Effect('chill', 1)),
     'polymorph':    new Card('Polymorph', 'wizard', 1, new Effect('stun', 1)),
     'arcaneblast':  new Card('Arcaneblast', 'wizard', 2, new Effect('damage', 16)),
     'pyroblast':    new Card('Pyroblast', 'wizard', 2, new Effect('damage', 12), new Effect('burn', 2)),
