@@ -111,7 +111,7 @@ button:hover {
     bottom: 0;
     height: 45vh;
     width: 15vw;
-    font-size: 16px;
+    font-size: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
@@ -135,6 +135,21 @@ button:hover {
     transition: height 0.2s ease;
     transition: translation 0.5s ease;
     border: 2px solid black;
+}
+
+.card .description {
+    font-size: 50%;
+    font-family: 'arial'
+}
+
+. card-image {
+    font-size: 400%;
+}
+
+.card .title {
+    font-size: 80%;
+    color:black;
+    margin: 5px;
 }
 
 .card-in-hand:hover {
@@ -452,7 +467,6 @@ button:hover {
     justify-content: center;
     align-content: center;
     transform: translateY(30%);
-    
 }
 
 #card-select-menu h1 {
@@ -477,15 +491,9 @@ button:hover {
     margin-right: 50px;
 }
 
-.card .description {
-    font-size: 50%;
-    font-family: 'arial'
-}
-
-.card .title {
-    font-size: 100%;
-    color:black;
-    margin: 5px;
+.card-choice .card-image {
+    font-size: 300%;
+    text-align: center;
 }
 
 /* Fancy transition ---------------------- */

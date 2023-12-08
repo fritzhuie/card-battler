@@ -299,11 +299,22 @@ function render () {
 
         }
 
+        html.enemyBurnStatus.style.display = game.enemy.hasStatusEffect('burn') ? "block" : "none"
+        if (game.enemy.hasStatusEffect('burn')) {
+            html.enemyBurnStatus.textContent = Number(game.enemy.hasStatusEffect('burn'))
+
+        }
+
+        html.enemyChillStatus.style.display = game.enemy.hasStatusEffect('chill') ? "block" : "none"
+        if (game.enemy.hasStatusEffect('chill')) {
+            html.enemyChillStatus.textContent = Number(game.enemy.hasStatusEffect('chill'))
+
+        }
+
         html.enemyStunStatus.style.display = game.enemy.hasStatusEffect('stun') ? "block" : "none"
         html.enemyEmpowerStatus.style.display = game.enemy.hasStatusEffect('empower') ? "block" : "none"
         html.enemyEnfeableStatus.style.display = game.enemy.hasStatusEffect('enfeable') ? "block" : "none"
-        html.enemyBurnStatus.style.display = game.enemy.hasStatusEffect('burn') ? "block" : "none"
-        html.enemyChillStatus.style.display = game.enemy.hasStatusEffect('chill') ? "block" : "none"
+        
 
         html.heroName.textContent = game.hero.name
         html.heroHealth.textContent = `${game.hero.health} / ${game.hero.maxHealth}`

@@ -306,10 +306,11 @@ class Hero {
     }
 
     gainHealth(value) {
+        console.log(`health: ${this.#health}`)
+        console.log(`gain ${value} health???`)
         this.#health += value
-        if(this.#health > this.#maxHealth) {
-            this.#health = this.#maxHealth
-        }
+        if(this.#health > this.#maxHealth) { this.#health = this.#maxHealth }
+        console.log(`health: ${this.#health}`)
     }
 
     hasStatusEffect(name) {
@@ -368,7 +369,7 @@ class Wizard extends Hero {
 
 class Barbarian extends Hero {
     constructor(){
-        const barbarianStartingDeck = ["cleave", "cleave", "cleave", "cleave", "cleave", "drinkblood", "drinkblood"]
+        const barbarianStartingDeck = ["cleave", "cleave", "cleave", "cleave", "cleave", "flourish", "flourish"]
         super('barbarian', 100, barbarianStartingDeck)
         this.name = "Aiyaruk"
     }
@@ -597,38 +598,37 @@ Card.image = {
 }
 
 Card.description = {
-    'strike': 'Deals Damage.',
-    'armor': 'Gain armor.',
-    'fireblast': 'Deal Damage & burn the enemy.',
-    'manashield': 'Gain armor, draw a card',
-    'cleave': 'Deal damage, cause bleed.',
+    'strike': 'Deals 5 Damage',
+    'armor': 'Gain 5 armor',
+    'fireblast': 'Deal 5 Damage & burn the enemy.',
+    'manashield': 'Gain 5 armor, draw a card',
+    'cleave': 'Deal damage, cause bleed',
     'flourish': 'Deal X damage, heal for X',
-    'hamstring': '',
-    'hiltpummel':'',
-    'raiseshield':'',
-    'shieldslam':'',
-    'battlestance':'',
+    'hamstring': 'Weaken your opponent',
+    'hiltpummel':'Stun your opponent',
+    'raiseshield':'Gain 12 armor',
+    'shieldslam':'Deal damage equal to your armor',
+    'battlestance':'Empower yourself until next turn',
     'disenguinate':`Deal damage equal to 'bleed'`,
     'eyegouge':'Poke your enemy in both eyes, stunning them',
     'kick':'Deal damage, draw a card',
-    'howl':'',
     'drinkblood':'Drink your enemies blood to gain health',
-    'magicmissile':'',
-    'icebolt':'',
-    'polymorph':'',
-    'arcaneblast':'',
-    'pyroblast':'',
-    'channel':''
+    'magicmissile':'Deal damage equal to your mana x 3',
+    'icebolt':'Deal 5 damage and chill your enemy',
+    'polymorph':'Turn your opponent into a harmless sheep',
+    'arcaneblast':'Deal 16 damage',
+    'pyroblast':'Deal 12 damage, apply 5 burn',
+    'channel':'Refill your mana'
 }
 
 Card.cards = {
     /* Starting cards */
     'strike':       new Card('Strike', 'warrior', 1, new Effect('damage', 5)),
     'armor':        new Card('Armor Up', 'warrior', 1, new Effect('armor', 5)),
-    'fireblast':    new Card('Fire Blast', 'wizard', 1, new Effect('damage', 5)),
+    'fireblast':    new Card('Fire Blast', 'wizard', 1, new Effect('damage', 5), new Effect('burn', 5)),
     'manashield':   new Card('Mana Shield', 'wizard', 1, new Effect('armor', 5), new Effect('draw', 1)),
     'cleave':       new Card('Cleave', 'barbarian', 1, new Effect('damage', 5), new Effect('bleed', 3)),
-    'flourish':     new Card('Flourish', 'barbarian', 1, new Effect('damage', 5), new Effect('heal', 4)),
+    'flourish':     new Card('Flourish', 'barbarian', 1, new Effect('damage', 3), new Effect('heal', 3)),
 
     /* Shared cards */
 
@@ -642,16 +642,15 @@ Card.cards = {
     /* Barbarian cards */
     'eyegouge':     new Card('Eye poke', 'barbarian', 1, new Effect('stun', 1)),
     'kick':         new Card('Kick', 'barbarian', 1, new Effect('damage', 3), new Effect('draw', 1)),
-    'howl':         new Card('Hown', 'barbarian', 1, new Effect('enfeable', 1)),
-    'disenguinate': new Card('Disenguinate', 'barbarian', 1, new Effect('bleed-damage', 1)),
-    'drinkblood':   new Card('Drink Blood', 'barbarian', 1, new Effect('bleed-heal', 1)),
+    'disenguinate': new Card('Disenguinate', 'barbarian', 1, new Effect('damage', 10)),
+    'drinkblood':   new Card('Drink Blood', 'barbarian', 1, new Effect('heal', 1)),
 
     /* Wizard cards */
     'magicmissile': new Card('Magic Missile', 'wizard', 0, new Effect('mana-damage', 3)),
     'icebolt':      new Card('Icebolt', 'wizard', 1, new Effect('damage', 6), new Effect('chill', 1)),
     'polymorph':    new Card('Polymorph', 'wizard', 1, new Effect('stun', 1)),
     'arcaneblast':  new Card('Arcaneblast', 'wizard', 2, new Effect('damage', 16)),
-    'pyroblast':    new Card('Pyroblast', 'wizard', 2, new Effect('damage', 12), new Effect('burn', 2)),
+    'pyroblast':    new Card('Pyroblast', 'wizard', 2, new Effect('damage', 12), new Effect('burn', 5)),
     'channel':      new Card('Channel', 'wizard', 1, new Effect('mana', 3)),
 }
 
