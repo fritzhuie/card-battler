@@ -360,7 +360,7 @@ function render () {
     // CARD SELECT MENU MENU ---------------------------------------------------------------------
         titleMenu = true
         document.getElementById('sub-title').textContent = ""
-        document.getElementById('wavy-title').textContent = "YOU DIED"
+        document.getElementById('wavy-title').textContent = "YOU WIN"
         console.log("WIN")
     }
 }
