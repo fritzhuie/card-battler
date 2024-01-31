@@ -10,7 +10,7 @@ _Delve into the hauted crypt. Battle increasingly stronger enemies, and build a 
 
 ## Technologies Used
 
-Javascript, CSS, HTML, DALL-E image generator, Chat GPT
+Javascript, CSS, HTML, DALL-E image generator, ChatGPT (quick and dirty dialog)
 
 ## Getting Started
 
@@ -30,98 +30,7 @@ Click "New Game"
 - If the player's health reaches 0, the player loses immediately.
 
 
-## Game States
-
-```mermaid
----
-title: Menu Navigation
----
-
-graph TD;
-   Title-menu --> Choose-hero;
-   Choose-hero --> Hero-intro;
-   Hero-intro --> Next-enemy-intro;
-   Next-enemy-intro --> Battle;
-   Battle --> Player-wins;
-   Battle --> Player-loses;
-   Player-wins --> Post-fight-dialog;
-   Post-fight-dialog --> Next-enemy-intro;
-   Player-loses --> Player-death-dialog;
-   Player-death-dialog --> Title-menu;
-```
-
-```mermaid
----
-title: Battle loop
----
-graph TD;
-   New-turn-draw-cards --> Player-plays-card;
-   Player-plays-card --> Perform-card-effect; 
-   Perform-card-effect --> Player-plays-card;
-   Perform-card-effect --> Enemy-is-dead;
-   Enemy-is-dead --> Player-wins;
-   Perform-card-effect --> Enemy-not-dead;
-   Enemy-not-dead --> End-turn;
-   End-turn --> Enemy-performs-action;
-   Enemy-performs-action --> Player-is-dead;
-   Enemy-performs-action --> Player-not-dead;
-   Player-is-dead --> Player-loses;
-   Player-not-dead --> New-turn-draw-cards;
-```
-
-
-## Pseudo-code for Battles
-```js
-
-newBattle() {
-   initBattle()
-   newTurn()
-}
-
-initBattle() {
-   buildPlayerDeck()
-   loadEnemy()
-}
-
-newTurn() {
-   discardHand()
-   refreshManaPool()
-   dealCards()
-}
-
-playCard(card) {
-   performCardEffect(card)
-   isEnemyDead() ? playerWins()
-}
-
-endTurn() {
-   performEnemyAction(action)
-   isPlayerDead() ? playerLoses()
-}
-
-performCardEffect(card) {
-   card('damage') ? hurtEnemy(card.effect.value)
-   card('armor') ? gainArmor(card.effect.value)
-}
-
-```
-
-
-## MVP milestones
-
-- As a player, I should to be able to start a game, play cards, end my turn in a loop until my character dies, or the enemy dies.
-- As a player, I should see a win state when all enemies have been defeated, and a lose state when the player's health reaches 0 
-- As a player, I should be able to see at least 10 random enemy types and at least 3 unique cards per class (9 total), utilizing the following mechanics:
-     - Damage
-     - Armor
-     - Draw card
-     - Bleed (debuff)
-     - Disable
-- As a player, I should be able to add a new card to my deck after defeating an enemy, creating a more powerful deck as more enemies are defeated
-- As a player, I should experience coherant dialog
-
-
-## Stretch Goal Milestones
+## Next Steps
 
 - Add a final boss 
 - Balance gameplay
@@ -162,27 +71,3 @@ performCardEffect(card) {
    - Magic attacks
    
 - Sound effects for boss intros and attacks
-
-
-## Schedule
-
-| Friday          | Saturday    | Sunday  |  Monday         | Tuesday      |  Wednesday   | Thursday     | Friday   |
-| :-------------- | :--------- | :----- | :---------------- | :---------- | :---------- | :---------- | :-------|
-| Gameplay MVP    | (Relax)     | (Relax) | Expand Gameplay | Implement UI | Add content  | Content / UI / game balance / sound | Scramble / panic / break everything |
-
-
-
-## Wire Frame (Battle scene)
-
-![wireframe-experimental](https://github.com/fritzhuie/card-battler/assets/1472318/6b343c05-2249-4315-8ad1-8eb12172f7fb)
-
-![wireframe-color](https://github.com/fritzhuie/card-battler/assets/1472318/88aacb3d-f6ef-4350-9f45-f3a53eccaaa1)
-
-
-# Next Steps 
-
-Add dozens of new cards and enemies
-
-Make cards look nice
-
-Balance the gameplay
