@@ -16,8 +16,6 @@ Javascript, CSS, HTML, DALL-E image generator, ChatGPT (quick and dirty dialog)
 
 Go to: https://fritzhuie.github.io/card-battler
 
-Click "New Game"
-
 ## Gameplay
 - Players start with a deck of cards, a health pool, and three power crystals.
 - Each round, an emeny is presented, and the player battles the enemy to the death.
