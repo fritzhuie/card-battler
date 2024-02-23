@@ -293,7 +293,7 @@ function render () {
         html.enemyName.textContent = game.enemy.name
         html.enemyAction.textContent =  `⚔️ ${game.enemy.nextAction().effects[0].value}`
         html.enemyHealth.textContent = `${game.enemy.health} / ${game.enemy.maxHealth}`
-        html.enemyPortrait.style.backgroundImage = `url(${game.enemy.portrait})`
+        html.enemyPortrait.style.backgroundImage = `url('img/${game.enemy.portrait}.png`
         html.enemyHealthSlider.style.width = `${100 * game.enemy.health / game.enemy.maxHealth}%`
 
         html.enemyBleedStatus.style.display = game.enemy.hasStatusEffect('bleed') ? "block" : "none"
@@ -322,7 +322,7 @@ function render () {
         html.heroName.textContent = game.hero.name
         html.heroHealth.textContent = `${game.hero.health} / ${game.hero.maxHealth}`
         html.heroHealthSlider.style.width = `${100 * game.hero.health / game.hero.maxHealth}%`
-        html.heroPortrait.style.backgroundImage = `url(../img/${game.hero.architype}-tall.png)`
+        html.heroPortrait.style.backgroundImage = `url(img/${game.hero.architype}-tall.png)`
 
         html.heroBleedStatus.style.display = game.hero.hasStatusEffect('bleed') ? "block" : "none"
         html.heroStunStatus.style.display = game.hero.hasStatusEffect('stun') ? "block" : "none"

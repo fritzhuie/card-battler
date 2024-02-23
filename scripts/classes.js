@@ -460,7 +460,7 @@ class EnemyGoblin extends Enemy {
         super();
         this.name = 'Stinky Goblin'
         this.description = 'Stinky Goblin.'
-        this.portrait = '../img/goblin.png'
+        this.portrait = 'goblin'
         this.maxHealth = 25
         this.health = this.maxHealth
         this.armor = 0
@@ -478,7 +478,7 @@ class EnemyShaman extends Enemy {
         super();
         this.name = 'Orthic Shaman'
         this.description = '100% organic boar skull!'
-        this.portrait = '../img/axe-shaman.png'
+        this.portrait = 'axe-shaman'
         this.maxHealth = 25
         this.health = this.maxHealth
         this.armor = 0
@@ -496,7 +496,7 @@ class EnemyWizard extends Enemy {
         super();
         this.name = 'Necrotic Wizard'
         this.description = 'wizard'
-        this.portrait = '../img/old-wizard.png'
+        this.portrait = 'old-wizard'
         this.maxHealth = 25
         this.health = this.maxHealth
         this.armor = 0
@@ -513,7 +513,7 @@ class EnemyBladeRevenant extends Enemy {
         super();
         this.name = 'Blade Revenant'
         this.description = "Hint: He's gonna hit you with the sword."
-        this.portrait = '../img/male-undead.png'
+        this.portrait = 'male-undead'
         this.maxHealth = 25
         this.health = this.maxHealth
         this.armor = 0
@@ -531,7 +531,7 @@ class EnemyMecharaptor extends Enemy {
         super();
         this.name = 'Mecha Raptor'
         this.description = 'They Didn’t Stop To Think If They Should'
-        this.portrait = '../img/mecharaptor.png'
+        this.portrait = 'mecharaptor'
         this.maxHealth = 200
         this.health = this.maxHealth
         this.armor = 0
